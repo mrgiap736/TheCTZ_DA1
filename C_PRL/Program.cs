@@ -14,7 +14,7 @@ namespace C_PRL
 			// To customize application configuration such as set high DPI settings or default font,
 			// see https://aka.ms/applicationconfiguration.
 			ApplicationConfiguration.Initialize();
-			Application.Run(new Form_TrangChu());
+			Application.Run(new Form_DangNhap());
 
             //Scaffold-DbContext "Data Source=MRG;Initial Catalog=Sql_TheCTZ;Integrated Security=True;Encrypt=True;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SqlServer- OutputDir Models
 
