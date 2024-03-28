@@ -11,5 +11,9 @@ public partial class NhanVien
 
     public string ChucVu { get; set; } = null!;
 
+    public string? TaiKhoan { get; set; }
+
+    public string? MatKhau { get; set; }
+
     public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 }

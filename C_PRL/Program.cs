@@ -16,8 +16,6 @@ namespace C_PRL
 			ApplicationConfiguration.Initialize();
 			Application.Run(new Form_DangNhap());
 
-            //Scaffold-DbContext "Data Source=MRG;Initial Catalog=Sql_TheCTZ;Integrated Security=True;Encrypt=True;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SqlServer- OutputDir Models
-
         }
     }
 }

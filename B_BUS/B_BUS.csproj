@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\A_DAL\A_DAL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -30,10 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_DangNhap));
             label1 = new Label();
-            textBox1 = new TextBox();
+            tbx_usn = new TextBox();
             btn_DangNhap = new Button();
-            textBox2 = new TextBox();
+            tbx_pass = new TextBox();
             label2 = new Label();
+            pn_iconus = new Panel();
+            pn_passicon = new Panel();
             SuspendLayout();
             // 
             // label1
@@ -47,31 +49,35 @@
             label1.TabIndex = 0;
             label1.Text = "Tài khoản";
             // 
-            // textBox1
+            // tbx_usn
             // 
-            textBox1.Location = new Point(96, 69);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(305, 27);
-            textBox1.TabIndex = 1;
+            tbx_usn.Location = new Point(96, 69);
+            tbx_usn.Name = "tbx_usn";
+            tbx_usn.PlaceholderText = "Nhập tài khoản";
+            tbx_usn.Size = new Size(305, 27);
+            tbx_usn.TabIndex = 1;
             // 
             // btn_DangNhap
             // 
             btn_DangNhap.BackColor = Color.FromArgb(255, 128, 0);
             btn_DangNhap.Font = new Font("Times New Roman", 11F, FontStyle.Regular, GraphicsUnit.Point);
             btn_DangNhap.ForeColor = Color.White;
-            btn_DangNhap.Location = new Point(196, 181);
+            btn_DangNhap.Location = new Point(187, 180);
             btn_DangNhap.Name = "btn_DangNhap";
             btn_DangNhap.Size = new Size(110, 40);
             btn_DangNhap.TabIndex = 2;
             btn_DangNhap.Text = "Đăng nhập";
             btn_DangNhap.UseVisualStyleBackColor = false;
+            btn_DangNhap.Click += btn_DangNhap_Click;
             // 
-            // textBox2
+            // tbx_pass
             // 
-            textBox2.Location = new Point(96, 134);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(305, 27);
-            textBox2.TabIndex = 4;
+            tbx_pass.Location = new Point(96, 134);
+            tbx_pass.Name = "tbx_pass";
+            tbx_pass.PasswordChar = '*';
+            tbx_pass.PlaceholderText = "Nhập mật khẩu";
+            tbx_pass.Size = new Size(305, 27);
+            tbx_pass.TabIndex = 4;
             // 
             // label2
             // 
@@ -84,6 +90,26 @@
             label2.TabIndex = 3;
             label2.Text = "Mật khẩu";
             // 
+            // pn_iconus
+            // 
+            pn_iconus.BackColor = Color.Transparent;
+            pn_iconus.BackgroundImage = (Image)resources.GetObject("pn_iconus.BackgroundImage");
+            pn_iconus.BackgroundImageLayout = ImageLayout.Stretch;
+            pn_iconus.Location = new Point(60, 69);
+            pn_iconus.Name = "pn_iconus";
+            pn_iconus.Size = new Size(30, 27);
+            pn_iconus.TabIndex = 5;
+            // 
+            // pn_passicon
+            // 
+            pn_passicon.BackColor = Color.Transparent;
+            pn_passicon.BackgroundImage = (Image)resources.GetObject("pn_passicon.BackgroundImage");
+            pn_passicon.BackgroundImageLayout = ImageLayout.Stretch;
+            pn_passicon.Location = new Point(60, 134);
+            pn_passicon.Name = "pn_passicon";
+            pn_passicon.Size = new Size(30, 27);
+            pn_passicon.TabIndex = 6;
+            // 
             // Form_DangNhap
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -91,12 +117,15 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(482, 253);
-            Controls.Add(textBox2);
+            Controls.Add(pn_passicon);
+            Controls.Add(pn_iconus);
+            Controls.Add(tbx_pass);
             Controls.Add(label2);
             Controls.Add(btn_DangNhap);
-            Controls.Add(textBox1);
+            Controls.Add(tbx_usn);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "Form_DangNhap";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Đăng nhập";
@@ -107,9 +136,11 @@
         #endregion
 
         private Label label1;
-        private TextBox textBox1;
+        private TextBox tbx_usn;
         private Button btn_DangNhap;
-        private TextBox textBox2;
+        private TextBox tbx_pass;
         private Label label2;
+        private Panel pn_iconus;
+        private Panel pn_passicon;
     }
 }

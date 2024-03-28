@@ -1,4 +1,5 @@
-﻿using System;
+﻿using B_BUS.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,31 @@ namespace C_PRL.UI
 {
     public partial class Form_DangNhap : Form
     {
+        Login_Services loginsv;
         public Form_DangNhap()
         {
             InitializeComponent();
+            loginsv = new Login_Services();
+        }
+
+        private void btn_DangNhap_Click(object sender, EventArgs e)
+        {
+            string us = tbx_usn.Text;
+            string pw = tbx_pass.Text;
+
+            if(loginsv.GetUS_PW(us, pw))
+            {
+                Form_TrangChu tt = new Form_TrangChu();
+                tt.Show();
+
+
+
+               // Close();
+            }
+            else
+            {
+                MessageBox.Show("Đăng nhập thất bại !");
+            }
         }
     }
 }

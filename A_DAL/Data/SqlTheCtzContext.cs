@@ -101,6 +101,8 @@ public partial class SqlTheCtzContext : DbContext
             entity.Property(e => e.ChucVu)
                 .HasMaxLength(10)
                 .IsUnicode(false);
+            entity.Property(e => e.MatKhau).HasMaxLength(20);
+            entity.Property(e => e.TaiKhoan).HasMaxLength(20);
             entity.Property(e => e.TenNhanVien).HasMaxLength(50);
         });
 
