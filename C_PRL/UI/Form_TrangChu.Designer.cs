@@ -30,8 +30,20 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_TrangChu));
             pn_DSChucNang = new Panel();
+            pn_NhanVien = new Panel();
+            label7 = new Label();
+            panel11 = new Panel();
+            pn_KhachHang = new Panel();
+            label6 = new Label();
+            panel9 = new Panel();
+            pn_SanPham = new Panel();
+            label5 = new Label();
+            panel7 = new Panel();
+            pn_HoaDon = new Panel();
+            lb_cn2 = new Label();
+            panel5 = new Panel();
             pn_BanHang = new Panel();
-            lb_CN1 = new Label();
+            lb_cn1 = new Label();
             panel3 = new Panel();
             lb_NameNV = new Label();
             panel2 = new Panel();
@@ -81,6 +93,10 @@
             label1 = new Label();
             dtg_DSsanpham = new DataGridView();
             pn_DSChucNang.SuspendLayout();
+            pn_NhanVien.SuspendLayout();
+            pn_KhachHang.SuspendLayout();
+            pn_SanPham.SuspendLayout();
+            pn_HoaDon.SuspendLayout();
             pn_BanHang.SuspendLayout();
             pn_HienThiChiTiet.SuspendLayout();
             panel1.SuspendLayout();
@@ -96,7 +112,11 @@
             // 
             // pn_DSChucNang
             // 
-            pn_DSChucNang.BackColor = Color.FromArgb(255, 255, 192);
+            pn_DSChucNang.BackColor = Color.FromArgb(45, 149, 150);
+            pn_DSChucNang.Controls.Add(pn_NhanVien);
+            pn_DSChucNang.Controls.Add(pn_KhachHang);
+            pn_DSChucNang.Controls.Add(pn_SanPham);
+            pn_DSChucNang.Controls.Add(pn_HoaDon);
             pn_DSChucNang.Controls.Add(pn_BanHang);
             pn_DSChucNang.Controls.Add(lb_NameNV);
             pn_DSChucNang.Controls.Add(panel2);
@@ -106,34 +126,154 @@
             pn_DSChucNang.Size = new Size(215, 972);
             pn_DSChucNang.TabIndex = 0;
             // 
+            // pn_NhanVien
+            // 
+            pn_NhanVien.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_NhanVien.Controls.Add(label7);
+            pn_NhanVien.Controls.Add(panel11);
+            pn_NhanVien.Location = new Point(0, 405);
+            pn_NhanVien.Name = "pn_NhanVien";
+            pn_NhanVien.Size = new Size(215, 57);
+            pn_NhanVien.TabIndex = 5;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.Location = new Point(63, 12);
+            label7.Name = "label7";
+            label7.Size = new Size(124, 32);
+            label7.TabIndex = 4;
+            label7.Text = "Nhân viên";
+            // 
+            // panel11
+            // 
+            panel11.BackColor = Color.Transparent;
+            panel11.BackgroundImage = (Image)resources.GetObject("panel11.BackgroundImage");
+            panel11.BackgroundImageLayout = ImageLayout.Stretch;
+            panel11.Location = new Point(3, 3);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(54, 50);
+            panel11.TabIndex = 3;
+            // 
+            // pn_KhachHang
+            // 
+            pn_KhachHang.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_KhachHang.Controls.Add(label6);
+            pn_KhachHang.Controls.Add(panel9);
+            pn_KhachHang.Location = new Point(0, 342);
+            pn_KhachHang.Name = "pn_KhachHang";
+            pn_KhachHang.Size = new Size(215, 57);
+            pn_KhachHang.TabIndex = 5;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            label6.Location = new Point(63, 12);
+            label6.Name = "label6";
+            label6.Size = new Size(140, 32);
+            label6.TabIndex = 4;
+            label6.Text = "Khách hàng";
+            // 
+            // panel9
+            // 
+            panel9.BackColor = Color.Transparent;
+            panel9.BackgroundImage = (Image)resources.GetObject("panel9.BackgroundImage");
+            panel9.BackgroundImageLayout = ImageLayout.Stretch;
+            panel9.Location = new Point(3, 3);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(54, 50);
+            panel9.TabIndex = 3;
+            // 
+            // pn_SanPham
+            // 
+            pn_SanPham.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_SanPham.Controls.Add(label5);
+            pn_SanPham.Controls.Add(panel7);
+            pn_SanPham.Location = new Point(0, 279);
+            pn_SanPham.Name = "pn_SanPham";
+            pn_SanPham.Size = new Size(215, 57);
+            pn_SanPham.TabIndex = 5;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.Location = new Point(63, 12);
+            label5.Name = "label5";
+            label5.Size = new Size(121, 32);
+            label5.TabIndex = 4;
+            label5.Text = "Sản phẩm";
+            // 
+            // panel7
+            // 
+            panel7.BackColor = Color.Transparent;
+            panel7.BackgroundImage = (Image)resources.GetObject("panel7.BackgroundImage");
+            panel7.BackgroundImageLayout = ImageLayout.Stretch;
+            panel7.Location = new Point(3, 3);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(54, 50);
+            panel7.TabIndex = 3;
+            // 
+            // pn_HoaDon
+            // 
+            pn_HoaDon.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_HoaDon.Controls.Add(lb_cn2);
+            pn_HoaDon.Controls.Add(panel5);
+            pn_HoaDon.Location = new Point(0, 216);
+            pn_HoaDon.Name = "pn_HoaDon";
+            pn_HoaDon.Size = new Size(215, 57);
+            pn_HoaDon.TabIndex = 5;
+            // 
+            // lb_cn2
+            // 
+            lb_cn2.AutoSize = true;
+            lb_cn2.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            lb_cn2.Location = new Point(63, 12);
+            lb_cn2.Name = "lb_cn2";
+            lb_cn2.Size = new Size(106, 32);
+            lb_cn2.TabIndex = 4;
+            lb_cn2.Text = "Hóa đơn";
+            // 
+            // panel5
+            // 
+            panel5.BackColor = Color.Transparent;
+            panel5.BackgroundImage = (Image)resources.GetObject("panel5.BackgroundImage");
+            panel5.BackgroundImageLayout = ImageLayout.Stretch;
+            panel5.Location = new Point(3, 3);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(54, 50);
+            panel5.TabIndex = 3;
+            // 
             // pn_BanHang
             // 
-            pn_BanHang.BackColor = Color.FromArgb(255, 128, 0);
-            pn_BanHang.Controls.Add(lb_CN1);
+            pn_BanHang.BackColor = Color.FromArgb(38, 80, 115);
+            pn_BanHang.Controls.Add(lb_cn1);
             pn_BanHang.Controls.Add(panel3);
             pn_BanHang.Location = new Point(0, 153);
             pn_BanHang.Name = "pn_BanHang";
-            pn_BanHang.Size = new Size(215, 43);
+            pn_BanHang.Size = new Size(215, 57);
             pn_BanHang.TabIndex = 3;
             // 
-            // lb_CN1
+            // lb_cn1
             // 
-            lb_CN1.AutoSize = true;
-            lb_CN1.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
-            lb_CN1.Location = new Point(54, 6);
-            lb_CN1.Name = "lb_CN1";
-            lb_CN1.Size = new Size(115, 32);
-            lb_CN1.TabIndex = 4;
-            lb_CN1.Text = "Bán hàng";
+            lb_cn1.AutoSize = true;
+            lb_cn1.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            lb_cn1.Location = new Point(63, 12);
+            lb_cn1.Name = "lb_cn1";
+            lb_cn1.Size = new Size(115, 32);
+            lb_cn1.TabIndex = 4;
+            lb_cn1.Text = "Bán hàng";
             // 
             // panel3
             // 
             panel3.BackColor = Color.Transparent;
             panel3.BackgroundImage = (Image)resources.GetObject("panel3.BackgroundImage");
             panel3.BackgroundImageLayout = ImageLayout.Stretch;
-            panel3.Location = new Point(0, 0);
+            panel3.Location = new Point(3, 3);
             panel3.Name = "panel3";
-            panel3.Size = new Size(48, 43);
+            panel3.Size = new Size(54, 50);
             panel3.TabIndex = 3;
             // 
             // lb_NameNV
@@ -149,7 +289,7 @@
             // 
             panel2.BackgroundImage = (Image)resources.GetObject("panel2.BackgroundImage");
             panel2.BackgroundImageLayout = ImageLayout.Stretch;
-            panel2.Location = new Point(12, 76);
+            panel2.Location = new Point(9, 76);
             panel2.Name = "panel2";
             panel2.Size = new Size(45, 44);
             panel2.TabIndex = 1;
@@ -165,7 +305,7 @@
             // 
             // pn_HienThiChiTiet
             // 
-            pn_HienThiChiTiet.BackColor = Color.FromArgb(255, 128, 128);
+            pn_HienThiChiTiet.BackColor = Color.FromArgb(38, 80, 115);
             pn_HienThiChiTiet.Controls.Add(lb_TenChucNang);
             pn_HienThiChiTiet.Location = new Point(215, 0);
             pn_HienThiChiTiet.Name = "pn_HienThiChiTiet";
@@ -175,7 +315,9 @@
             // lb_TenChucNang
             // 
             lb_TenChucNang.AutoSize = true;
+            lb_TenChucNang.BackColor = Color.Transparent;
             lb_TenChucNang.Font = new Font("Segoe UI", 17F, FontStyle.Regular, GraphicsUnit.Point);
+            lb_TenChucNang.ForeColor = Color.White;
             lb_TenChucNang.Location = new Point(743, 9);
             lb_TenChucNang.Name = "lb_TenChucNang";
             lb_TenChucNang.Size = new Size(137, 40);
@@ -184,7 +326,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(128, 255, 255);
+            panel1.BackColor = Color.FromArgb(241, 250, 218);
             panel1.Controls.Add(grb_HoaDonCho);
             panel1.Controls.Add(grb_GioHang);
             panel1.Controls.Add(grb_Thanhtoan);
@@ -530,7 +672,7 @@
             // 
             // tbx_Search
             // 
-            tbx_Search.Location = new Point(749, 29);
+            tbx_Search.Location = new Point(731, 33);
             tbx_Search.Name = "tbx_Search";
             tbx_Search.PlaceholderText = "Nhập tên sản phẩm";
             tbx_Search.Size = new Size(252, 27);
@@ -539,7 +681,7 @@
             // lb_Search
             // 
             lb_Search.AutoSize = true;
-            lb_Search.Location = new Point(670, 32);
+            lb_Search.Location = new Point(652, 36);
             lb_Search.Name = "lb_Search";
             lb_Search.Size = new Size(73, 20);
             lb_Search.TabIndex = 7;
@@ -565,7 +707,7 @@
             // cbx_Filter1
             // 
             cbx_Filter1.FormattingEnabled = true;
-            cbx_Filter1.Location = new Point(99, 32);
+            cbx_Filter1.Location = new Point(81, 32);
             cbx_Filter1.Name = "cbx_Filter1";
             cbx_Filter1.Size = new Size(145, 28);
             cbx_Filter1.TabIndex = 2;
@@ -573,7 +715,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(45, 36);
+            label1.Location = new Point(27, 36);
             label1.Name = "label1";
             label1.Size = new Size(48, 20);
             label1.TabIndex = 1;
@@ -581,6 +723,7 @@
             // 
             // dtg_DSsanpham
             // 
+            dtg_DSsanpham.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtg_DSsanpham.BackgroundColor = Color.White;
             dtg_DSsanpham.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dtg_DSsanpham.Location = new Point(6, 76);
@@ -610,6 +753,14 @@
             Load += Form_TrangChu_Load;
             pn_DSChucNang.ResumeLayout(false);
             pn_DSChucNang.PerformLayout();
+            pn_NhanVien.ResumeLayout(false);
+            pn_NhanVien.PerformLayout();
+            pn_KhachHang.ResumeLayout(false);
+            pn_KhachHang.PerformLayout();
+            pn_SanPham.ResumeLayout(false);
+            pn_SanPham.PerformLayout();
+            pn_HoaDon.ResumeLayout(false);
+            pn_HoaDon.PerformLayout();
             pn_BanHang.ResumeLayout(false);
             pn_BanHang.PerformLayout();
             pn_HienThiChiTiet.ResumeLayout(false);
@@ -641,7 +792,7 @@
         private Label lb_Xinchao;
         private Panel pn_BanHang;
         private Panel panel3;
-        private Label lb_CN1;
+        private Label lb_cn1;
         private GroupBox grb_DSsanpham;
         private TextBox tbx_Search;
         private Label lb_Search;
@@ -684,5 +835,17 @@
         private Label lb_TichLuy;
         private Label lb_gh4;
         private Label label3;
+        private Panel pn_NhanVien;
+        private Label label7;
+        private Panel panel11;
+        private Panel pn_KhachHang;
+        private Label label6;
+        private Panel panel9;
+        private Panel pn_SanPham;
+        private Label label5;
+        private Panel panel7;
+        private Panel pn_HoaDon;
+        private Label lb_cn2;
+        private Panel panel5;
     }
 }
