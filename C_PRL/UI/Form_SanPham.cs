@@ -16,5 +16,16 @@ namespace C_PRL.UI
         {
             InitializeComponent();
         }
+
+        public List<Control> GetCtrl()
+        {
+            List<Control> ctrls = new List<Control>();
+
+            foreach (Control ctrl in pn_Form_SanPham.Controls)
+            {
+                ctrls.Add(ctrl);
+            }
+            return ctrls;
+        }
     }
 }

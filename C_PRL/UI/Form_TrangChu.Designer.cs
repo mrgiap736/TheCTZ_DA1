@@ -50,7 +50,7 @@
             lb_Xinchao = new Label();
             pn_HienThiChiTiet = new Panel();
             lb_TenChucNang = new Label();
-            panel1 = new Panel();
+            pn_Form_BanHang = new Panel();
             grb_HoaDonCho = new GroupBox();
             dtg_HoaDonCho = new DataGridView();
             grb_GioHang = new GroupBox();
@@ -99,7 +99,7 @@
             pn_HoaDon.SuspendLayout();
             pn_BanHang.SuspendLayout();
             pn_HienThiChiTiet.SuspendLayout();
-            panel1.SuspendLayout();
+            pn_Form_BanHang.SuspendLayout();
             grb_HoaDonCho.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dtg_HoaDonCho).BeginInit();
             grb_GioHang.SuspendLayout();
@@ -135,6 +135,7 @@
             pn_NhanVien.Name = "pn_NhanVien";
             pn_NhanVien.Size = new Size(215, 57);
             pn_NhanVien.TabIndex = 5;
+            pn_NhanVien.Click += pn_NhanVien_Click;
             // 
             // label7
             // 
@@ -165,6 +166,7 @@
             pn_KhachHang.Name = "pn_KhachHang";
             pn_KhachHang.Size = new Size(215, 57);
             pn_KhachHang.TabIndex = 5;
+            pn_KhachHang.Click += pn_KhachHang_Click;
             // 
             // label6
             // 
@@ -195,6 +197,7 @@
             pn_SanPham.Name = "pn_SanPham";
             pn_SanPham.Size = new Size(215, 57);
             pn_SanPham.TabIndex = 5;
+            pn_SanPham.Click += pn_SanPham_Click;
             // 
             // label5
             // 
@@ -225,6 +228,7 @@
             pn_HoaDon.Name = "pn_HoaDon";
             pn_HoaDon.Size = new Size(215, 57);
             pn_HoaDon.TabIndex = 5;
+            pn_HoaDon.Click += pn_HoaDon_Click;
             // 
             // lb_cn2
             // 
@@ -255,6 +259,7 @@
             pn_BanHang.Name = "pn_BanHang";
             pn_BanHang.Size = new Size(215, 57);
             pn_BanHang.TabIndex = 3;
+            pn_BanHang.Click += pn_BanHang_Click;
             // 
             // lb_cn1
             // 
@@ -263,7 +268,7 @@
             lb_cn1.Location = new Point(63, 12);
             lb_cn1.Name = "lb_cn1";
             lb_cn1.Size = new Size(115, 32);
-            lb_cn1.TabIndex = 4;
+            lb_cn1.TabIndex = 3;
             lb_cn1.Text = "Bán hàng";
             // 
             // panel3
@@ -324,17 +329,17 @@
             lb_TenChucNang.TabIndex = 0;
             lb_TenChucNang.Text = "Bán hàng";
             // 
-            // panel1
+            // pn_Form_BanHang
             // 
-            panel1.BackColor = Color.FromArgb(241, 250, 218);
-            panel1.Controls.Add(grb_HoaDonCho);
-            panel1.Controls.Add(grb_GioHang);
-            panel1.Controls.Add(grb_Thanhtoan);
-            panel1.Controls.Add(grb_DSsanpham);
-            panel1.Location = new Point(215, 60);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1689, 912);
-            panel1.TabIndex = 2;
+            pn_Form_BanHang.BackColor = Color.FromArgb(241, 250, 218);
+            pn_Form_BanHang.Controls.Add(grb_HoaDonCho);
+            pn_Form_BanHang.Controls.Add(grb_GioHang);
+            pn_Form_BanHang.Controls.Add(grb_Thanhtoan);
+            pn_Form_BanHang.Controls.Add(grb_DSsanpham);
+            pn_Form_BanHang.Location = new Point(215, 60);
+            pn_Form_BanHang.Name = "pn_Form_BanHang";
+            pn_Form_BanHang.Size = new Size(1689, 912);
+            pn_Form_BanHang.TabIndex = 2;
             // 
             // grb_HoaDonCho
             // 
@@ -501,9 +506,9 @@
             grb_Thanhtoan.Controls.Add(lb_tt2);
             grb_Thanhtoan.Controls.Add(textBox1);
             grb_Thanhtoan.Controls.Add(lb_tt1);
-            grb_Thanhtoan.Location = new Point(1019, 16);
+            grb_Thanhtoan.Location = new Point(1019, 8);
             grb_Thanhtoan.Name = "grb_Thanhtoan";
-            grb_Thanhtoan.Size = new Size(667, 502);
+            grb_Thanhtoan.Size = new Size(667, 510);
             grb_Thanhtoan.TabIndex = 1;
             grb_Thanhtoan.TabStop = false;
             grb_Thanhtoan.Text = "Thanh toán";
@@ -740,7 +745,7 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(1902, 971);
-            Controls.Add(panel1);
+            Controls.Add(pn_Form_BanHang);
             Controls.Add(pn_HienThiChiTiet);
             Controls.Add(pn_DSChucNang);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -765,7 +770,7 @@
             pn_BanHang.PerformLayout();
             pn_HienThiChiTiet.ResumeLayout(false);
             pn_HienThiChiTiet.PerformLayout();
-            panel1.ResumeLayout(false);
+            pn_Form_BanHang.ResumeLayout(false);
             grb_HoaDonCho.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dtg_HoaDonCho).EndInit();
             grb_GioHang.ResumeLayout(false);
@@ -785,7 +790,7 @@
 
         private Panel pn_DSChucNang;
 		private Panel pn_HienThiChiTiet;
-		private Panel panel1;
+		private Panel pn_Form_BanHang;
         private Label lb_TenChucNang;
         private Label lb_NameNV;
         private Panel panel2;

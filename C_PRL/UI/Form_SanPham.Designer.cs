@@ -28,12 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form_SanPham";
+            pn_Form_SanPham = new Panel();
+            SuspendLayout();
+            // 
+            // pn_Form_SanPham
+            // 
+            pn_Form_SanPham.BackColor = Color.FromArgb(255, 192, 192);
+            pn_Form_SanPham.Location = new Point(215, 60);
+            pn_Form_SanPham.Name = "pn_Form_SanPham";
+            pn_Form_SanPham.Size = new Size(1689, 912);
+            pn_Form_SanPham.TabIndex = 0;
+            // 
+            // Form_SanPham
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1902, 971);
+            Controls.Add(pn_Form_SanPham);
+            Name = "Form_SanPham";
+            Text = "Form_SanPham";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel pn_Form_SanPham;
     }
 }
