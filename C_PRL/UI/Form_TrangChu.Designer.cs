@@ -500,7 +500,6 @@
             // 
             // grb_Thanhtoan
             // 
-            grb_Thanhtoan.Controls.Add(pn_iconThanhtoan);
             grb_Thanhtoan.Controls.Add(pn_buttonThanhToan);
             grb_Thanhtoan.Controls.Add(textBox4);
             grb_Thanhtoan.Controls.Add(lb_TongTien);
@@ -525,15 +524,18 @@
             // 
             // pn_iconThanhtoan
             // 
-            pn_iconThanhtoan.BackColor = Color.Yellow;
-            pn_iconThanhtoan.Location = new Point(260, 410);
+            pn_iconThanhtoan.BackColor = Color.Transparent;
+            pn_iconThanhtoan.BackgroundImage = (Image)resources.GetObject("pn_iconThanhtoan.BackgroundImage");
+            pn_iconThanhtoan.BackgroundImageLayout = ImageLayout.Stretch;
+            pn_iconThanhtoan.Location = new Point(0, 0);
             pn_iconThanhtoan.Name = "pn_iconThanhtoan";
             pn_iconThanhtoan.Size = new Size(54, 50);
             pn_iconThanhtoan.TabIndex = 0;
             // 
             // pn_buttonThanhToan
             // 
-            pn_buttonThanhToan.BackColor = Color.White;
+            pn_buttonThanhToan.BackColor = Color.Yellow;
+            pn_buttonThanhToan.Controls.Add(pn_iconThanhtoan);
             pn_buttonThanhToan.Controls.Add(lb_Thanhtoan);
             pn_buttonThanhToan.Location = new Point(262, 410);
             pn_buttonThanhToan.Name = "pn_buttonThanhToan";
@@ -544,7 +546,7 @@
             // 
             lb_Thanhtoan.AutoSize = true;
             lb_Thanhtoan.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lb_Thanhtoan.Location = new Point(58, 12);
+            lb_Thanhtoan.Location = new Point(58, 10);
             lb_Thanhtoan.Name = "lb_Thanhtoan";
             lb_Thanhtoan.Size = new Size(110, 28);
             lb_Thanhtoan.TabIndex = 0;
