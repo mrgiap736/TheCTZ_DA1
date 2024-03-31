@@ -128,7 +128,7 @@
             // 
             // pn_NhanVien
             // 
-            pn_NhanVien.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_NhanVien.BackColor = Color.FromArgb(45, 149, 150);
             pn_NhanVien.Controls.Add(label7);
             pn_NhanVien.Controls.Add(panel11);
             pn_NhanVien.Location = new Point(0, 405);
@@ -146,6 +146,7 @@
             label7.Size = new Size(124, 32);
             label7.TabIndex = 4;
             label7.Text = "Nhân viên";
+            label7.Click += pn_NhanVien_Click;
             // 
             // panel11
             // 
@@ -156,10 +157,11 @@
             panel11.Name = "panel11";
             panel11.Size = new Size(54, 50);
             panel11.TabIndex = 3;
+            panel11.Click += pn_NhanVien_Click;
             // 
             // pn_KhachHang
             // 
-            pn_KhachHang.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_KhachHang.BackColor = Color.FromArgb(45, 149, 150);
             pn_KhachHang.Controls.Add(label6);
             pn_KhachHang.Controls.Add(panel9);
             pn_KhachHang.Location = new Point(0, 342);
@@ -177,6 +179,7 @@
             label6.Size = new Size(140, 32);
             label6.TabIndex = 4;
             label6.Text = "Khách hàng";
+            label6.Click += pn_KhachHang_Click;
             // 
             // panel9
             // 
@@ -187,10 +190,11 @@
             panel9.Name = "panel9";
             panel9.Size = new Size(54, 50);
             panel9.TabIndex = 3;
+            panel9.Click += pn_KhachHang_Click;
             // 
             // pn_SanPham
             // 
-            pn_SanPham.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_SanPham.BackColor = Color.FromArgb(45, 149, 150);
             pn_SanPham.Controls.Add(label5);
             pn_SanPham.Controls.Add(panel7);
             pn_SanPham.Location = new Point(0, 279);
@@ -208,6 +212,7 @@
             label5.Size = new Size(121, 32);
             label5.TabIndex = 4;
             label5.Text = "Sản phẩm";
+            label5.Click += pn_SanPham_Click;
             // 
             // panel7
             // 
@@ -218,10 +223,11 @@
             panel7.Name = "panel7";
             panel7.Size = new Size(54, 50);
             panel7.TabIndex = 3;
+            panel7.Click += pn_SanPham_Click;
             // 
             // pn_HoaDon
             // 
-            pn_HoaDon.BackColor = Color.FromArgb(0, 9, 173, 2);
+            pn_HoaDon.BackColor = Color.FromArgb(45, 149, 150);
             pn_HoaDon.Controls.Add(lb_cn2);
             pn_HoaDon.Controls.Add(panel5);
             pn_HoaDon.Location = new Point(0, 216);
@@ -239,6 +245,7 @@
             lb_cn2.Size = new Size(106, 32);
             lb_cn2.TabIndex = 4;
             lb_cn2.Text = "Hóa đơn";
+            lb_cn2.Click += pn_HoaDon_Click;
             // 
             // panel5
             // 
@@ -249,6 +256,7 @@
             panel5.Name = "panel5";
             panel5.Size = new Size(54, 50);
             panel5.TabIndex = 3;
+            panel5.Click += pn_HoaDon_Click;
             // 
             // pn_BanHang
             // 
@@ -270,6 +278,7 @@
             lb_cn1.Size = new Size(115, 32);
             lb_cn1.TabIndex = 3;
             lb_cn1.Text = "Bán hàng";
+            lb_cn1.Click += pn_BanHang_Click;
             // 
             // panel3
             // 
@@ -280,6 +289,7 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(54, 50);
             panel3.TabIndex = 3;
+            panel3.Click += pn_BanHang_Click;
             // 
             // lb_NameNV
             // 

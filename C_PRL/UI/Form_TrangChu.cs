@@ -16,7 +16,7 @@ namespace C_PRL.UI
         BanHang_Services bhsv;
         public Form_TrangChu()
         {
-           
+
             InitializeComponent();
 
             bhsv = new BanHang_Services();
@@ -45,7 +45,13 @@ namespace C_PRL.UI
             {
                 pn_Form_BanHang.Controls.Add(item);
             }
-      
+
+            pn_HoaDon.BackColor = Color.FromArgb(45, 149, 150);
+            pn_KhachHang.BackColor = Color.FromArgb(45, 149, 150);
+            pn_NhanVien.BackColor = Color.FromArgb(45, 149, 150);
+            pn_SanPham.BackColor = Color.FromArgb(45, 149, 150);
+            pn_BanHang.BackColor = Color.FromArgb(38, 80, 115);
+
         }
 
         private void pn_HoaDon_Click(object sender, EventArgs e)
@@ -58,6 +64,12 @@ namespace C_PRL.UI
             {
                 pn_Form_BanHang.Controls.Add(item);
             }
+
+            pn_HoaDon.BackColor = Color.FromArgb(38, 80, 115);
+            pn_KhachHang.BackColor = Color.FromArgb(45, 149, 150);
+            pn_NhanVien.BackColor = Color.FromArgb(45, 149, 150);
+            pn_SanPham.BackColor = Color.FromArgb(45, 149, 150);
+            pn_BanHang.BackColor = Color.FromArgb(45, 149, 150);
         }
 
         private void pn_SanPham_Click(object sender, EventArgs e)
@@ -70,6 +82,12 @@ namespace C_PRL.UI
             {
                 pn_Form_BanHang.Controls.Add(item);
             }
+
+            pn_HoaDon.BackColor = Color.FromArgb(45, 149, 150);
+            pn_KhachHang.BackColor = Color.FromArgb(45, 149, 150);
+            pn_NhanVien.BackColor = Color.FromArgb(45, 149, 150);
+            pn_SanPham.BackColor = Color.FromArgb(38, 80, 115);
+            pn_BanHang.BackColor = Color.FromArgb(45, 149, 150);
         }
 
         private void pn_KhachHang_Click(object sender, EventArgs e)
@@ -82,6 +100,12 @@ namespace C_PRL.UI
             {
                 pn_Form_BanHang.Controls.Add(item);
             }
+
+            pn_HoaDon.BackColor = Color.FromArgb(45, 149, 150);
+            pn_KhachHang.BackColor = Color.FromArgb(38, 80, 115);
+            pn_NhanVien.BackColor = Color.FromArgb(45, 149, 150);
+            pn_SanPham.BackColor = Color.FromArgb(45, 149, 150);
+            pn_BanHang.BackColor = Color.FromArgb(45, 149, 150);
         }
 
         private void pn_NhanVien_Click(object sender, EventArgs e)
@@ -94,6 +118,12 @@ namespace C_PRL.UI
             {
                 pn_Form_BanHang.Controls.Add(item);
             }
+
+            pn_HoaDon.BackColor = Color.FromArgb(45, 149, 150);
+            pn_KhachHang.BackColor = Color.FromArgb(45, 149, 150);
+            pn_NhanVien.BackColor = Color.FromArgb(38, 80, 115);
+            pn_SanPham.BackColor = Color.FromArgb(45, 149, 150);
+            pn_BanHang.BackColor = Color.FromArgb(45, 149, 150);
         }
         #endregion
 
