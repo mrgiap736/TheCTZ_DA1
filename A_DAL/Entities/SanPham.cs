@@ -13,7 +13,11 @@ public partial class SanPham
 
     public string? ThongSoKyThuat { get; set; }
 
-    public int Gia { get; set; }
+    public int GiaNhap { get; set; }
+
+    public int GiaBan { get; set; }
+
+    public int TrangThai { get; set; }
 
     public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; } = new List<ChiTietHoaDon>();
 }

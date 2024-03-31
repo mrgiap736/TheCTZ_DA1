@@ -28,13 +28,13 @@ public partial class SqlTheCtzContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=MRG;Initial Catalog=Sql_TheCTZ;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=MRG;Initial Catalog=Sql_TheCTZ;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ChiTietHoaDon>(entity =>
         {
-            entity.HasKey(e => e.MaChiTietHoaDon).HasName("PK__ChiTietH__CFF2C426A85325B5");
+            entity.HasKey(e => e.MaChiTietHoaDon).HasName("PK__ChiTietH__CFF2C4265A46BAD8");
 
             entity.ToTable("ChiTietHoaDon");
 
@@ -59,7 +59,7 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<HoaDon>(entity =>
         {
-            entity.HasKey(e => e.MaHoaDon).HasName("PK__HoaDon__835ED13B72CC1991");
+            entity.HasKey(e => e.MaHoaDon).HasName("PK__HoaDon__835ED13BD7822A26");
 
             entity.ToTable("HoaDon");
 
@@ -82,7 +82,7 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<KhachHang>(entity =>
         {
-            entity.HasKey(e => e.MaKhachHang).HasName("PK__KhachHan__88D2F0E53BE61BCD");
+            entity.HasKey(e => e.MaKhachHang).HasName("PK__KhachHan__88D2F0E5FB952ABB");
 
             entity.ToTable("KhachHang");
 
@@ -91,7 +91,7 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<NhanVien>(entity =>
         {
-            entity.HasKey(e => e.MaNhanVien).HasName("PK__NhanVien__77B2CA47810AC7E7");
+            entity.HasKey(e => e.MaNhanVien).HasName("PK__NhanVien__77B2CA475B5DE01E");
 
             entity.ToTable("NhanVien");
 
@@ -108,7 +108,7 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<SanPham>(entity =>
         {
-            entity.HasKey(e => e.MaSanPham).HasName("PK__SanPham__FAC7442DCCCFC99B");
+            entity.HasKey(e => e.MaSanPham).HasName("PK__SanPham__FAC7442D34345780");
 
             entity.ToTable("SanPham");
 
