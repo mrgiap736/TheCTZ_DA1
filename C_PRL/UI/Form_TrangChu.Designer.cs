@@ -90,8 +90,6 @@
 			lb_tt3 = new Label();
 			tbx_Giamgia = new TextBox();
 			lb_tt2 = new Label();
-			tbx_MaHoaDon = new TextBox();
-			lb_tt1 = new Label();
 			grb_DSsanpham = new GroupBox();
 			tbx_Search = new TextBox();
 			lb_Search = new Label();
@@ -447,6 +445,7 @@
 			tbx_SDTkh.Name = "tbx_SDTkh";
 			tbx_SDTkh.Size = new Size(193, 27);
 			tbx_SDTkh.TabIndex = 5;
+			tbx_SDTkh.KeyPress += tbx_SDTkh_KeyPress;
 			// 
 			// lb_gh2
 			// 
@@ -623,8 +622,6 @@
 			grb_Thanhtoan.Controls.Add(lb_tt3);
 			grb_Thanhtoan.Controls.Add(tbx_Giamgia);
 			grb_Thanhtoan.Controls.Add(lb_tt2);
-			grb_Thanhtoan.Controls.Add(tbx_MaHoaDon);
-			grb_Thanhtoan.Controls.Add(lb_tt1);
 			grb_Thanhtoan.Location = new Point(1019, 8);
 			grb_Thanhtoan.Name = "grb_Thanhtoan";
 			grb_Thanhtoan.Size = new Size(667, 510);
@@ -676,9 +673,9 @@
 			lb_TongTien.AutoSize = true;
 			lb_TongTien.Location = new Point(176, 246);
 			lb_TongTien.Name = "lb_TongTien";
-			lb_TongTien.Size = new Size(18, 20);
+			lb_TongTien.Size = new Size(17, 20);
 			lb_TongTien.TabIndex = 12;
-			lb_TongTien.Text = "...";
+			lb_TongTien.Text = "0";
 			// 
 			// lb_tt6
 			// 
@@ -721,9 +718,9 @@
 			lb_TienThua.AutoSize = true;
 			lb_TienThua.Location = new Point(176, 206);
 			lb_TienThua.Name = "lb_TienThua";
-			lb_TienThua.Size = new Size(18, 20);
+			lb_TienThua.Size = new Size(17, 20);
 			lb_TienThua.TabIndex = 7;
-			lb_TienThua.Text = "...";
+			lb_TienThua.Text = "0";
 			// 
 			// lb_tt4
 			// 
@@ -736,15 +733,18 @@
 			// 
 			// tbx_TienKhachTra
 			// 
-			tbx_TienKhachTra.Location = new Point(176, 143);
+			tbx_TienKhachTra.Location = new Point(176, 103);
 			tbx_TienKhachTra.Name = "tbx_TienKhachTra";
 			tbx_TienKhachTra.Size = new Size(398, 27);
 			tbx_TienKhachTra.TabIndex = 5;
+			tbx_TienKhachTra.Text = "0";
+			tbx_TienKhachTra.TextChanged += tbx_TienKhachTra_TextChanged;
+			tbx_TienKhachTra.KeyPress += tbx_TienKhachTra_KeyPress;
 			// 
 			// lb_tt3
 			// 
 			lb_tt3.AutoSize = true;
-			lb_tt3.Location = new Point(36, 143);
+			lb_tt3.Location = new Point(36, 110);
 			lb_tt3.Name = "lb_tt3";
 			lb_tt3.Size = new Size(112, 20);
 			lb_tt3.TabIndex = 4;
@@ -752,35 +752,21 @@
 			// 
 			// tbx_Giamgia
 			// 
-			tbx_Giamgia.Location = new Point(176, 107);
+			tbx_Giamgia.Location = new Point(176, 143);
 			tbx_Giamgia.Name = "tbx_Giamgia";
 			tbx_Giamgia.Size = new Size(398, 27);
 			tbx_Giamgia.TabIndex = 3;
+			tbx_Giamgia.Text = "0";
+			tbx_Giamgia.KeyPress += tbx_Giamgia_KeyPress;
 			// 
 			// lb_tt2
 			// 
 			lb_tt2.AutoSize = true;
-			lb_tt2.Location = new Point(36, 110);
+			lb_tt2.Location = new Point(36, 146);
 			lb_tt2.Name = "lb_tt2";
 			lb_tt2.Size = new Size(72, 20);
 			lb_tt2.TabIndex = 2;
 			lb_tt2.Text = "Giảm giá:";
-			// 
-			// tbx_MaHoaDon
-			// 
-			tbx_MaHoaDon.Location = new Point(176, 74);
-			tbx_MaHoaDon.Name = "tbx_MaHoaDon";
-			tbx_MaHoaDon.Size = new Size(398, 27);
-			tbx_MaHoaDon.TabIndex = 1;
-			// 
-			// lb_tt1
-			// 
-			lb_tt1.AutoSize = true;
-			lb_tt1.Location = new Point(36, 77);
-			lb_tt1.Name = "lb_tt1";
-			lb_tt1.Size = new Size(92, 20);
-			lb_tt1.TabIndex = 0;
-			lb_tt1.Text = "Mã hóa đơn:";
 			// 
 			// grb_DSsanpham
 			// 
@@ -944,8 +930,6 @@
         private Label lb_tt3;
         private TextBox tbx_Giamgia;
         private Label lb_tt2;
-        private TextBox tbx_MaHoaDon;
-        private Label lb_tt1;
         private Label lb_TongTien;
         private Label lb_tt6;
         private Label lb_tt8;

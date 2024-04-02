@@ -1,9 +1,11 @@
-﻿using B_BUS.Services;
+﻿using A_DAL.Entities;
+using B_BUS.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +16,16 @@ namespace C_PRL.UI
 	public partial class Form_TrangChu : Form
 	{
 		BanHang_Services bhsv;
+		HoaDon_Services hdsv;
+		ChiTietHD_Services ctsv;
 		public Form_TrangChu()
 		{
 
 			InitializeComponent();
 
 			bhsv = new BanHang_Services();
+			hdsv = new HoaDon_Services();
+			ctsv = new ChiTietHD_Services();
 
 			GetCtrl();
 		}
@@ -135,6 +141,8 @@ namespace C_PRL.UI
 
 		public void LoadGrid(dynamic data)
 		{
+			dtg_DSsanpham.Rows.Clear();
+
 			//Tạo cột cho ds sản phẩm 
 			dtg_DSsanpham.ColumnCount = 7;
 
@@ -181,6 +189,20 @@ namespace C_PRL.UI
 			dtg_GioHang.Columns[4].HeaderText = "Đơn giá";
 
 
+			//Tạo cột cho hóa đơn chờ 
+			dtg_HoaDonCho.ColumnCount = 3;
+
+			dtg_HoaDonCho.Columns[0].Name = "Id";
+			dtg_HoaDonCho.Columns[0].HeaderText = "Mã";
+			dtg_HoaDonCho.Columns[0].Width = 40;
+
+			dtg_HoaDonCho.Columns[1].Name = "NameKH";
+			dtg_HoaDonCho.Columns[1].HeaderText = "Tên khách hàng";
+
+
+			dtg_HoaDonCho.Columns[2].Name = "tt";
+			dtg_HoaDonCho.Columns[2].HeaderText = "Trạng thái";
+
 
 
 
@@ -192,6 +214,17 @@ namespace C_PRL.UI
 			foreach (var item in data)
 			{
 				dtg_DSsanpham.Rows.Add(stt++, item.TenSanPham, item.HangSanXuat, item.ThongSoKyThuat, item.GiaBan, item.TrangThai == 1 ? "Còn hàng" : "Hết hàng", item.MaSanPham);
+			}
+
+
+			//Thêm dữ liệu vào hóa đơn chờ 
+			foreach (var item in hdsv.GetAllHoaDon())
+			{
+				if (item.TrangThai == 0)
+				{
+					string trangthai = "Chưa thanh toán";
+					dtg_HoaDonCho.Rows.Add(item.MaHoaDon, item.MaKhachHang, trangthai);
+				}
 			}
 
 		}
@@ -236,6 +269,7 @@ namespace C_PRL.UI
 								if (list[i].Cells[0].Value != null && list[i].Cells[0].Value.ToString() == id)
 								{
 									list[i].Cells[3].Value = Convert.ToInt32(list[i].Cells[3].Value) + 1;
+									lb_TongTien.Text = TinhTongTien().ToString();
 									check = false;
 								}
 
@@ -245,6 +279,7 @@ namespace C_PRL.UI
 							{
 								int sttGH = dtg_GioHang.Rows.Count;
 								dtg_GioHang.Rows.Add(id, sttGH++, name, soluong, dongia);
+								lb_TongTien.Text = TinhTongTien().ToString();
 							}
 
 						}
@@ -273,6 +308,33 @@ namespace C_PRL.UI
 		}
 
 
+		//Hàm tính tổng tiền 
+		public int TinhTongTien()
+		{
+
+			int kq = 0;
+			foreach (DataGridViewRow item in dtg_GioHang.Rows)
+			{
+				if (item.Cells[3].Value != null && item.Cells[4].Value != null)
+				{
+					kq = kq + (Convert.ToInt32(item.Cells[4].Value) * Convert.ToInt32(item.Cells[3].Value));
+				}
+
+			}
+			return kq;
+
+		}
+
+		//Hàm chuyển số ngăn cách phần nghìn 
+		public static string AddThousandSeparators(int number)
+		{
+			// Chuyển đổi số sang chuỗi và sử dụng phương thức Format để thêm dấu chấm ngăn cách
+			string formattedNumber = string.Format("{0:N0}", number);
+
+			return formattedNumber;
+		}
+
+
 
 
 		#region các nút 
@@ -288,19 +350,71 @@ namespace C_PRL.UI
 					dtg_GioHang.Rows.Remove(item);
 				}
 			}
+
+			lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
 		}
 
 		//nut xoa gio hang
 		private void pn_BtnXoaGioHang_Click(object sender, EventArgs e)
 		{
 			dtg_GioHang.Rows.Clear();
+			lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
 		}
 
 
 		//Nut tạo hóa đơn
+
 		private void pn_BtnTaoHoaDon_Click(object sender, EventArgs e)
 		{
+			int makhachhang = 1; //Tạm thời chưa sửa
+			string manhanvien = "1"; //Tạm thời chưa sửa 
+			DateTime ngaymua = DateTime.Now;
 
+			int tongtien = TinhTongTien();
+
+			int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text);
+
+			int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
+
+			int trangthai = 0;
+
+			if (!ValidateHD(makhachhang, manhanvien, ngaymua, tongtien, trangthai))
+			{
+				return;
+			}
+			{
+				HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
+
+
+				hdsv.TaoHoaDon(hd);
+
+				//ChiTietHoaDon cthd = new ChiTietHoaDon();
+
+				//ctsv.TaoChiTietHoaDon(cthd);
+
+				LoadGrid(bhsv.GetAllSanPham());
+
+
+			}
+
+
+		}
+
+		public bool ValidateHD(int b, string c, DateTime d, int e, int f)
+		{
+			//
+			//b - ma khach hang
+			//c - ma nhan vien
+			//d - ngay mua
+			//e - tong tien
+			//f - trang thai
+
+
+			bool check = true;
+			//
+
+			//
+			return check;
 		}
 
 
@@ -324,6 +438,62 @@ namespace C_PRL.UI
 		#endregion
 
 
-		
+
+		#region sự kiện textbox
+		private void tbx_TienKhachTra_TextChanged(object sender, EventArgs e)
+		{
+			int tienthua = 0;
+			if (!int.TryParse(tbx_TienKhachTra.Text, out int tienKhachTra) || tienKhachTra > 999999999)
+			{
+				tbx_TienKhachTra.Text = "";
+			}
+
+			if (int.TryParse(tbx_TienKhachTra.Text, out tienKhachTra))
+			{
+				int tongTien;
+				if (int.TryParse(lb_TongTien.Text, out tongTien))
+				{
+					tienthua = tienKhachTra - tongTien;
+				}
+				
+			}
+
+			if (tienthua < 0)
+			{
+				tienthua = 0;
+			}
+
+			lb_TienThua.Text = AddThousandSeparators(tienthua);
+		}
+
+		//Chỉ được nhập số 
+		private void tbx_TienKhachTra_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+			{
+				e.Handled = true; // Ngăn không cho ký tự được nhập vào TextBox
+			}
+		}
+
+		private void tbx_Giamgia_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+			{
+				e.Handled = true; // Ngăn không cho ký tự được nhập vào TextBox
+			}
+		}
+
+		private void tbx_SDTkh_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+			{
+				e.Handled = true; // Ngăn không cho ký tự được nhập vào TextBox
+			}
+		}
+
+
+		#endregion
+
+
 	}
 }

@@ -18,6 +18,4 @@ public partial class SanPham
     public int GiaBan { get; set; }
 
     public int TrangThai { get; set; }
-
-    public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; } = new List<ChiTietHoaDon>();
 }

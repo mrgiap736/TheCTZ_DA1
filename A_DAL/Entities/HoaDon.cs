@@ -5,7 +5,23 @@ namespace A_DAL.Entities;
 
 public partial class HoaDon
 {
-    public string MaHoaDon { get; set; } = null!;
+	public HoaDon(int? maKhachHang, string? maNhanVien, DateTime ngayMua, int tongTien, int tienKhachTra, int? giamGia, int trangThai)
+	{		
+		MaKhachHang = maKhachHang;
+		MaNhanVien = maNhanVien;
+		NgayMua = ngayMua;
+		TongTien = tongTien;
+		TienKhachTra = tienKhachTra;
+		GiamGia = giamGia;
+		TrangThai = trangThai;
+	}
+
+    public HoaDon()
+    {
+            
+    }
+
+    public int MaHoaDon { get; set; }
 
     public int? MaKhachHang { get; set; }
 
@@ -14,6 +30,10 @@ public partial class HoaDon
     public DateTime NgayMua { get; set; }
 
     public int TongTien { get; set; }
+
+    public int TienKhachTra { get; set; }
+
+    public int? GiamGia { get; set; }
 
     public int TrangThai { get; set; }
 
