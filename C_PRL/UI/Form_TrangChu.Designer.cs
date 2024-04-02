@@ -75,6 +75,7 @@
 			panel1 = new Panel();
 			dtg_GioHang = new DataGridView();
 			grb_Thanhtoan = new GroupBox();
+			label11 = new Label();
 			pn_buttonThanhToan = new Panel();
 			pn_iconThanhtoan = new Panel();
 			lb_Thanhtoan = new Label();
@@ -381,6 +382,7 @@
 			dtg_HoaDonCho.RowTemplate.Height = 29;
 			dtg_HoaDonCho.Size = new Size(319, 356);
 			dtg_HoaDonCho.TabIndex = 0;
+			dtg_HoaDonCho.CellClick += dtg_HoaDonCho_CellClick;
 			// 
 			// grb_GioHang
 			// 
@@ -609,6 +611,7 @@
 			// 
 			// grb_Thanhtoan
 			// 
+			grb_Thanhtoan.Controls.Add(label11);
 			grb_Thanhtoan.Controls.Add(pn_buttonThanhToan);
 			grb_Thanhtoan.Controls.Add(tbx_GhiChu);
 			grb_Thanhtoan.Controls.Add(lb_TongTien);
@@ -628,6 +631,15 @@
 			grb_Thanhtoan.TabIndex = 1;
 			grb_Thanhtoan.TabStop = false;
 			grb_Thanhtoan.Text = "Thanh toán";
+			// 
+			// label11
+			// 
+			label11.AutoSize = true;
+			label11.Location = new Point(553, 148);
+			label11.Name = "label11";
+			label11.Size = new Size(21, 20);
+			label11.TabIndex = 15;
+			label11.Text = "%";
 			// 
 			// pn_buttonThanhToan
 			// 
@@ -649,6 +661,7 @@
 			pn_iconThanhtoan.Name = "pn_iconThanhtoan";
 			pn_iconThanhtoan.Size = new Size(49, 44);
 			pn_iconThanhtoan.TabIndex = 0;
+			pn_iconThanhtoan.Click += pn_buttonThanhToan_Click;
 			// 
 			// lb_Thanhtoan
 			// 
@@ -659,6 +672,7 @@
 			lb_Thanhtoan.Size = new Size(110, 28);
 			lb_Thanhtoan.TabIndex = 0;
 			lb_Thanhtoan.Text = "Thanh toán";
+			lb_Thanhtoan.Click += pn_buttonThanhToan_Click;
 			// 
 			// tbx_GhiChu
 			// 
@@ -738,6 +752,7 @@
 			tbx_TienKhachTra.Size = new Size(398, 27);
 			tbx_TienKhachTra.TabIndex = 5;
 			tbx_TienKhachTra.Text = "0";
+			tbx_TienKhachTra.Click += tbx_TienKhachTra_Click;
 			tbx_TienKhachTra.TextChanged += tbx_TienKhachTra_TextChanged;
 			tbx_TienKhachTra.KeyPress += tbx_TienKhachTra_KeyPress;
 			// 
@@ -754,9 +769,11 @@
 			// 
 			tbx_Giamgia.Location = new Point(176, 143);
 			tbx_Giamgia.Name = "tbx_Giamgia";
-			tbx_Giamgia.Size = new Size(398, 27);
+			tbx_Giamgia.Size = new Size(74, 27);
 			tbx_Giamgia.TabIndex = 3;
 			tbx_Giamgia.Text = "0";
+			tbx_Giamgia.Click += tbx_Giamgia_Click;
+			tbx_Giamgia.TextChanged += tbx_Giamgia_TextChanged;
 			tbx_Giamgia.KeyPress += tbx_Giamgia_KeyPress;
 			// 
 			// lb_tt2
@@ -976,5 +993,6 @@
 		private Label label9;
 		private Label label8;
 		private Label label4;
+		private Label label11;
 	}
 }

@@ -34,5 +34,19 @@ namespace A_DAL.Repos
 		{
 			return context.HoaDons.ToList();
 		}
+
+		public void Update(int a, int b, int c, int d, int e)
+		{
+			var hoadonUp = context.HoaDons.Find(a);
+
+			hoadonUp.TienKhachTra = b;
+			hoadonUp.GiamGia = c;
+			hoadonUp.TongTien = d;
+			hoadonUp.TrangThai = e;
+
+			context.HoaDons.Update(hoadonUp);
+			context.SaveChanges();
+			return;
+		}
 	}
 }

@@ -142,6 +142,7 @@ namespace C_PRL.UI
 		public void LoadGrid(dynamic data)
 		{
 			dtg_DSsanpham.Rows.Clear();
+			dtg_HoaDonCho.Rows.Clear();
 
 			//Tạo cột cho ds sản phẩm 
 			dtg_DSsanpham.ColumnCount = 7;
@@ -190,7 +191,7 @@ namespace C_PRL.UI
 
 
 			//Tạo cột cho hóa đơn chờ 
-			dtg_HoaDonCho.ColumnCount = 3;
+			dtg_HoaDonCho.ColumnCount = 6;
 
 			dtg_HoaDonCho.Columns[0].Name = "Id";
 			dtg_HoaDonCho.Columns[0].HeaderText = "Mã";
@@ -202,6 +203,17 @@ namespace C_PRL.UI
 
 			dtg_HoaDonCho.Columns[2].Name = "tt";
 			dtg_HoaDonCho.Columns[2].HeaderText = "Trạng thái";
+
+			dtg_HoaDonCho.Columns[3].Name = "tongtien";
+			dtg_HoaDonCho.Columns[3].Visible = false;
+
+			dtg_HoaDonCho.Columns[4].Name = "tienkhachtra";
+			dtg_HoaDonCho.Columns[4].Visible = false;
+
+			dtg_HoaDonCho.Columns[5].Name = "giamgia";
+			dtg_HoaDonCho.Columns[5].Visible = false;
+
+
 
 
 
@@ -223,7 +235,7 @@ namespace C_PRL.UI
 				if (item.TrangThai == 0)
 				{
 					string trangthai = "Chưa thanh toán";
-					dtg_HoaDonCho.Rows.Add(item.MaHoaDon, item.MaKhachHang, trangthai);
+					dtg_HoaDonCho.Rows.Add(item.MaHoaDon, item.MaKhachHang, trangthai, item.TongTien, item.TienKhachTra, item.GiamGia);
 				}
 			}
 
@@ -269,24 +281,51 @@ namespace C_PRL.UI
 								if (list[i].Cells[0].Value != null && list[i].Cells[0].Value.ToString() == id)
 								{
 									list[i].Cells[3].Value = Convert.ToInt32(list[i].Cells[3].Value) + 1;
-									lb_TongTien.Text = TinhTongTien().ToString();
 									check = false;
 								}
 
 							}
-
 							if (check)
 							{
 								int sttGH = dtg_GioHang.Rows.Count;
 								dtg_GioHang.Rows.Add(id, sttGH++, name, soluong, dongia);
-								lb_TongTien.Text = TinhTongTien().ToString();
 							}
+
+							lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
 
 						}
 					}
 				}
 			}
 
+		}
+
+		//Cell click hóa đơn chờ 
+		private void dtg_HoaDonCho_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			int rowIndex = e.RowIndex;
+
+			if (dtg_HoaDonCho.SelectedRows.Count > 1 || dtg_HoaDonCho.Rows[rowIndex].Cells[0].Value == null)
+			{
+				return;
+			}
+			else
+			{
+				idUpdate = Convert.ToInt32(dtg_HoaDonCho.Rows[rowIndex].Cells[0].Value);
+
+				tbx_TienKhachTra.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[4].Value.ToString();
+				tbx_Giamgia.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[5].Value.ToString();
+				lb_TongTien.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[3].Value.ToString();
+
+				int tienthua = Convert.ToInt32(dtg_HoaDonCho.Rows[rowIndex].Cells[4].Value) - Convert.ToInt32(dtg_HoaDonCho.Rows[rowIndex].Cells[3].Value);
+
+				if (tienthua < 0)
+				{
+					tienthua = 0;
+				}
+
+				lb_TienThua.Text = tienthua.ToString();
+			}
 		}
 
 
@@ -313,6 +352,7 @@ namespace C_PRL.UI
 		{
 
 			int kq = 0;
+			int SauKhiGiamGia = 0;
 			foreach (DataGridViewRow item in dtg_GioHang.Rows)
 			{
 				if (item.Cells[3].Value != null && item.Cells[4].Value != null)
@@ -321,7 +361,14 @@ namespace C_PRL.UI
 				}
 
 			}
-			return kq;
+
+			if (int.TryParse(tbx_Giamgia.Text, out int giamgia))
+			{
+				SauKhiGiamGia = kq - (kq / 100 * giamgia);
+			}
+
+
+			return SauKhiGiamGia;
 
 		}
 
@@ -367,7 +414,7 @@ namespace C_PRL.UI
 		private void pn_BtnTaoHoaDon_Click(object sender, EventArgs e)
 		{
 			int makhachhang = 1; //Tạm thời chưa sửa
-			string manhanvien = "1"; //Tạm thời chưa sửa 
+			string manhanvien = "NV1"; //Tạm thời chưa sửa 
 			DateTime ngaymua = DateTime.Now;
 
 			int tongtien = TinhTongTien();
@@ -391,7 +438,7 @@ namespace C_PRL.UI
 				//ChiTietHoaDon cthd = new ChiTietHoaDon();
 
 				//ctsv.TaoChiTietHoaDon(cthd);
-
+				dtg_GioHang.Rows.Clear();
 				LoadGrid(bhsv.GetAllSanPham());
 
 
@@ -429,9 +476,50 @@ namespace C_PRL.UI
 		}
 
 		//Nút thanh toán
+		int idUpdate;
 		private void pn_buttonThanhToan_Click(object sender, EventArgs e)
 		{
+			int makhachhang = 1; //Tạm thời chưa sửa
+			string manhanvien = "NV1"; //Tạm thời chưa sửa 
+			DateTime ngaymua = DateTime.Now;
 
+			int tongtien = TinhTongTien();
+
+			int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text);
+
+			int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
+
+			int trangthai = 1;
+
+			if (!ValidateHD(makhachhang, manhanvien, ngaymua, tongtien, trangthai))
+			{
+				return;
+			}
+			{
+				bool check = true;
+				foreach (var item in hdsv.GetAllHoaDon())
+				{
+					if (item.MaHoaDon == idUpdate)
+					{
+						check = false;
+					}
+				}
+
+				if (check)
+				{
+					HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
+					hdsv.TaoHoaDon(hd);
+				}
+				else
+				{
+					hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien, trangthai);
+					MessageBox.Show("Thanh toán thành công");
+				}
+
+
+				dtg_GioHang.Rows.Clear();
+				LoadGrid(bhsv.GetAllSanPham());
+			}
 		}
 
 
@@ -455,7 +543,7 @@ namespace C_PRL.UI
 				{
 					tienthua = tienKhachTra - tongTien;
 				}
-				
+
 			}
 
 			if (tienthua < 0)
@@ -464,6 +552,16 @@ namespace C_PRL.UI
 			}
 
 			lb_TienThua.Text = AddThousandSeparators(tienthua);
+		}
+
+		//Sự kiện giảm giá 
+		private void tbx_Giamgia_TextChanged(object sender, EventArgs e)
+		{
+
+			int tongtien = TinhTongTien();
+
+			lb_TongTien.Text = AddThousandSeparators(tongtien);
+
 		}
 
 		//Chỉ được nhập số 
@@ -491,9 +589,18 @@ namespace C_PRL.UI
 			}
 		}
 
+		//Click 
+		private void tbx_TienKhachTra_Click(object sender, EventArgs e)
+		{
+			tbx_TienKhachTra.SelectAll();
+		}
+
+		private void tbx_Giamgia_Click(object sender, EventArgs e)
+		{
+			tbx_Giamgia.SelectAll();
+		}
 
 		#endregion
-
 
 	}
 }

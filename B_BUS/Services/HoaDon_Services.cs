@@ -12,27 +12,25 @@ namespace B_BUS.Services
 	{
 		HoaDon_Repos hdrp;
 
-        public HoaDon_Services()
-        {
-            hdrp = new HoaDon_Repos();
-        }
+		public HoaDon_Services()
+		{
+			hdrp = new HoaDon_Repos();
+		}
 
-        public void TaoHoaDon(HoaDon hd)
-        {
-            try
-            {
-				hdrp.Create(hd);
-			}
-            catch(Exception ex)
-            {
-                return;
-            }          
-        }
+		public void TaoHoaDon(HoaDon hd)
+		{
+			hdrp.Create(hd);
+		}
 
-        public List<HoaDon> GetAllHoaDon()
-        {
-            return hdrp.GetAll();
-        }
+		public List<HoaDon> GetAllHoaDon()
+		{
+			return hdrp.GetAll();
+		}
 
-    }
+		public void CapNhatHoaDon(int a, int b, int c, int d, int e)
+		{
+			hdrp.Update(a, b, c, d, e);
+		}
+
+	}
 }
