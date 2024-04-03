@@ -1,20 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using A_DAL.Entities;
+using B_BUS.Services;
+using OfficeOpenXml;
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace C_PRL.UI
 {
     public partial class Form_SanPham : Form
     {
+        SanPham_Services _service;
+        List<SanPham> _listSP = new();
+        string _idwhenclick;
         public Form_SanPham()
         {
             InitializeComponent();
+            _service = new SanPham_Services();
+            LoadGird(null);
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+
         }
 
         public List<Control> GetCtrl()
@@ -27,5 +32,299 @@ namespace C_PRL.UI
             }
             return ctrls;
         }
+        public void LoadGird(string search)
+        {
+            dtgView.Rows.Clear();
+            dtgView.ColumnCount = 9;
+            dtgView.Columns[0].Name = "STT";
+            dtgView.Columns[1].Name = "Mã Sản Phẩm";
+            dtgView.Columns[2].Name = "Tên Sản Phẩm";
+            dtgView.Columns[3].Name = "Hàng Sản Phẩm";
+            dtgView.Columns[4].Name = "Thông Số Kỹ Thuật";
+            dtgView.Columns[5].Name = "Giá Nhập";
+            dtgView.Columns[6].Name = "Giá Bán";
+            dtgView.Columns[7].Name = "Trạng Thái";
+            dtgView.Columns[8].Name = "Hình Ảnh";
+            _listSP = _service.GetAll(search);
+            foreach (var sp in _service.GetAll(txt_Search.Text))
+            {
+                int stt = _listSP.IndexOf(sp) + 1;
+                dtgView.Rows.Add(stt, sp.MaSanPham, sp.TenSanPham, sp.HangSanXuat, sp.ThongSoKyThuat,
+                    sp.GiaNhap, sp.GiaBan, sp.TrangThai);
+            }
+            dtgView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        private void pn_LamMoi_Click(object sender, EventArgs e)
+        {
+            txt_MaSanPham.Text = "";
+            txt_TenSanPham.Text = "";
+            txt_HangSanPham.Text = "";
+            txt_ThongSoKyThuat.Text = "";
+            txt_GiaNhap.Text = "";
+            txt_GiaBan.Text = "";
+
+            rd_ConHang.Checked = false;
+            rd_HetHang.Checked = false;
+        }
+
+        private void pn_ThemSP_Click(object sender, EventArgs e)
+        {
+            var sp = new SanPham();
+            sp.MaSanPham = txt_MaSanPham.Text;
+            sp.TenSanPham = txt_TenSanPham.Text;
+            sp.HangSanXuat = txt_HangSanPham.Text;
+            sp.ThongSoKyThuat = txt_ThongSoKyThuat.Text;
+            sp.GiaNhap = Convert.ToInt32(txt_GiaNhap.Text);
+            sp.GiaBan = Convert.ToInt32(txt_GiaBan.Text);
+
+            if (rd_ConHang.Checked)
+            {
+                sp.TrangThai = 1;
+            }
+            else if (rd_HetHang.Checked)
+            {
+                sp.TrangThai = 0;
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn trạng thái sản phẩm.");
+                return;
+            }
+
+            var option = MessageBox.Show("Xác nhận muốn thêm sản phẩm?", "Xác nhận", MessageBoxButtons.YesNo);
+            if (option == DialogResult.Yes)
+            {
+                MessageBox.Show(_service.Add(sp));
+                LoadGird(null);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+
+
+        private void pn_UpdateSP_Click(object sender, EventArgs e)
+        {
+            var sp = new SanPham();
+            sp.MaSanPham = _idwhenclick;
+            sp.TenSanPham = txt_TenSanPham.Text;
+            sp.HangSanXuat = txt_HangSanPham.Text;
+            sp.ThongSoKyThuat = txt_ThongSoKyThuat.Text;
+            sp.GiaNhap = Convert.ToInt32(txt_GiaNhap.Text);
+            sp.GiaBan = Convert.ToInt32(txt_GiaBan.Text);
+            if (rd_ConHang.Checked)
+            {
+                sp.TrangThai = 1;
+            }
+            else if (rd_HetHang.Checked)
+            {
+                sp.TrangThai = 0;
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn trạng thái sản phẩm.");
+                return;
+            }
+
+            var option = MessageBox.Show("Xác nhận muốn sửa sản phẩm?", "Xác nhận", MessageBoxButtons.YesNo);
+            if (option == DialogResult.Yes)
+            {
+                MessageBox.Show(_service.Update(sp));
+                LoadGird(null);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void pn_XoaSP_Click(object sender, EventArgs e)
+        {
+            var sp = new SanPham();
+            sp.MaSanPham = _idwhenclick;
+            var option = MessageBox.Show("Xác nhận muốn xoá sản phẩm?", "Xác nhận", MessageBoxButtons.YesNo);
+            if (option == DialogResult.Yes)
+            {
+                MessageBox.Show(_service.Remove(sp));
+                LoadGird(null);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+
+        private void txt_Search_TextChanged(object sender, EventArgs e)
+        {
+            LoadGird(null);
+        }
+
+        private void dtgView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            if (index < 0 || index >= _listSP.Count)
+            {
+                return;
+            }
+            var obj = _listSP[index];
+            _idwhenclick = obj.MaSanPham;
+            txt_MaSanPham.Text = obj.MaSanPham;
+            txt_TenSanPham.Text = obj.TenSanPham;
+            txt_HangSanPham.Text = obj.HangSanXuat;
+            txt_ThongSoKyThuat.Text = obj.ThongSoKyThuat;
+            txt_GiaNhap.Text = obj.GiaNhap.ToString();
+            txt_GiaBan.Text = obj.GiaNhap.ToString();
+            if (obj.TrangThai == 1)
+            {
+                rd_ConHang.Checked = true;
+            }
+            else if (obj.TrangThai == 0)
+            {
+                rd_HetHang.Checked = true;
+            }
+        }
+
+        private void dtgView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            //(ví dụ: cột có index = 7)
+            if (e.ColumnIndex == 7 && e.Value != null)
+            {
+                int trangThai = Convert.ToInt32(e.Value);
+                if (trangThai == 1)
+                {
+                    e.Value = "Còn hàng";
+                }
+                else if (trangThai == 0)
+                {
+                    e.Value = "Hết hàng";
+                }
+                e.FormattingApplied = true;
+            }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void ExportToExcel(List<SanPham> data)
+        {
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Danh sách sản phẩm");
+
+                worksheet.Cells[1, 1].Value = "Mã Sản Phẩm";
+                worksheet.Cells[1, 2].Value = "Tên Sản Phẩm";
+                worksheet.Cells[1, 3].Value = "Hãng Sản Xuất";
+                worksheet.Cells[1, 4].Value = "Thông Số Kỹ Thuật";
+                worksheet.Cells[1, 5].Value = "Giá Nhập";
+                worksheet.Cells[1, 6].Value = "Giá Bán";
+                worksheet.Cells[1, 7].Value = "Trạng Thái";
+
+                int row = 2;
+                foreach (var sp in data)
+                {
+                    worksheet.Cells[row, 1].Value = sp.MaSanPham;
+                    worksheet.Cells[row, 2].Value = sp.TenSanPham;
+                    worksheet.Cells[row, 3].Value = sp.HangSanXuat;
+                    worksheet.Cells[row, 4].Value = sp.ThongSoKyThuat;
+                    worksheet.Cells[row, 5].Value = sp.GiaNhap;
+                    worksheet.Cells[row, 6].Value = sp.GiaBan;
+                    worksheet.Cells[row, 7].Value = sp.TrangThai == 1 ? "Còn hàng" : "Hết hàng";
+
+                    row++;
+                }
+
+                // Lưu file Excel
+                using (var stream = new MemoryStream())
+                {
+                    excelPackage.SaveAs(stream);
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                    saveFileDialog.FilterIndex = 1;
+                    saveFileDialog.RestoreDirectory = true;
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        if (Path.GetExtension(saveFileDialog.FileName).ToLower() != ".xlsx")
+                        {
+                            MessageBox.Show("Chỉ chấp nhận định dạng .xlsx cho tệp tin!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
+                            stream.WriteTo(fs);
+                            fs.Close();
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private void pn_XuatExcel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pn_XuatExcel_Click(object sender, EventArgs e)
+        {
+            ExportToExcel(_listSP);
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            pn_LamMoi_Click(sender, e);
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+            pn_LamMoi_Click(sender, e);
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            pn_ThemSP_Click(sender, e);
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+            pn_ThemSP_Click(sender, e);
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            pn_UpdateSP_Click(sender, e);
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+            pn_UpdateSP_Click(sender, e);
+        }
+
+        private void pictureBox1_Click_1(object sender, EventArgs e)
+        {
+            pn_XoaSP_Click(sender, e);
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+            pn_XoaSP_Click(sender, e);
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            pn_XuatExcel_Click(sender, e);
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+            pn_XuatExcel_Click(sender, e);
+        }
     }
+
 }
+
