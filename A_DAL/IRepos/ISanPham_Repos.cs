@@ -10,5 +10,8 @@ namespace A_DAL.IRepos
     public interface ISanPham_Repos
     {
         public List<SanPham> GetAll();
-    }
+		public bool AddSP(SanPham sp);
+		public bool UpdateSP(SanPham sp);
+		public bool RemoveSP(SanPham sp);
+	}
 }
