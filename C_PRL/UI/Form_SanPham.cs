@@ -3,6 +3,7 @@ using B_BUS.Services;
 using OfficeOpenXml;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace C_PRL.UI
@@ -47,14 +48,17 @@ namespace C_PRL.UI
             dtgView.Columns[7].Name = "Trạng Thái";
             dtgView.Columns[8].Name = "Hình Ảnh";
             _listSP = _service.GetAll(search);
-            foreach (var sp in _service.GetAll(txt_Search.Text))
+            foreach (var sp in _listSP)
             {
                 int stt = _listSP.IndexOf(sp) + 1;
+                string giaNhapFormatted = sp.GiaNhap.ToString("#,##0");
+                string giaBanFormatted = sp.GiaBan.ToString("#,##0");
                 dtgView.Rows.Add(stt, sp.MaSanPham, sp.TenSanPham, sp.HangSanXuat, sp.ThongSoKyThuat,
-                    sp.GiaNhap, sp.GiaBan, sp.TrangThai);
+                    giaNhapFormatted, giaBanFormatted, sp.TrangThai);
             }
             dtgView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+
 
         private void pn_LamMoi_Click(object sender, EventArgs e)
         {
@@ -68,17 +72,64 @@ namespace C_PRL.UI
             rd_ConHang.Checked = false;
             rd_HetHang.Checked = false;
         }
-
+        
         private void pn_ThemSP_Click(object sender, EventArgs e)
         {
+            // Kiểm tra dữ liệu nhập vào
+            if (string.IsNullOrWhiteSpace(txt_MaSanPham.Text) || string.IsNullOrWhiteSpace(txt_TenSanPham.Text) ||
+                string.IsNullOrWhiteSpace(txt_HangSanPham.Text) || string.IsNullOrWhiteSpace(txt_ThongSoKyThuat.Text))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin sản phẩm.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra giá nhập và giá bán có phải số không
+            if (!int.TryParse(txt_GiaNhap.Text.Replace(",", ""), out int giaNhap) ||
+                !int.TryParse(txt_GiaBan.Text.Replace(",", ""), out int giaBan))
+            {
+                MessageBox.Show("Giá nhập và giá bán phải là số.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            // Kiểm tra giá nhập và giá bán có lớn hơn hoặc bằng 1,000 không
+            if (giaNhap < 1000 || giaBan < 1000)
+            {
+                MessageBox.Show(
+                    "Giá nhập và giá bán phải lớn hơn hoặc bằng 1,000.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            // Kiểm tra xem mã sản phẩm đã tồn tại hay chưa
+            foreach (var existingSP in _listSP)
+            {
+                if (existingSP.MaSanPham == txt_MaSanPham.Text)
+                {
+                    MessageBox.Show(
+                        text: "Mã sản phẩm đã bị trùng, vui lòng nhập mã sản phẩm khác.",
+                        caption: "Thông báo",
+                        buttons: MessageBoxButtons.OK,
+                        icon: MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            // Kiểm tra xem mã sản phẩm có chứa ký tự đặc biệt hay không
+            string maSanPham = txt_MaSanPham.Text;
+            if (!Regex.IsMatch(maSanPham, @"^[a-zA-Z0-9]+$"))
+            {
+                MessageBox.Show("Mã sản phẩm không được chứa ký tự đặc biệt.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
             var sp = new SanPham();
             sp.MaSanPham = txt_MaSanPham.Text;
             sp.TenSanPham = txt_TenSanPham.Text;
             sp.HangSanXuat = txt_HangSanPham.Text;
             sp.ThongSoKyThuat = txt_ThongSoKyThuat.Text;
-            sp.GiaNhap = Convert.ToInt32(txt_GiaNhap.Text);
-            sp.GiaBan = Convert.ToInt32(txt_GiaBan.Text);
+            sp.GiaNhap = giaNhap;
+            sp.GiaBan = giaBan;
 
+            // Kiểm tra trạng thái sản phẩm
             if (rd_ConHang.Checked)
             {
                 sp.TrangThai = 1;
@@ -89,14 +140,18 @@ namespace C_PRL.UI
             }
             else
             {
-                MessageBox.Show("Vui lòng chọn trạng thái sản phẩm.");
+                MessageBox.Show("Vui lòng chọn trạng thái sản phẩm.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var option = MessageBox.Show("Xác nhận muốn thêm sản phẩm?", "Xác nhận", MessageBoxButtons.YesNo);
+            // Hiển thị hộp thoại xác nhận
+            var option = MessageBox.Show("Xác nhận muốn thêm sản phẩm?", "Xác nhận",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (option == DialogResult.Yes)
             {
+                // Thêm sản phẩm vào cơ sở dữ liệu và xử lý kết quả
                 MessageBox.Show(_service.Add(sp));
+                // Tải lại danh sách sản phẩm sau khi thêm thành công
                 LoadGird(null);
             }
             else
@@ -109,13 +164,49 @@ namespace C_PRL.UI
 
         private void pn_UpdateSP_Click(object sender, EventArgs e)
         {
+
+            // Kiểm tra dữ liệu nhập vào
+            if (string.IsNullOrWhiteSpace(txt_MaSanPham.Text) ||
+                string.IsNullOrWhiteSpace(txt_TenSanPham.Text) ||
+                string.IsNullOrWhiteSpace(txt_HangSanPham.Text) ||
+                string.IsNullOrWhiteSpace(txt_ThongSoKyThuat.Text))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin sản phẩm.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra giá nhập và giá bán có phải số không
+            if (!int.TryParse(txt_GiaNhap.Text.Replace(",", ""), out int giaNhap) ||
+                !int.TryParse(txt_GiaBan.Text.Replace(",", ""), out int giaBan))
+            {
+                MessageBox.Show("Giá nhập và giá bán phải là số.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            // Kiểm tra giá nhập và giá bán có lớn hơn hoặc bằng 1,000 không
+            if (giaNhap < 1000 || giaBan < 1000)
+            {
+                MessageBox.Show("Giá nhập và giá bán phải lớn hơn hoặc bằng 1,000.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra xem mã sản phẩm có chứa ký tự đặc biệt hay không
+            string maSanPham = txt_MaSanPham.Text;
+            if (!Regex.IsMatch(maSanPham, @"^[a-zA-Z0-9]+$"))
+            {
+                MessageBox.Show("Mã sản phẩm không được chứa ký tự đặc biệt.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             var sp = new SanPham();
             sp.MaSanPham = _idwhenclick;
             sp.TenSanPham = txt_TenSanPham.Text;
             sp.HangSanXuat = txt_HangSanPham.Text;
             sp.ThongSoKyThuat = txt_ThongSoKyThuat.Text;
-            sp.GiaNhap = Convert.ToInt32(txt_GiaNhap.Text);
-            sp.GiaBan = Convert.ToInt32(txt_GiaBan.Text);
+            sp.GiaNhap = giaNhap;
+            sp.GiaBan = giaBan;
+
+            // Kiểm tra trạng thái sản phẩm
             if (rd_ConHang.Checked)
             {
                 sp.TrangThai = 1;
@@ -126,14 +217,18 @@ namespace C_PRL.UI
             }
             else
             {
-                MessageBox.Show("Vui lòng chọn trạng thái sản phẩm.");
+                MessageBox.Show("Vui lòng chọn trạng thái sản phẩm.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var option = MessageBox.Show("Xác nhận muốn sửa sản phẩm?", "Xác nhận", MessageBoxButtons.YesNo);
+            // Hiển thị hộp thoại xác nhận
+            var option = MessageBox.Show("Xác nhận muốn sửa sản phẩm?", "Xác nhận",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (option == DialogResult.Yes)
             {
+                // Thêm sản phẩm vào cơ sở dữ liệu và xử lý kết quả
                 MessageBox.Show(_service.Update(sp));
+                // Tải lại danh sách sản phẩm sau khi thêm thành công
                 LoadGird(null);
             }
             else
@@ -142,11 +237,19 @@ namespace C_PRL.UI
             }
         }
 
+
         private void pn_XoaSP_Click(object sender, EventArgs e)
         {
+            // Kiểm tra xem có sản phẩm được chọn hay không
+            if (string.IsNullOrEmpty(_idwhenclick))
+            {
+                MessageBox.Show("Vui lòng chọn sản phẩm muốn xoá.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var sp = new SanPham();
             sp.MaSanPham = _idwhenclick;
-            var option = MessageBox.Show("Xác nhận muốn xoá sản phẩm?", "Xác nhận", MessageBoxButtons.YesNo);
+            var option = MessageBox.Show("Xác nhận muốn xoá sản phẩm?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (option == DialogResult.Yes)
             {
                 MessageBox.Show(_service.Remove(sp));
@@ -157,6 +260,7 @@ namespace C_PRL.UI
                 return;
             }
         }
+
 
 
         private void txt_Search_TextChanged(object sender, EventArgs e)
@@ -178,7 +282,7 @@ namespace C_PRL.UI
             txt_HangSanPham.Text = obj.HangSanXuat;
             txt_ThongSoKyThuat.Text = obj.ThongSoKyThuat;
             txt_GiaNhap.Text = obj.GiaNhap.ToString();
-            txt_GiaBan.Text = obj.GiaNhap.ToString();
+            txt_GiaBan.Text = obj.GiaBan.ToString();
             if (obj.TrangThai == 1)
             {
                 rd_ConHang.Checked = true;
@@ -187,6 +291,7 @@ namespace C_PRL.UI
             {
                 rd_HetHang.Checked = true;
             }
+
         }
 
         private void dtgView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -209,7 +314,7 @@ namespace C_PRL.UI
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Chức năng thêm ảnh chưa được hoàn thiện.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         private void ExportToExcel(List<SanPham> data)
         {
@@ -324,6 +429,94 @@ namespace C_PRL.UI
         private void label12_Click(object sender, EventArgs e)
         {
             pn_XuatExcel_Click(sender, e);
+        }
+
+        private void txt_GiaNhap_TextChanged(object sender, EventArgs e)
+        {
+            // Kiểm tra xem chuỗi có độ dài lớn hơn 0 không
+            if (txt_GiaNhap.Text.Length > 0)
+            {
+                // Lọc chuỗi chỉ giữ lại ký tự số và dấu "."
+                string input = Regex.Replace(txt_GiaNhap.Text, "[^0-9.]", "");
+
+                // Kiểm tra xem sau khi lọc, chuỗi có độ dài lớn hơn 0 không
+                if (input.Length > 0)
+                {
+                    // Kiểm tra xem chuỗi chỉ có duy nhất một dấu "."
+                    if (input.Count(c => c == '.') <= 1)
+                    {
+                        // Chuyển đổi chuỗi thành số nguyên
+                        if (decimal.TryParse(input, out decimal giaNhap))
+                        {
+                            // Định dạng số tiền và hiển thị lại trong textbox
+                            txt_GiaNhap.Text = giaNhap.ToString("#,##0");
+                            // Di chuyển con trỏ về cuối textbox để người dùng có thể tiếp tục nhập
+                            txt_GiaNhap.SelectionStart = txt_GiaNhap.Text.Length;
+                        }
+                        else
+                        {
+                            // Nếu người dùng nhập không phải là số, xóa ký tự vừa nhập và hiển thị thông báo
+                            txt_GiaNhap.Text = txt_GiaNhap.Text.Substring(0, txt_GiaNhap.Text.Length - 1);
+                            MessageBox.Show("Vui lòng nhập số nguyên.");
+                        }
+                    }
+                    else
+                    {
+                        // Nếu chuỗi chứa nhiều hơn một dấu ".", xóa ký tự vừa nhập và hiển thị thông báo
+                        txt_GiaNhap.Text = txt_GiaNhap.Text.Substring(0, txt_GiaNhap.Text.Length - 1);
+                        MessageBox.Show("Số tiền không hợp lệ.");
+                    }
+                }
+            }
+        }
+
+        private void txt_GiaBan_TextChanged(object sender, EventArgs e)
+        {
+            // Kiểm tra xem chuỗi có độ dài lớn hơn 0 không
+            if (txt_GiaBan.Text.Length > 0)
+            {
+                // Lọc chuỗi chỉ giữ lại ký tự số và dấu "."
+                string input = Regex.Replace(txt_GiaBan.Text, "[^0-9.]", "");
+
+                // Kiểm tra xem sau khi lọc, chuỗi có độ dài lớn hơn 0 không
+                if (input.Length > 0)
+                {
+                    // Kiểm tra xem chuỗi chỉ có duy nhất một dấu "."
+                    if (input.Count(c => c == '.') <= 1)
+                    {
+                        // Chuyển đổi chuỗi thành số nguyên
+                        if (decimal.TryParse(input, out decimal giaNhap))
+                        {
+                            // Định dạng số tiền và hiển thị lại trong textbox
+                            txt_GiaBan.Text = giaNhap.ToString("#,##0");
+                            // Di chuyển con trỏ về cuối textbox để người dùng có thể tiếp tục nhập
+                            txt_GiaBan.SelectionStart = txt_GiaBan.Text.Length;
+                        }
+                        else
+                        {
+                            // Nếu người dùng nhập không phải là số, xóa ký tự vừa nhập và hiển thị thông báo
+                            txt_GiaBan.Text = txt_GiaBan.Text.Substring(0, txt_GiaBan.Text.Length - 1);
+                            MessageBox.Show("Vui lòng nhập số nguyên.");
+                        }
+                    }
+                    else
+                    {
+                        // Nếu chuỗi chứa nhiều hơn một dấu ".", xóa ký tự vừa nhập và hiển thị thông báo
+                        txt_GiaBan.Text = txt_GiaBan.Text.Substring(0, txt_GiaBan.Text.Length - 1);
+                        MessageBox.Show("Số tiền không hợp lệ.");
+                    }
+                }
+            }
+        }
+
+        private void pn_LamMoi_MouseEnter(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void pn_LamMoi_MouseLeave(object sender, EventArgs e)
+        {
+
         }
     }
 
