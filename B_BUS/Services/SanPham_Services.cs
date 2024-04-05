@@ -16,7 +16,7 @@ namespace B_BUS.Services
 
             if (_repos.AddSP(sp) == true)
 			{
-				return "Thêm sản phẩm thành công";
+				return "Sản phẩm đã thêm thành công";
 			}
 			else
 			{
@@ -36,11 +36,11 @@ namespace B_BUS.Services
 			clone.TrangThai = sp.TrangThai;
 			if (_repos.UpdateSP(clone) == true)
 			{
-				return "Sửa sản phẩm thành công";
+				return "Update sản phẩm thành công";
 			}
 			else
 			{
-				return "Sửa sản phẩm thất bại";
+				return "Update sản phẩm thất bại";
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace B_BUS.Services
 			var clone = _repos.GetAll().FirstOrDefault(x => x.MaSanPham == sp.MaSanPham);
 			if (_repos.RemoveSP(clone) == true)
 			{
-				return "Xoá sản phẩm thành công";
+				return "Đã xoá sản phẩm ";
 			}
 			else
 			{

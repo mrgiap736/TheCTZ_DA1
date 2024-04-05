@@ -222,7 +222,7 @@ namespace C_PRL.UI
             }
 
             // Hiển thị hộp thoại xác nhận
-            var option = MessageBox.Show("Xác nhận muốn sửa sản phẩm?", "Xác nhận",
+            var option = MessageBox.Show("Xác nhận muốn update sản phẩm?", "Xác nhận",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (option == DialogResult.Yes)
             {
