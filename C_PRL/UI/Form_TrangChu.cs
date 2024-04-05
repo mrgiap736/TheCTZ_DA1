@@ -102,7 +102,7 @@ namespace C_PRL.UI
 
 			Form_KhachHang form = new Form_KhachHang();
 
-			foreach (var item in form.GetCtrl())
+			foreach (var item in form.Gekhtrl())
 			{
 				pn_Form_BanHang.Controls.Add(item);
 			}
