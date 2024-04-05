@@ -18,7 +18,7 @@ namespace C_PRL
 
 
 			//ch?y luôn form trang ch? b? qua ??ng nh?p
-            Application.Run(new Form_DangNhap());
+            Application.Run(new Form_TrangChu());
 
         }
     }
