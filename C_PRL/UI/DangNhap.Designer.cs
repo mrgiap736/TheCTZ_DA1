@@ -43,18 +43,20 @@
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.ForeColor = Color.White;
-            label1.Location = new Point(96, 46);
+            label1.Location = new Point(120, 58);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(71, 20);
+            label1.Size = new Size(86, 25);
             label1.TabIndex = 0;
             label1.Text = "Tài khoản";
             // 
             // tbx_usn
             // 
-            tbx_usn.Location = new Point(96, 69);
+            tbx_usn.Location = new Point(120, 86);
+            tbx_usn.Margin = new Padding(4, 4, 4, 4);
             tbx_usn.Name = "tbx_usn";
             tbx_usn.PlaceholderText = "Nhập tài khoản";
-            tbx_usn.Size = new Size(305, 27);
+            tbx_usn.Size = new Size(380, 31);
             tbx_usn.TabIndex = 1;
             // 
             // btn_DangNhap
@@ -62,9 +64,10 @@
             btn_DangNhap.BackColor = Color.FromArgb(255, 128, 0);
             btn_DangNhap.Font = new Font("Times New Roman", 11F, FontStyle.Regular, GraphicsUnit.Point);
             btn_DangNhap.ForeColor = Color.White;
-            btn_DangNhap.Location = new Point(187, 180);
+            btn_DangNhap.Location = new Point(234, 225);
+            btn_DangNhap.Margin = new Padding(4, 4, 4, 4);
             btn_DangNhap.Name = "btn_DangNhap";
-            btn_DangNhap.Size = new Size(110, 40);
+            btn_DangNhap.Size = new Size(138, 50);
             btn_DangNhap.TabIndex = 2;
             btn_DangNhap.Text = "Đăng nhập";
             btn_DangNhap.UseVisualStyleBackColor = false;
@@ -72,11 +75,12 @@
             // 
             // tbx_pass
             // 
-            tbx_pass.Location = new Point(96, 134);
+            tbx_pass.Location = new Point(120, 168);
+            tbx_pass.Margin = new Padding(4, 4, 4, 4);
             tbx_pass.Name = "tbx_pass";
             tbx_pass.PasswordChar = '*';
             tbx_pass.PlaceholderText = "Nhập mật khẩu";
-            tbx_pass.Size = new Size(305, 27);
+            tbx_pass.Size = new Size(380, 31);
             tbx_pass.TabIndex = 4;
             // 
             // label2
@@ -84,9 +88,10 @@
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
             label2.ForeColor = Color.White;
-            label2.Location = new Point(96, 111);
+            label2.Location = new Point(120, 139);
+            label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(70, 20);
+            label2.Size = new Size(86, 25);
             label2.TabIndex = 3;
             label2.Text = "Mật khẩu";
             // 
@@ -95,9 +100,11 @@
             pn_iconus.BackColor = Color.Transparent;
             pn_iconus.BackgroundImage = (Image)resources.GetObject("pn_iconus.BackgroundImage");
             pn_iconus.BackgroundImageLayout = ImageLayout.Stretch;
-            pn_iconus.Location = new Point(60, 69);
+            pn_iconus.ForeColor = SystemColors.ActiveCaptionText;
+            pn_iconus.Location = new Point(75, 86);
+            pn_iconus.Margin = new Padding(4, 4, 4, 4);
             pn_iconus.Name = "pn_iconus";
-            pn_iconus.Size = new Size(30, 27);
+            pn_iconus.Size = new Size(38, 34);
             pn_iconus.TabIndex = 5;
             // 
             // pn_passicon
@@ -105,18 +112,19 @@
             pn_passicon.BackColor = Color.Transparent;
             pn_passicon.BackgroundImage = (Image)resources.GetObject("pn_passicon.BackgroundImage");
             pn_passicon.BackgroundImageLayout = ImageLayout.Stretch;
-            pn_passicon.Location = new Point(60, 134);
+            pn_passicon.Location = new Point(75, 168);
+            pn_passicon.Margin = new Padding(4, 4, 4, 4);
             pn_passicon.Name = "pn_passicon";
-            pn_passicon.Size = new Size(30, 27);
+            pn_passicon.Size = new Size(38, 34);
             pn_passicon.TabIndex = 6;
             // 
             // Form_DangNhap
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(482, 253);
+            ClientSize = new Size(602, 316);
             Controls.Add(pn_passicon);
             Controls.Add(pn_iconus);
             Controls.Add(tbx_pass);
@@ -125,6 +133,7 @@
             Controls.Add(tbx_usn);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(4, 4, 4, 4);
             MaximizeBox = false;
             Name = "Form_DangNhap";
             StartPosition = FormStartPosition.CenterScreen;
