@@ -47,7 +47,7 @@ namespace C_PRL.UI
             dtgView.Columns[6].Name = "Giá Bán";
             dtgView.Columns[7].Name = "Trạng Thái";
             dtgView.Columns[8].Name = "Hình Ảnh";
-            _listSP = _service.GetAll(search);
+            _listSP = _service.GetAll(txt_Search.Text);
             foreach (var sp in _listSP)
             {
                 int stt = _listSP.IndexOf(sp) + 1;

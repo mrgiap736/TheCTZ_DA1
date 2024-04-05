@@ -4,15 +4,17 @@ using A_DAL.Repos;
 namespace B_BUS.Services
 {
 	public class SanPham_Services
-	{
+    {
 		SanPham_Repos _repos;
 		public SanPham_Services()
 		{
 			_repos = new SanPham_Repos();
+
 		}
-		public string Add(SanPham sp)
+		public string Add(SanPham sp)	
 		{
-			if (_repos.AddSP(sp) == true)
+
+            if (_repos.AddSP(sp) == true)
 			{
 				return "Thêm sản phẩm thành công";
 			}
@@ -20,7 +22,7 @@ namespace B_BUS.Services
 			{
 				return "Thêm sản phẩm thất bại";
 			}
-		}
+        }
 
 		public string Update(SanPham sp)
 		{
@@ -63,9 +65,9 @@ namespace B_BUS.Services
 			}
 			else
 			{
-				return _repos.GetAll().Where(x => x.TenSanPham.Contains(search) || x.HangSanXuat.Contains(search)).ToList();
+				return _repos.GetAll().Where(x => x.TenSanPham.Contains(search)).ToList();
 			}
 		}
 
-	}
+    }
 }
