@@ -9,37 +9,35 @@ using System.Threading.Tasks;
 
 namespace A_DAL.Repos
 {
-    public class NhanVien_Repos : INhanVien_Repos
+    public class KhachHang_Repos : IKhachHang_Repos
     {
         SqlTheCtzContext context;
-
-        public NhanVien_Repos()
+        public KhachHang_Repos()
         {
             context = new SqlTheCtzContext();
         }
-
-        public bool AddNV(NhanVien nv)
+        public bool AddKH(KhachHang kh)
         {
-            context.Add(nv);
+            context.Add(kh);
             context.SaveChanges();
             return true;
         }
 
-        public List<NhanVien> GetAll()
+        public List<KhachHang> GetAll()
         {
-            return context.NhanViens.ToList();
+            return context.KhachHangs.ToList();
         }
 
-        public bool RemoveNV(NhanVien nv)
+        public bool RemoveKH(KhachHang kh)
         {
-            context.Remove(nv);
+            context.Remove(kh);
             context.SaveChanges();
             return true;
         }
 
-        public bool UpdateNV(NhanVien nv)
+        public bool UpdateKH(KhachHang kh)
         {
-            context.Update(nv);
+            context.Update(kh);
             context.SaveChanges();
             return true;
         }
