@@ -27,9 +27,9 @@ namespace B_BUS.Services
 			return hdrp.GetAll();
 		}
 
-		public void CapNhatHoaDon(int a, int b, int c, int d, int e)
+		public void CapNhatHoaDon(int a, int b, int c, int d)
 		{
-			hdrp.Update(a, b, c, d, e);
+			hdrp.Update(a, b, c, d);
 		}
 
 	}

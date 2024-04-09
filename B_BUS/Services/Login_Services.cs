@@ -16,21 +16,20 @@ namespace B_BUS.Services
              nvrp = new NhanVien_Repos();
         }
 
-        public bool GetUS_PW(string username, string password)
+        public NhanVien GetUS_PW(string username, string password)
         {
-            bool check = false;
+            NhanVien nv = null;
             List<NhanVien> _lstnv = nvrp.GetAll();
 
             for (int i = 0; i < _lstnv.Count; i++)
             {
                 if (_lstnv[i].TaiKhoan.Equals(username) && _lstnv[i].MatKhau.Equals(password))
                 {
-                    check = true;
+                    nv = _lstnv[i];
                 }
-                else check = false;
             }
 
-            return check;
+            return nv;
         }
     }
 }

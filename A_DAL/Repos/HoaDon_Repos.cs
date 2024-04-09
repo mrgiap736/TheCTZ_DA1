@@ -32,17 +32,17 @@ namespace A_DAL.Repos
 
 		public List<HoaDon> GetAll()
 		{
-			return context.HoaDons.ToList();
+			return context.HoaDons.Include("MaKhachHangNavigation").ToList();
 		}
 
-		public void Update(int a, int b, int c, int d, int e)
+		public void Update(int a, int b, int c, int d)
 		{
 			var hoadonUp = context.HoaDons.Find(a);
 
 			hoadonUp.TienKhachTra = b;
 			hoadonUp.GiamGia = c;
 			hoadonUp.TongTien = d;
-			hoadonUp.TrangThai = e;
+			hoadonUp.TrangThai = 1;
 
 			context.HoaDons.Update(hoadonUp);
 			context.SaveChanges();

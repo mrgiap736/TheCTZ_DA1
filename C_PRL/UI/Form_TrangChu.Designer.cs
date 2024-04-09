@@ -365,9 +365,9 @@
             // grb_HoaDonCho
             // 
             grb_HoaDonCho.Controls.Add(dtg_HoaDonCho);
-            grb_HoaDonCho.Location = new Point(1350, 524);
+            grb_HoaDonCho.Location = new Point(1316, 524);
             grb_HoaDonCho.Name = "grb_HoaDonCho";
-            grb_HoaDonCho.Size = new Size(339, 388);
+            grb_HoaDonCho.Size = new Size(373, 388);
             grb_HoaDonCho.TabIndex = 3;
             grb_HoaDonCho.TabStop = false;
             grb_HoaDonCho.Text = "Hóa đơn chờ";
@@ -380,7 +380,7 @@
             dtg_HoaDonCho.Name = "dtg_HoaDonCho";
             dtg_HoaDonCho.RowHeadersWidth = 51;
             dtg_HoaDonCho.RowTemplate.Height = 29;
-            dtg_HoaDonCho.Size = new Size(319, 356);
+            dtg_HoaDonCho.Size = new Size(337, 356);
             dtg_HoaDonCho.TabIndex = 0;
             dtg_HoaDonCho.CellClick += dtg_HoaDonCho_CellClick;
             // 
@@ -400,7 +400,7 @@
             grb_GioHang.Controls.Add(dtg_GioHang);
             grb_GioHang.Location = new Point(6, 524);
             grb_GioHang.Name = "grb_GioHang";
-            grb_GioHang.Size = new Size(1338, 388);
+            grb_GioHang.Size = new Size(1304, 388);
             grb_GioHang.TabIndex = 2;
             grb_GioHang.TabStop = false;
             grb_GioHang.Text = "Giỏ hàng";
@@ -408,7 +408,7 @@
             // lb_TichLuy
             // 
             lb_TichLuy.AutoSize = true;
-            lb_TichLuy.Location = new Point(1106, 180);
+            lb_TichLuy.Location = new Point(1092, 180);
             lb_TichLuy.Name = "lb_TichLuy";
             lb_TichLuy.Size = new Size(18, 20);
             lb_TichLuy.TabIndex = 9;
@@ -417,7 +417,7 @@
             // lb_gh4
             // 
             lb_gh4.AutoSize = true;
-            lb_gh4.Location = new Point(1036, 180);
+            lb_gh4.Location = new Point(1022, 180);
             lb_gh4.Name = "lb_gh4";
             lb_gh4.Size = new Size(62, 20);
             lb_gh4.TabIndex = 8;
@@ -426,7 +426,7 @@
             // lb_TenKH
             // 
             lb_TenKH.AutoSize = true;
-            lb_TenKH.Location = new Point(1106, 129);
+            lb_TenKH.Location = new Point(1092, 129);
             lb_TenKH.Name = "lb_TenKH";
             lb_TenKH.Size = new Size(18, 20);
             lb_TenKH.TabIndex = 7;
@@ -435,7 +435,7 @@
             // lb_gh3
             // 
             lb_gh3.AutoSize = true;
-            lb_gh3.Location = new Point(1036, 129);
+            lb_gh3.Location = new Point(1022, 129);
             lb_gh3.Name = "lb_gh3";
             lb_gh3.Size = new Size(59, 20);
             lb_gh3.TabIndex = 6;
@@ -443,7 +443,7 @@
             // 
             // tbx_SDTkh
             // 
-            tbx_SDTkh.Location = new Point(1106, 74);
+            tbx_SDTkh.Location = new Point(1092, 74);
             tbx_SDTkh.Name = "tbx_SDTkh";
             tbx_SDTkh.Size = new Size(193, 27);
             tbx_SDTkh.TabIndex = 5;
@@ -453,7 +453,7 @@
             // lb_gh2
             // 
             lb_gh2.AutoSize = true;
-            lb_gh2.Location = new Point(1036, 77);
+            lb_gh2.Location = new Point(1022, 77);
             lb_gh2.Name = "lb_gh2";
             lb_gh2.Size = new Size(38, 20);
             lb_gh2.TabIndex = 4;
@@ -463,7 +463,7 @@
             // 
             lb_gh1.AutoSize = true;
             lb_gh1.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            lb_gh1.Location = new Point(1120, 26);
+            lb_gh1.Location = new Point(1106, 26);
             lb_gh1.Name = "lb_gh1";
             lb_gh1.Size = new Size(114, 25);
             lb_gh1.TabIndex = 3;

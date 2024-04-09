@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace C_PRL.UI
         BanHang_Services bhsv;
         HoaDon_Services hdsv;
         ChiTietHD_Services ctsv;
-        public Form_TrangChu()
+        public Form_TrangChu(NhanVien? nv)
         {
 
             InitializeComponent();
@@ -32,7 +33,16 @@ namespace C_PRL.UI
             LoadCBX1();
             LoadCBX2();
 
+            //Lấy mã nhân viên từ tk pw đăng nhập vào app
+
+            if(nv == null)
+            {
+                nvien = null;
+            }
+            else nvien = nv;
+
         }
+        NhanVien nvien;
 
         #region chuyển panel
 
@@ -139,6 +149,12 @@ namespace C_PRL.UI
 
         private void Form_TrangChu_Load(object sender, EventArgs e)
         {
+            if(nvien == null)
+            {
+                lb_NameNV.Text = "Đang bảo trì";
+            }
+            else lb_NameNV.Text = nvien.TenNhanVien;
+
             LoadGrid(bhsv.GetAllSanPham());
 
             tbx_TienKhachTra.Click += tbx_Click;
@@ -270,13 +286,14 @@ namespace C_PRL.UI
                 if (item.TrangThai == 0)
                 {
                     string trangthai = "Chưa thanh toán";
-                    dtg_HoaDonCho.Rows.Add(item.MaHoaDon, item.MaKhachHang, trangthai, item.TongTien, item.TienKhachTra, item.GiamGia);
+                    dtg_HoaDonCho.Rows.Add(item.MaHoaDon, item.MaKhachHangNavigation.TenKhachHang, trangthai, item.TongTien, item.TienKhachTra, item.GiamGia);
                 }
             }
 
         }
 
 
+        #region Sự kiện cell click
         //Thêm sản phẩm vào giỏ hàng 
 
         private void dtg_DSsanpham_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -381,6 +398,9 @@ namespace C_PRL.UI
         }
 
 
+        #endregion
+
+
         //Hàm tính tổng tiền sau khi giam gia
         public int TinhTongTien()
         {
@@ -449,7 +469,7 @@ namespace C_PRL.UI
 
         //Hàm tìm kiếm khách hàng
         //Lấy mã khách hàng để tạo hóa đơn  
-        int maKH;
+        int maKH = 0;
         public void SearchCustomer()
         {
             KhachHang kh = bhsv.GetKhachHang(tbx_SDTkh.Text);
@@ -462,7 +482,7 @@ namespace C_PRL.UI
             }
             else
             {
-                
+
                 return;
             }
         }
@@ -496,76 +516,12 @@ namespace C_PRL.UI
             lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
         }
 
-
-        //Nut tạo hóa đơn
-
-        private void pn_BtnTaoHoaDon_Click(object sender, EventArgs e)
+        //Hàm thanh toán
+        public void ThanhToan()
         {
+            //Lấy dữ liệu
             int makhachhang = maKH;
-            string manhanvien = "NV1"; //Tạm thời chưa sửa 
-            DateTime ngaymua = DateTime.Now;
-
-            int tongtien = TinhTongTien();
-
-            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text);
-
-            int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
-
-            int trangthai = 0;
-
-            if (!ValidateHD(makhachhang, tongtien, trangthai))
-            {
-                return;
-            }
-            {
-                HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
-
-
-                hdsv.TaoHoaDon(hd);
-
-                //ChiTietHoaDon cthd = new ChiTietHoaDon();
-
-                //ctsv.TaoChiTietHoaDon(cthd);
-                dtg_GioHang.Rows.Clear();
-                LoadGrid(bhsv.GetAllSanPham());
-
-
-            }
-
-
-        }
-
-        public bool ValidateHD(int makh, int e, int f)
-        {
-            //b - ma khach hang
-            //e - tong tien
-            //f - trang thai
-
-
-            bool check = true;
-            //
-
-            //
-            return check;
-        }
-
-
-
-
-
-
-        //Nút cập nhật
-        private void pn_BtnCapNhat_Click(object sender, EventArgs e)
-        {
-            LoadGrid(bhsv.GetAllSanPham());
-        }
-
-        //Nút thanh toán
-        int idUpdate;
-        private void pn_buttonThanhToan_Click(object sender, EventArgs e)
-        {
-            int makhachhang = 1; //Tạm thời chưa sửa
-            string manhanvien = "NV1"; //Tạm thời chưa sửa 
+            string manhanvien = nvien.MaNhanVien;
             DateTime ngaymua = DateTime.Now;
 
             int tongtien = TinhTongTien();
@@ -576,7 +532,7 @@ namespace C_PRL.UI
 
             int trangthai = 1;
 
-            if (!ValidateHD(makhachhang, tongtien, trangthai))
+            if (!ValidateHD(makhachhang, tienkhachtra, tongtien, trangthai))
             {
                 return;
             }
@@ -597,7 +553,7 @@ namespace C_PRL.UI
                 }
                 else
                 {
-                    hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien, trangthai);
+                    hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien);
                     MessageBox.Show("Thanh toán thành công");
                 }
 
@@ -605,6 +561,100 @@ namespace C_PRL.UI
                 dtg_GioHang.Rows.Clear();
                 LoadGrid(bhsv.GetAllSanPham());
             }
+        }
+
+        //Hàm tạo hóa đơn chờ
+        public void TaoHoaDonCho()
+        {
+            int makhachhang = maKH;
+            string manhanvien = nvien.MaNhanVien;
+            DateTime ngaymua = DateTime.Now;
+
+            int tongtien = TinhTongTien();
+
+            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text);
+
+            int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
+
+            int trangthai = 0;
+
+            if (!ValidateHD(makhachhang, tienkhachtra, tongtien, trangthai))
+            {
+                return;
+            }
+            {
+                HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
+
+
+                hdsv.TaoHoaDon(hd);
+
+                //ChiTietHoaDon cthd = new ChiTietHoaDon();
+
+                //ctsv.TaoChiTietHoaDon(cthd);
+                dtg_GioHang.Rows.Clear();
+                LoadGrid(bhsv.GetAllSanPham());
+            }
+        }
+
+        //Nut tạo hóa đơn
+        private void pn_BtnTaoHoaDon_Click(object sender, EventArgs e)
+        {
+            TaoHoaDonCho();
+        }
+
+        public bool ValidateHD(int makh, int tienkhachtra, int tongtien, int f)
+        {
+            //b - ma khach hang
+            //e - tong tien
+            //f - trang thai
+
+
+            bool check = true;
+            //
+            if (dtg_GioHang.Rows.Count == 1)
+            {
+                MessageBox.Show("Không có sản phẩm nào được chọn !");
+                check = false;
+            }
+            else if (makh == 0)
+            {
+                MessageBox.Show("Không tìm thấy khách hàng !");
+                check = false;
+            }
+            else if (tienkhachtra == 0)
+            {
+                MessageBox.Show("Chưa nhập số tiền khách trả !");
+                check = false;
+            }
+            else
+            {
+                if (tienkhachtra < tongtien)
+                {
+                    MessageBox.Show("Số tiền khách gửi không đủ !");
+                    check = false;
+                }          
+            }
+            //
+            return check;
+        }
+
+
+
+
+
+
+        //Nút cập nhật
+        private void pn_BtnCapNhat_Click(object sender, EventArgs e)
+        {
+            LoadGrid(bhsv.GetAllSanPham());
+        }
+
+
+        //Nút thanh toán
+        int idUpdate;
+        private void pn_buttonThanhToan_Click(object sender, EventArgs e)
+        {
+            ThanhToan(); 
         }
 
 
@@ -674,7 +724,10 @@ namespace C_PRL.UI
         {
             TextBox textBox = (TextBox)sender;
 
-            textBox.Text = "0";
+            if (textBox.Text == "")
+            {
+                textBox.Text = "0";
+            }
         }
 
         //su kien tim kiem san pham theo ten
@@ -694,6 +747,6 @@ namespace C_PRL.UI
 
         #endregion
 
-        
+
     }
 }

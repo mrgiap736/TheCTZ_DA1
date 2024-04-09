@@ -25,14 +25,14 @@ namespace C_PRL.UI
             string us = tbx_usn.Text;
             string pw = tbx_pass.Text;
 
-            if(loginsv.GetUS_PW(us, pw))
+            if (loginsv.GetUS_PW(us, pw) != null)
             {
-                Form_TrangChu tt = new Form_TrangChu();
+                Form_TrangChu tt = new Form_TrangChu(loginsv.GetUS_PW(us, pw));
                 tt.Show();
 
 
 
-               // Close();
+                // Close();
             }
             else
             {
