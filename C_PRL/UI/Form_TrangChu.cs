@@ -170,6 +170,19 @@ namespace C_PRL.UI
 
         }
 
+        //Hàm clear tb
+        public void ClearInput()
+        {
+            cbx_Filter1.SelectedIndex = 0;
+            cbx_Filter2.SelectedIndex = 0;
+
+            tbx_Search.Text = "";
+            tbx_TienKhachTra.Text = "0";
+            tbx_GhiChu.Text = "";
+            tbx_SDTkh.Text = "";
+            dtg_GioHang.Rows.Clear();
+        }
+
         //Load du lieu cho 2 combobox
         public void LoadCBX1()
         {
@@ -550,11 +563,14 @@ namespace C_PRL.UI
                 {
                     HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
                     hdsv.TaoHoaDon(hd);
+                    MessageBox.Show("Thanh toán thành công");
+                    ClearInput();
                 }
                 else
                 {
                     hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien);
                     MessageBox.Show("Thanh toán thành công");
+                    ClearInput();
                 }
 
 
@@ -590,9 +606,10 @@ namespace C_PRL.UI
 
                 //ChiTietHoaDon cthd = new ChiTietHoaDon();
 
-                //ctsv.TaoChiTietHoaDon(cthd);
-                dtg_GioHang.Rows.Clear();
+                //ctsv.TaoChiTietHoaDon(cthd);  //Chua su dung den
+
                 LoadGrid(bhsv.GetAllSanPham());
+                ClearInput();
             }
         }
 
