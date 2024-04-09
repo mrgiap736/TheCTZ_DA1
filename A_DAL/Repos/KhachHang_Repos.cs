@@ -35,6 +35,11 @@ namespace A_DAL.Repos
             return true;
         }
 
+        public KhachHang SearchByPhone(string phone)
+        {
+            return context.KhachHangs.FirstOrDefault(x => x.SoDienThoai == phone);
+        }
+
         public bool UpdateKH(KhachHang kh)
         {
             context.Update(kh);

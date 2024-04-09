@@ -28,13 +28,13 @@ public partial class SqlTheCtzContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-QM5ES3L\\HUNGTUAN;Initial Catalog=Sql_TheCTZ;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=MRG;Initial Catalog=Sql_TheCTZ;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ChiTietHoaDon>(entity =>
         {
-            entity.HasKey(e => e.MaChiTietHoaDon).HasName("PK__ChiTietH__CFF2C426740E1999");
+            entity.HasKey(e => e.MaChiTietHoaDon).HasName("PK__ChiTietH__CFF2C426ADFADC6E");
 
             entity.ToTable("ChiTietHoaDon");
 
@@ -50,7 +50,7 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<HoaDon>(entity =>
         {
-            entity.HasKey(e => e.MaHoaDon).HasName("PK__HoaDon__835ED13B8250B0D4");
+            entity.HasKey(e => e.MaHoaDon).HasName("PK__HoaDon__835ED13B353F5476");
 
             entity.ToTable("HoaDon");
 
@@ -70,25 +70,26 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<KhachHang>(entity =>
         {
-            entity.HasKey(e => e.MaKhachHang).HasName("PK__KhachHan__88D2F0E5B7554FD9");
+            entity.HasKey(e => e.MaKhachHang).HasName("PK__KhachHan__88D2F0E50EC30629");
 
             entity.ToTable("KhachHang");
 
+            entity.Property(e => e.SoDienThoai)
+                .HasMaxLength(1)
+                .IsUnicode(false);
             entity.Property(e => e.TenKhachHang).HasMaxLength(50);
         });
 
         modelBuilder.Entity<NhanVien>(entity =>
         {
-            entity.HasKey(e => e.MaNhanVien).HasName("PK__NhanVien__77B2CA47D4CC8DFA");
+            entity.HasKey(e => e.MaNhanVien).HasName("PK__NhanVien__77B2CA479FC652F6");
 
             entity.ToTable("NhanVien");
 
             entity.Property(e => e.MaNhanVien)
                 .HasMaxLength(10)
                 .IsUnicode(false);
-            entity.Property(e => e.ChucVu)
-                .HasMaxLength(10)
-                .IsUnicode(false);
+            entity.Property(e => e.ChucVu).HasMaxLength(30);
             entity.Property(e => e.MatKhau).HasMaxLength(20);
             entity.Property(e => e.TaiKhoan).HasMaxLength(20);
             entity.Property(e => e.TenNhanVien).HasMaxLength(50);
@@ -96,7 +97,7 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<SanPham>(entity =>
         {
-            entity.HasKey(e => e.MaSanPham).HasName("PK__SanPham__FAC7442DDDDA6928");
+            entity.HasKey(e => e.MaSanPham).HasName("PK__SanPham__FAC7442D9E86E253");
 
             entity.ToTable("SanPham");
 

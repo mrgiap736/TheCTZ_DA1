@@ -13,5 +13,6 @@ namespace A_DAL.IRepos
         public bool AddKH(KhachHang kh);
         public bool UpdateKH(KhachHang kh);
         public bool RemoveKH(KhachHang kh);
+        public KhachHang SearchByPhone(string phone);
     }
 }

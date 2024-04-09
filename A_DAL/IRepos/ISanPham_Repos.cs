@@ -13,5 +13,9 @@ namespace A_DAL.IRepos
 		public bool AddSP(SanPham sp);
 		public bool UpdateSP(SanPham sp);
 		public bool RemoveSP(SanPham sp);
+		public List<SanPham> SearchByName(string name);
+		public List<SanPham> FilterByPrice(int index);
+		public List<SanPham> FilterByTheFirm(int index);
+
 	}
 }

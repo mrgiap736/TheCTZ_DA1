@@ -45,5 +45,54 @@ namespace A_DAL.Repos
 			context.SaveChanges();
 			return true;
 		}
-	}
+
+        public List<SanPham> SearchByName(string name)
+        {
+            return context.SanPhams.Where(x => x.TenSanPham.ToLower().Contains(name.ToLower().Trim())).ToList();
+        }
+
+        public List<SanPham> FilterByPrice(int index)
+        {
+            int max = 0;
+            int min = 0;
+
+            if(index >= 0)
+            {
+                if(index == 0)
+                {
+                    return GetAll();
+                }
+
+                else if(index == 1)
+                {
+                    max = 1000000;
+                    min = 0;
+                }
+                else if(index == 2)
+                {
+                    max = 10000000;
+                    min = 1000000;
+                }
+                else if(index == 3)
+                {
+                    max = 50000000;
+                    min = 10000000;
+                }
+                else
+                {
+                    max = int.MaxValue;
+                    min = 50000000;
+                }
+
+                return context.SanPhams.Where(x => x.GiaBan > min && x.GiaBan < max).ToList();
+            }
+
+            return GetAll();
+        }
+
+        public List<SanPham> FilterByTheFirm(int index)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

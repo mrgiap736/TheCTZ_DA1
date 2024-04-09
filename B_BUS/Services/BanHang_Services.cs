@@ -11,15 +11,32 @@ namespace B_BUS.Services
     public class BanHang_Services
     {
         SanPham_Repos sprp;
+        KhachHang_Repos khrp;
 
         public BanHang_Services()
         {
             sprp = new SanPham_Repos();
+            khrp = new KhachHang_Repos();
         }
 
         public List<SanPham> GetAllSanPham()
         {
             return sprp.GetAll();
+        }
+
+        public List<SanPham> GetSPByName(string name)
+        {
+            return sprp.SearchByName(name);
+        }
+
+        public List<SanPham> GetSPByPrice(int index)
+        {
+            return sprp.FilterByPrice(index);
+        }
+
+        public KhachHang GetKhachHang(string phone)
+        {
+            return khrp.SearchByPhone(phone);
         }
     }
 }
