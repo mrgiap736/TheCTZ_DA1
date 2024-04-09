@@ -12,6 +12,6 @@ namespace A_DAL.IRepos
 		public List<HoaDon> GetAll();
 		public void Create(HoaDon hoaDon);
 		public void Update(int a, int b, int c, int d);
-		public void Delete(string id);
+		public HoaDon Get(int id);
 	}
 }

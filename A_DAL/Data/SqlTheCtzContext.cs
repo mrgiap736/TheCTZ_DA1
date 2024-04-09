@@ -34,23 +34,26 @@ public partial class SqlTheCtzContext : DbContext
     {
         modelBuilder.Entity<ChiTietHoaDon>(entity =>
         {
-            entity.HasKey(e => e.MaChiTietHoaDon).HasName("PK__ChiTietH__CFF2C426ADFADC6E");
+            entity.HasKey(e => e.MaChiTietHoaDon).HasName("PK__ChiTietH__CFF2C426ED58D28A");
 
             entity.ToTable("ChiTietHoaDon");
 
-            entity.Property(e => e.MaChiTietHoaDon)
-                .HasMaxLength(1)
+            entity.Property(e => e.MaSanPham)
+                .HasMaxLength(10)
                 .IsUnicode(false);
-            entity.Property(e => e.DanhSachSanPham).HasMaxLength(1);
 
             entity.HasOne(d => d.MaHoaDonNavigation).WithMany(p => p.ChiTietHoaDons)
                 .HasForeignKey(d => d.MaHoaDon)
                 .HasConstraintName("FK__ChiTietHo__MaHoa__2D27B809");
+
+            entity.HasOne(d => d.MaSanPhamNavigation).WithMany(p => p.ChiTietHoaDons)
+                .HasForeignKey(d => d.MaSanPham)
+                .HasConstraintName("FK__ChiTietHo__MaSan__2E1BDC42");
         });
 
         modelBuilder.Entity<HoaDon>(entity =>
         {
-            entity.HasKey(e => e.MaHoaDon).HasName("PK__HoaDon__835ED13B353F5476");
+            entity.HasKey(e => e.MaHoaDon).HasName("PK__HoaDon__835ED13B80925F71");
 
             entity.ToTable("HoaDon");
 
@@ -70,19 +73,17 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<KhachHang>(entity =>
         {
-            entity.HasKey(e => e.MaKhachHang).HasName("PK__KhachHan__88D2F0E50EC30629");
+            entity.HasKey(e => e.MaKhachHang).HasName("PK__KhachHan__88D2F0E55BB6BB54");
 
             entity.ToTable("KhachHang");
 
-            entity.Property(e => e.SoDienThoai)
-                .HasMaxLength(1)
-                .IsUnicode(false);
+            entity.Property(e => e.SoDienThoai).HasMaxLength(20);
             entity.Property(e => e.TenKhachHang).HasMaxLength(50);
         });
 
         modelBuilder.Entity<NhanVien>(entity =>
         {
-            entity.HasKey(e => e.MaNhanVien).HasName("PK__NhanVien__77B2CA479FC652F6");
+            entity.HasKey(e => e.MaNhanVien).HasName("PK__NhanVien__77B2CA47283B966D");
 
             entity.ToTable("NhanVien");
 
@@ -97,7 +98,7 @@ public partial class SqlTheCtzContext : DbContext
 
         modelBuilder.Entity<SanPham>(entity =>
         {
-            entity.HasKey(e => e.MaSanPham).HasName("PK__SanPham__FAC7442D9E86E253");
+            entity.HasKey(e => e.MaSanPham).HasName("PK__SanPham__FAC7442DFADD3123");
 
             entity.ToTable("SanPham");
 
@@ -106,7 +107,7 @@ public partial class SqlTheCtzContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.HangSanXuat).HasMaxLength(20);
             entity.Property(e => e.TenSanPham).HasMaxLength(50);
-            entity.Property(e => e.ThongSoKyThuat).HasMaxLength(50);
+            entity.Property(e => e.ThongSoKyThuat).HasMaxLength(200);
         });
 
         OnModelCreatingPartial(modelBuilder);

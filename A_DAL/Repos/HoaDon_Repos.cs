@@ -25,12 +25,12 @@ namespace A_DAL.Repos
 			return;
 		}
 
-		public void Delete(string id)
-		{
-			throw new NotImplementedException();
-		}
+        public HoaDon Get(int id)
+        {
+			return context.HoaDons.SingleOrDefault(x => x.MaHoaDon.Equals(id));
+        }
 
-		public List<HoaDon> GetAll()
+        public List<HoaDon> GetAll()
 		{
 			return context.HoaDons.Include("MaKhachHangNavigation").ToList();
 		}

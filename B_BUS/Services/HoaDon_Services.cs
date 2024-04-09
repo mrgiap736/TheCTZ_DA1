@@ -32,5 +32,10 @@ namespace B_BUS.Services
 			hdrp.Update(a, b, c, d);
 		}
 
+		public HoaDon GetHD(int id)
+		{
+			return hdrp.Get(id);
+		}
+
 	}
 }

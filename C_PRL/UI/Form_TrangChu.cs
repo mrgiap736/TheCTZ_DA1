@@ -22,6 +22,7 @@ namespace C_PRL.UI
         HoaDon_Services hdsv;
         KhachHang_Services khsv;
         ChiTietHD_Services ctsv;
+
         public Form_TrangChu(NhanVien? nv)
         {
 
@@ -153,6 +154,8 @@ namespace C_PRL.UI
         }
         #endregion
 
+
+        #region Load data
         private void Form_TrangChu_Load(object sender, EventArgs e)
         {
             if(nvien == null)
@@ -212,6 +215,18 @@ namespace C_PRL.UI
             cbx_Filter2.SelectedIndex = 0;
         }
 
+        private void LoadGioHang(dynamic data)
+        {
+            //Xóa dữ liệu trước khi thêm
+            dtg_GioHang.Rows.Clear();
+
+            foreach (var item in data)
+            {
+                int sttGH = dtg_GioHang.Rows.Count;
+                dtg_GioHang.Rows.Add(item.MaSanPhamNavigation.MaSanPham, sttGH++, item.MaSanPhamNavigation.TenSanPham, item.SoLuong, item.DonGia);
+            }
+        }
+
         public void LoadGrid(dynamic data)
         {
             dtg_DSsanpham.Rows.Clear();
@@ -262,7 +277,6 @@ namespace C_PRL.UI
             dtg_GioHang.Columns[4].Name = "dongia";
             dtg_GioHang.Columns[4].HeaderText = "Đơn giá";
 
-
             //Tạo cột cho hóa đơn chờ 
             dtg_HoaDonCho.ColumnCount = 6;
 
@@ -286,13 +300,6 @@ namespace C_PRL.UI
             dtg_HoaDonCho.Columns[5].Name = "giamgia";
             dtg_HoaDonCho.Columns[5].Visible = false;
 
-
-
-
-
-
-
-
             //Thêm dữ liệu vào ds sản phẩm
             //stt
             int stt = 1;
@@ -315,9 +322,11 @@ namespace C_PRL.UI
         }
 
 
+        #endregion
+
+
         #region Sự kiện cell click
         //Thêm sản phẩm vào giỏ hàng 
-
         private void dtg_DSsanpham_CellClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -379,7 +388,15 @@ namespace C_PRL.UI
         {
             int rowIndex = e.RowIndex;
 
-            if (dtg_HoaDonCho.SelectedRows.Count > 1 || dtg_HoaDonCho.Rows[rowIndex].Cells[0].Value == null || e.RowIndex < 0)
+            if (dtg_HoaDonCho.Rows.Count <= 1)
+            {
+                if(dtg_HoaDonCho.SelectedRows.Count <= 1)
+                {
+                    return;
+                }
+            }
+
+            if (dtg_HoaDonCho.Rows[rowIndex].Cells[0].Value == null || e.RowIndex < 0)
             {
                 return;
             }
@@ -392,6 +409,9 @@ namespace C_PRL.UI
                 lb_TongTien.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[3].Value.ToString();
 
                 string nameKH_search = dtg_HoaDonCho.Rows[rowIndex].Cells[1].Value.ToString();
+
+                //Load lại sản phẩm trong giỏ hàng của hóa đơn đó 
+                LoadGioHang(ctsv.GetAllCTHoaDon(idUpdate));
 
                 //Lấy dữ liệu khách hàng từ tên khách hàng
                 kHang = khsv.Search_KH_By_Name(nameKH_search);
@@ -425,7 +445,7 @@ namespace C_PRL.UI
                 return;
             }
             {
-                idGHindex = dtg_GioHang.Rows[rowIndex].Cells[0].Value.ToString();
+                idGHindex = dtg_GioHang.Rows[rowIndex].Cells[0].Value.ToString();       
             }
         }
 
@@ -591,6 +611,7 @@ namespace C_PRL.UI
                 {
                     HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
                     hdsv.TaoHoaDon(hd);
+                    AddHDChiTiet(hd.MaHoaDon);
                     MessageBox.Show("Thanh toán thành công");
 
                     //cập nhật tích lũy cho khách hàng
@@ -602,13 +623,29 @@ namespace C_PRL.UI
                 }
                 else
                 {
+
+                    //Thanh toán hóa đơn chờ
                     hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien);
+                    UpdateHDChiTiet();
                     MessageBox.Show("Thanh toán thành công");
 
                     //cập nhật tích lũy cho khách hàng
-                    kHang.TichLuy = kHang.TichLuy + tongtien / 100000;
-                    khsv.Update(kHang);
+                    int? tichluymoi;
+                    if (tbx_Giamgia.Text == "0")
+                    {
+                        //nếu khách hàng mua không giảm giá thì tích lũy
+                        tichluymoi = kHang.TichLuy + tongtien / 100000;
+                        kHang.TichLuy = tichluymoi;
+                        
+                    }
+                    else
+                    {
+                        //nếu khách hàng mua với giảm giá thì không tích lũy và trừ bớt điểm tích lũy đang có
+                        tichluymoi = kHang.TichLuy - Convert.ToInt32(tbx_Giamgia.Text);
+                        kHang.TichLuy = tichluymoi;
+                    }
 
+                    khsv.Update(kHang);
 
                     //Xoa du lieu input
                     ClearInput();
@@ -629,9 +666,9 @@ namespace C_PRL.UI
 
             int tongtien = TinhTongTien();
 
-            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text);
+            int tienkhachtra = 0;
 
-            int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
+            int giamgia = 0;
 
             int trangthai = 0;
 
@@ -640,10 +677,17 @@ namespace C_PRL.UI
                 return;
             }
             {
-                HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
-
-
-                hdsv.TaoHoaDon(hd);
+                HoaDon hdonUpdate = hdsv.GetHD(idUpdate);
+                if(hdonUpdate != null)
+                {
+                    UpdateHDChiTiet();
+                }
+                else
+                {
+                    HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
+                    hdsv.TaoHoaDon(hd);
+                    AddHDChiTiet(hd.MaHoaDon);
+                }
 
                 //
 
@@ -653,9 +697,79 @@ namespace C_PRL.UI
         }
 
         //Hàm tạo chi tiết hóa đơn (được gọi sau khi tạo hóa đơn)
-        public void AddHDChiTiet()
+        public void AddHDChiTiet(int mahd)
+        {
+            foreach (DataGridViewRow item in dtg_GioHang.Rows)
+            {
+                if (item.Cells[0].Value != null)
+                {
+                    ChiTietHoaDon ctHoaDon = new ChiTietHoaDon();
+                    ctHoaDon.MaHoaDon = mahd;
+                    ctHoaDon.MaSanPham = item.Cells[0].Value.ToString();
+                    ctHoaDon.SoLuong = Convert.ToInt32(item.Cells[3].Value);
+                    ctHoaDon.DonGia = Convert.ToInt32(item.Cells[4].Value);
+
+                    ctsv.TaoChiTietHoaDon(ctHoaDon);
+                }
+            }
+        }
+
+        //Hàm update chi tiết hóa đơn (được gọi sau khi thanh toán hóa đơn chờ)
+        public void UpdateHDChiTiet()
         {
 
+            foreach (var item in ctsv.GetAllCTHoaDon(idUpdate).ToList())
+            {
+                bool foundInCart = false;
+                foreach (DataGridViewRow row in dtg_GioHang.Rows)
+                {
+                    if (row.Cells[0].Value != null)
+                    {
+                        if (item.MaSanPham == row.Cells[0].Value.ToString())
+                        {
+                            // Cập nhật số lượng
+                            item.SoLuong = Convert.ToInt32(row.Cells[3].Value);
+                            ctsv.UpdateCTHoaDon(item);
+                            foundInCart = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Xóa nếu không còn tồn tại trong giỏ hàng
+                if (!foundInCart)
+                {
+                    ctsv.DeleteSPChiTietHoaDon(item);
+                }
+            }
+
+            // Tạo mới nếu không tồn tại trong hóa đơn
+            foreach (DataGridViewRow row in dtg_GioHang.Rows)
+            {
+                if (row.Cells[0].Value != null)
+                {
+                    bool foundInOrder = false;
+                    foreach (var item in ctsv.GetAllCTHoaDon(idUpdate))
+                    {
+                        if (item.MaSanPham == row.Cells[0].Value.ToString())
+                        {
+                            foundInOrder = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundInOrder)
+                    {
+                        ChiTietHoaDon ctHoaDon = new ChiTietHoaDon();
+                        ctHoaDon.MaHoaDon = idUpdate;
+                        ctHoaDon.MaSanPham = row.Cells[0].Value.ToString();
+                        ctHoaDon.SoLuong = Convert.ToInt32(row.Cells[3].Value);
+                        ctHoaDon.DonGia = Convert.ToInt32(row.Cells[4].Value);
+
+                        ctsv.TaoChiTietHoaDon(ctHoaDon);
+                    }
+                }
+            }
         }
 
 

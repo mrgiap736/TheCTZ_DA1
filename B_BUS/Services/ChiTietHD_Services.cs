@@ -17,14 +17,24 @@ namespace B_BUS.Services
              ctrp = new ChiTietHD_Repos();
         }
 
-        public List<ChiTietHoaDon> GetAllCTHoaDon()
+        public List<ChiTietHoaDon> GetAllCTHoaDon(int mahd)
         {
-            return ctrp.GetAll();
+            return ctrp.GetAll(mahd);
         }
 
         public void TaoChiTietHoaDon(ChiTietHoaDon t)
         {
             ctrp.Create(t);
+        }
+
+        public void UpdateCTHoaDon(ChiTietHoaDon ct)
+        {
+            ctrp.Update(ct);
+        }
+
+        public void DeleteSPChiTietHoaDon(ChiTietHoaDon ct)
+        {
+            ctrp.Delete(ct);
         }
     }
 }
