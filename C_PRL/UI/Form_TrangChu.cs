@@ -513,7 +513,7 @@ namespace C_PRL.UI
 
             int trangthai = 0;
 
-            if (!ValidateHD(makhachhang, manhanvien, ngaymua, tongtien, trangthai))
+            if (!ValidateHD(makhachhang, tongtien, trangthai))
             {
                 return;
             }
