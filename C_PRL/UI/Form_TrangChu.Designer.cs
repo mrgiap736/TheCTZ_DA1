@@ -515,11 +515,11 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(63, 13);
+            label9.Location = new Point(50, 13);
             label9.Name = "label9";
-            label9.Size = new Size(93, 20);
+            label9.Size = new Size(121, 20);
             label9.TabIndex = 3;
-            label9.Text = "Tạo hóa đơn";
+            label9.Text = "Tạo hóa đơn chờ";
             label9.Click += pn_BtnTaoHoaDon_Click;
             // 
             // panel8
@@ -645,6 +645,7 @@
             // pn_buttonThanhToan
             // 
             pn_buttonThanhToan.BackColor = Color.Yellow;
+            pn_buttonThanhToan.BorderStyle = BorderStyle.FixedSingle;
             pn_buttonThanhToan.Controls.Add(pn_iconThanhtoan);
             pn_buttonThanhToan.Controls.Add(lb_Thanhtoan);
             pn_buttonThanhToan.Location = new Point(262, 410);

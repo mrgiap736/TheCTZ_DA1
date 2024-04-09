@@ -14,5 +14,6 @@ namespace A_DAL.IRepos
         public bool UpdateKH(KhachHang kh);
         public bool RemoveKH(KhachHang kh);
         public KhachHang SearchByPhone(string phone);
+        public KhachHang SearchByName(string name);
     }
 }

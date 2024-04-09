@@ -35,6 +35,11 @@ namespace A_DAL.Repos
             return true;
         }
 
+        public KhachHang SearchByName(string name)
+        {
+            return context.KhachHangs.FirstOrDefault(x => x.TenKhachHang.Trim().ToLower().Contains(name.ToLower().Trim()));
+        }
+
         public KhachHang SearchByPhone(string phone)
         {
             return context.KhachHangs.FirstOrDefault(x => x.SoDienThoai == phone);

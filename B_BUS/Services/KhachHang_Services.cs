@@ -64,5 +64,10 @@ namespace B_BUS.Services
             }
         }
 
+        public KhachHang Search_KH_By_Name(string name)
+        {
+            return _repos.SearchByName(name);
+        }
+
     }
 }

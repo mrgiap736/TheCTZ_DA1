@@ -1,5 +1,7 @@
-﻿using A_DAL.Entities;
+﻿using A_DAL.Data;
+using A_DAL.Entities;
 using B_BUS.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +20,7 @@ namespace C_PRL.UI
     {
         BanHang_Services bhsv;
         HoaDon_Services hdsv;
+        KhachHang_Services khsv;
         ChiTietHD_Services ctsv;
         public Form_TrangChu(NhanVien? nv)
         {
@@ -27,6 +30,7 @@ namespace C_PRL.UI
             bhsv = new BanHang_Services();
             hdsv = new HoaDon_Services();
             ctsv = new ChiTietHD_Services();
+            khsv = new KhachHang_Services();
 
             GetCtrl();
 
@@ -43,6 +47,8 @@ namespace C_PRL.UI
 
         }
         NhanVien nvien;
+
+        KhachHang kHang;
 
         #region chuyển panel
 
@@ -181,6 +187,9 @@ namespace C_PRL.UI
             tbx_GhiChu.Text = "";
             tbx_SDTkh.Text = "";
             dtg_GioHang.Rows.Clear();
+
+            lb_TenKH.Text = "...";
+            lb_TichLuy.Text = "...";
         }
 
         //Load du lieu cho 2 combobox
@@ -382,6 +391,16 @@ namespace C_PRL.UI
                 tbx_Giamgia.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[5].Value.ToString();
                 lb_TongTien.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[3].Value.ToString();
 
+                string nameKH_search = dtg_HoaDonCho.Rows[rowIndex].Cells[1].Value.ToString();
+
+                //Lấy dữ liệu khách hàng từ tên khách hàng
+                kHang = khsv.Search_KH_By_Name(nameKH_search);
+
+                tbx_SDTkh.Text = kHang.SoDienThoai;
+                lb_TenKH.Text = kHang.TenKhachHang;
+                lb_TichLuy.Text = kHang.TichLuy.ToString();
+
+
                 int tienthua = Convert.ToInt32(dtg_HoaDonCho.Rows[rowIndex].Cells[4].Value) - Convert.ToInt32(dtg_HoaDonCho.Rows[rowIndex].Cells[3].Value);
 
                 if (tienthua < 0)
@@ -394,7 +413,7 @@ namespace C_PRL.UI
         }
 
 
-        //Click giỏ hàng
+        //Cell click giỏ hàng
         string idGHindex;
         private void dtg_GioHang_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -414,6 +433,8 @@ namespace C_PRL.UI
         #endregion
 
 
+
+        #region Các hàm xử lý logic 
         //Hàm tính tổng tiền sau khi giam gia
         public int TinhTongTien()
         {
@@ -485,51 +506,58 @@ namespace C_PRL.UI
         int maKH = 0;
         public void SearchCustomer()
         {
-            KhachHang kh = bhsv.GetKhachHang(tbx_SDTkh.Text);
+            kHang = bhsv.GetKhachHang(tbx_SDTkh.Text);
 
-            if (kh != null)
+            if (kHang != null)
             {
-                lb_TenKH.Text = kh.TenKhachHang;
-                lb_TichLuy.Text = kh.TichLuy.ToString();
-                maKH = kh.MaKhachHang;
+                lb_TenKH.Text = kHang.TenKhachHang;
+                lb_TichLuy.Text = kHang.TichLuy.ToString();
+                maKH = kHang.MaKhachHang;
             }
             else
             {
-
                 return;
             }
         }
 
-
-
-
-
-
-        #region các nút 
-
-        //Nut xoa sp
-        private void pn_BtnXoaSP_Click(object sender, EventArgs e)
+        //Hàm validate dữ liệu đầu vào hóa đơn 
+        public bool ValidateHD(int makh, int tienkhachtra, int tongtien, int f)
         {
+            //b - ma khach hang
+            //e - tong tien
+            //f - trang thai
 
-            foreach (DataGridViewRow item in dtg_GioHang.Rows)
+
+            bool check = true;
+            //
+            if (dtg_GioHang.Rows.Count == 1)
             {
-                if (item.Cells[0].Value == idGHindex)
+                MessageBox.Show("Không có sản phẩm nào được chọn !");
+                check = false;
+            }
+            else if (makh == 0)
+            {
+                MessageBox.Show("Không tìm thấy khách hàng !");
+                check = false;
+            }
+            else if (tienkhachtra == 0)
+            {
+                MessageBox.Show("Chưa nhập số tiền khách trả !");
+                check = false;
+            }
+            else
+            {
+                if (tienkhachtra < tongtien)
                 {
-                    dtg_GioHang.Rows.Remove(item);
+                    MessageBox.Show("Số tiền khách gửi không đủ !");
+                    check = false;
                 }
             }
-
-            lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
+            //
+            return check;
         }
 
-        //nut xoa gio hang
-        private void pn_BtnXoaGioHang_Click(object sender, EventArgs e)
-        {
-            dtg_GioHang.Rows.Clear();
-            lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
-        }
-
-        //Hàm thanh toán
+        //Hàm thanh toán (Tạo hóa đơn)
         public void ThanhToan()
         {
             //Lấy dữ liệu
@@ -564,12 +592,25 @@ namespace C_PRL.UI
                     HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
                     hdsv.TaoHoaDon(hd);
                     MessageBox.Show("Thanh toán thành công");
+
+                    //cập nhật tích lũy cho khách hàng
+                    kHang.TichLuy = kHang.TichLuy + tongtien / 100000;
+                    khsv.Update(kHang);
+
+                    //Xoa du lieu input
                     ClearInput();
                 }
                 else
                 {
                     hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien);
                     MessageBox.Show("Thanh toán thành công");
+
+                    //cập nhật tích lũy cho khách hàng
+                    kHang.TichLuy = kHang.TichLuy + tongtien / 100000;
+                    khsv.Update(kHang);
+
+
+                    //Xoa du lieu input
                     ClearInput();
                 }
 
@@ -579,7 +620,7 @@ namespace C_PRL.UI
             }
         }
 
-        //Hàm tạo hóa đơn chờ
+        //Hàm tạo hóa đơn chờ (Tạo hóa đơn)
         public void TaoHoaDonCho()
         {
             int makhachhang = maKH;
@@ -604,13 +645,46 @@ namespace C_PRL.UI
 
                 hdsv.TaoHoaDon(hd);
 
-                //ChiTietHoaDon cthd = new ChiTietHoaDon();
-
-                //ctsv.TaoChiTietHoaDon(cthd);  //Chua su dung den
+                //
 
                 LoadGrid(bhsv.GetAllSanPham());
                 ClearInput();
             }
+        }
+
+        //Hàm tạo chi tiết hóa đơn (được gọi sau khi tạo hóa đơn)
+        public void AddHDChiTiet()
+        {
+
+        }
+
+
+        #endregion
+
+
+
+        #region các nút 
+
+        //Nut xoa sp
+        private void pn_BtnXoaSP_Click(object sender, EventArgs e)
+        {
+
+            foreach (DataGridViewRow item in dtg_GioHang.Rows)
+            {
+                if (item.Cells[0].Value == idGHindex)
+                {
+                    dtg_GioHang.Rows.Remove(item);
+                }
+            }
+
+            lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
+        }
+
+        //nut xoa gio hang
+        private void pn_BtnXoaGioHang_Click(object sender, EventArgs e)
+        {
+            dtg_GioHang.Rows.Clear();
+            lb_TongTien.Text = AddThousandSeparators(TinhTongTien());
         }
 
         //Nut tạo hóa đơn
@@ -618,46 +692,6 @@ namespace C_PRL.UI
         {
             TaoHoaDonCho();
         }
-
-        public bool ValidateHD(int makh, int tienkhachtra, int tongtien, int f)
-        {
-            //b - ma khach hang
-            //e - tong tien
-            //f - trang thai
-
-
-            bool check = true;
-            //
-            if (dtg_GioHang.Rows.Count == 1)
-            {
-                MessageBox.Show("Không có sản phẩm nào được chọn !");
-                check = false;
-            }
-            else if (makh == 0)
-            {
-                MessageBox.Show("Không tìm thấy khách hàng !");
-                check = false;
-            }
-            else if (tienkhachtra == 0)
-            {
-                MessageBox.Show("Chưa nhập số tiền khách trả !");
-                check = false;
-            }
-            else
-            {
-                if (tienkhachtra < tongtien)
-                {
-                    MessageBox.Show("Số tiền khách gửi không đủ !");
-                    check = false;
-                }          
-            }
-            //
-            return check;
-        }
-
-
-
-
 
 
         //Nút cập nhật
