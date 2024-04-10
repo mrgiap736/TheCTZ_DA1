@@ -185,7 +185,14 @@ namespace C_PRL.UI
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    ptb_Anh.Image.Save(ms, ptb_Anh.Image.RawFormat);
+                    try
+                    {
+                        ptb_Anh.Image.Save(ms, ptb_Anh.Image.RawFormat);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi lưu ảnh ");
+                    }
                     imageData = ms.ToArray();
                 }
             }
@@ -308,8 +315,20 @@ namespace C_PRL.UI
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    ptb_Anh.Image.Save(ms, ptb_Anh.Image.RawFormat);
+
+
+                    try
+                    {
+                        ptb_Anh.Image.Save(ms, ptb_Anh.Image.RawFormat);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi lưu ảnh ");
+                    }
+
                     imageData = ms.ToArray();
+                    
+
                 }
             }
             else
