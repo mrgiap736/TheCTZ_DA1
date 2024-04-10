@@ -122,7 +122,7 @@
             // 
             // tbx_Search
             // 
-            tbx_Search.Location = new Point(6, 51);
+            tbx_Search.Location = new Point(19, 51);
             tbx_Search.Name = "tbx_Search";
             tbx_Search.PlaceholderText = "Tìm kiếm";
             tbx_Search.Size = new Size(260, 27);

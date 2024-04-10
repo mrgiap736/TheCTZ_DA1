@@ -32,7 +32,7 @@
             pn_Form_SanPham = new Panel();
             groupBox3 = new GroupBox();
             dtgView = new DataGridView();
-            groupBox2 = new GroupBox();
+            grb_ChucNang = new GroupBox();
             pn_XuatExcel = new Panel();
             label12 = new Label();
             pictureBox5 = new PictureBox();
@@ -69,7 +69,7 @@
             pn_Form_SanPham.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dtgView).BeginInit();
-            groupBox2.SuspendLayout();
+            grb_ChucNang.SuspendLayout();
             pn_XuatExcel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             pn_XoaSP.SuspendLayout();
@@ -88,7 +88,7 @@
             // 
             pn_Form_SanPham.BackColor = Color.FromArgb(255, 192, 192);
             pn_Form_SanPham.Controls.Add(groupBox3);
-            pn_Form_SanPham.Controls.Add(groupBox2);
+            pn_Form_SanPham.Controls.Add(grb_ChucNang);
             pn_Form_SanPham.Controls.Add(groupBox1);
             pn_Form_SanPham.Location = new Point(215, 60);
             pn_Form_SanPham.Name = "pn_Form_SanPham";
@@ -119,19 +119,19 @@
             dtgView.CellClick += dtgView_CellClick;
             dtgView.CellFormatting += dtgView_CellFormatting;
             // 
-            // groupBox2
+            // grb_ChucNang
             // 
-            groupBox2.Controls.Add(pn_XuatExcel);
-            groupBox2.Controls.Add(pn_XoaSP);
-            groupBox2.Controls.Add(pn_UpdateSP);
-            groupBox2.Controls.Add(pn_ThemSP);
-            groupBox2.Controls.Add(pn_LamMoi);
-            groupBox2.Location = new Point(1211, 3);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(349, 502);
-            groupBox2.TabIndex = 1;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Chức năng";
+            grb_ChucNang.Controls.Add(pn_XuatExcel);
+            grb_ChucNang.Controls.Add(pn_XoaSP);
+            grb_ChucNang.Controls.Add(pn_UpdateSP);
+            grb_ChucNang.Controls.Add(pn_ThemSP);
+            grb_ChucNang.Controls.Add(pn_LamMoi);
+            grb_ChucNang.Location = new Point(1211, 3);
+            grb_ChucNang.Name = "grb_ChucNang";
+            grb_ChucNang.Size = new Size(349, 502);
+            grb_ChucNang.TabIndex = 1;
+            grb_ChucNang.TabStop = false;
+            grb_ChucNang.Text = "Chức năng";
             // 
             // pn_XuatExcel
             // 
@@ -524,10 +524,11 @@
             Controls.Add(pn_Form_SanPham);
             Name = "Form_SanPham";
             Text = "Form_SanPham";
+            Load += Form_SanPham_Load;
             pn_Form_SanPham.ResumeLayout(false);
             groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dtgView).EndInit();
-            groupBox2.ResumeLayout(false);
+            grb_ChucNang.ResumeLayout(false);
             pn_XuatExcel.ResumeLayout(false);
             pn_XuatExcel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
@@ -553,7 +554,7 @@
 
         private Panel pn_Form_SanPham;
         private GroupBox groupBox3;
-        private GroupBox groupBox2;
+        private GroupBox grb_ChucNang;
         private GroupBox groupBox1;
         private TextBox txt_GiaNhap;
         private Label label5;

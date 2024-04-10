@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace C_PRL.UI
 {
@@ -50,6 +51,28 @@ namespace C_PRL.UI
         NhanVien nvien;
 
         KhachHang kHang;
+
+        private void PhanQuyen_NhanVien(NhanVien nvien)
+        {
+            if(nvien.ChucVu.Equals("Nhân viên"))
+            {
+                pn_NhanVien.Click -= pn_NhanVien_Click;
+
+                foreach (Control item in pn_NhanVien.Controls)
+                {
+                    item.Click -= pn_NhanVien_Click;
+
+                    item.Click += NotClick;
+                }
+
+
+            }
+        }
+        //Su kien thong bao nhan vien k dc phep su dung chuc nang
+        private void NotClick(object sender, EventArgs e)
+        {
+            MessageBox.Show("Nhân viên không thể sử dụng chức năng này !");
+        }
 
         #region chuyển panel
 
@@ -103,7 +126,7 @@ namespace C_PRL.UI
         {
             pn_Form_BanHang.Controls.Clear();
 
-            Form_SanPham form = new Form_SanPham();
+            Form_SanPham form = new Form_SanPham(nvien);
 
             foreach (var item in form.GetCtrl())
             {
@@ -121,7 +144,7 @@ namespace C_PRL.UI
         {
             pn_Form_BanHang.Controls.Clear();
 
-            Form_KhachHang form = new Form_KhachHang();
+            Form_KhachHang form = new Form_KhachHang(nvien);
 
             foreach (var item in form.Gekhtrl())
             {
@@ -158,6 +181,11 @@ namespace C_PRL.UI
         #region Load data
         private void Form_TrangChu_Load(object sender, EventArgs e)
         {
+            //Phân quyền chức năng trước khi thao tác
+            PhanQuyen_NhanVien(nvien);
+            //
+            //
+             
             if (nvien == null)
             {
                 lb_NameNV.Text = "Đang bảo trì";
@@ -455,7 +483,6 @@ namespace C_PRL.UI
         #endregion
 
 
-
         #region Các hàm xử lý logic 
         //Hàm tính tổng tiền sau khi giam gia
         public int TinhTongTien()
@@ -542,14 +569,9 @@ namespace C_PRL.UI
             }
         }
 
-        //Hàm validate dữ liệu đầu vào hóa đơn 
-        public bool ValidateHD(int makh, int tienkhachtra, int tongtien, int f)
+        //Hàm validate dữ liệu đầu vào tạo hóa đơn 
+        public bool ValidateTaoHD(int makh, int tienkhachtra, int tongtien)
         {
-            //b - ma khach hang
-            //e - tong tien
-            //f - trang thai
-
-
             bool check = true;
             //
             if (dtg_GioHang.Rows.Count == 1)
@@ -579,6 +601,25 @@ namespace C_PRL.UI
             return check;
         }
 
+        //Hàm validate dữ liệu đầu vào tạo hóa đơn chờ
+        public bool ValidateTaoHDCho(int makh)
+        {
+            bool check = true;
+            //
+            if (dtg_GioHang.Rows.Count == 1)
+            {
+                MessageBox.Show("Không có sản phẩm nào được chọn !");
+                check = false;
+            }
+            else if (makh == 0)
+            {
+                MessageBox.Show("Không tìm thấy khách hàng !");
+                check = false;
+            }
+            //
+            return check;
+        }
+
         //Hàm thanh toán (Tạo hóa đơn)
         public void ThanhToan()
         {
@@ -589,13 +630,13 @@ namespace C_PRL.UI
 
             int tongtien = TinhTongTien();
 
-            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text);
+            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text.Replace(",",""));
 
             int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
 
             int trangthai = 1;
 
-            if (!ValidateHD(makhachhang, tienkhachtra, tongtien, trangthai))
+            if (!ValidateTaoHD(makhachhang, tienkhachtra, tongtien))
             {
                 return;
             }
@@ -674,7 +715,7 @@ namespace C_PRL.UI
 
             int trangthai = 0;
 
-            if (!ValidateHD(makhachhang, tienkhachtra, tongtien, trangthai))
+            if (!ValidateTaoHDCho(makhachhang))
             {
                 return;
             }
@@ -778,7 +819,6 @@ namespace C_PRL.UI
         #endregion
 
 
-
         #region các nút 
 
         //Nut xoa sp
@@ -828,11 +868,31 @@ namespace C_PRL.UI
         #endregion
 
 
-
         #region sự kiện textbox
         private void tbx_TienKhachTra_TextChanged(object sender, EventArgs e)
         {
             TinhAllTien();
+
+            string text = tbx_TienKhachTra.Text.Replace(",", "");
+            int tien;
+
+            if (text == "" || text == "0")
+            {
+                return;
+            }
+            else
+            {
+                tien = Convert.ToInt32(text);
+            }
+
+            if(tien > 500000000)
+            {
+                tbx_TienKhachTra.Text = "0";
+            }
+
+            tbx_TienKhachTra.Text = AddThousandSeparators(tien);
+
+            tbx_TienKhachTra.SelectionStart = tbx_TienKhachTra.Text.Length;         
         }
 
         //Sự kiện giảm giá 
@@ -875,7 +935,7 @@ namespace C_PRL.UI
         //Click 
         private void tbx_Click(object sender, EventArgs e)
         {
-            TextBox textBox = (TextBox)sender;
+            System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)sender;
 
             // Kiểm tra nếu TextBox đã được chọn (đã bôi đen)
             if (textBox.SelectionLength > 0)
@@ -889,7 +949,7 @@ namespace C_PRL.UI
         //Focus
         private void tbx_LostFocus(object sender, EventArgs e)
         {
-            TextBox textBox = (TextBox)sender;
+            System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)sender;
 
             if (textBox.Text == "")
             {
@@ -924,6 +984,7 @@ namespace C_PRL.UI
         }
 
         #endregion
+
 
         #region Sự kiện cell content click 
         private void dtg_GioHang_CellContentClick(object sender, DataGridViewCellEventArgs e)

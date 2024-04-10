@@ -13,15 +13,37 @@ namespace C_PRL.UI
         SanPham_Services _service;
         List<SanPham> _listSP = new();
         string _idwhenclick;
-        public Form_SanPham()
+        public Form_SanPham(NhanVien nv)
         {
             InitializeComponent();
             _service = new SanPham_Services();
             LoadGird(null);
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ///123///////2113232
+            PhanQuyen_NhanVien(nv);
+        }
+        
 
+        private void Form_SanPham_Load(object sender, EventArgs e)
+        {
+            
+        }
 
+        private void PhanQuyen_NhanVien(NhanVien nv)
+        {
+            if (nv.ChucVu.Equals("Nhân viên"))
+            {
+                grb_ChucNang.Enabled = false;
+
+                grb_ChucNang.Click += NotClick;
+            }
+            else return;
+        }
+
+        //khong cho phep nv su dung chuc nang
+        private void NotClick(object sender, EventArgs e)
+        {
+            MessageBox.Show("Nhân viên không thể sử dụng chức năng này !");
         }
 
         public List<Control> GetCtrl()
@@ -72,7 +94,7 @@ namespace C_PRL.UI
             rd_ConHang.Checked = false;
             rd_HetHang.Checked = false;
         }
-        
+
         private void pn_ThemSP_Click(object sender, EventArgs e)
         {
             // Kiểm tra dữ liệu nhập vào
@@ -511,13 +533,15 @@ namespace C_PRL.UI
 
         private void pn_LamMoi_MouseEnter(object sender, EventArgs e)
         {
-           
+
         }
 
         private void pn_LamMoi_MouseLeave(object sender, EventArgs e)
         {
 
         }
+
+      
     }
 
 }

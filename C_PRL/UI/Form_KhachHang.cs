@@ -18,11 +18,32 @@ namespace C_PRL.UI
         KhachHang_Services _service;
         List<KhachHang> _listKH = new();
         int _idwhenclick;
-        public Form_KhachHang()
+        public Form_KhachHang(NhanVien nv)
         {
             InitializeComponent();
             _service = new KhachHang_Services();
             LoadGird(null);
+        }
+
+        private void PhanQuyen_NhanVien(NhanVien nv)
+        {
+            if(nv.ChucVu.Equals("Nhân viên"))
+            {
+                pn_Btn_Xoa.Click -= pn_Btn_Xoa_Click;
+
+                pn_Btn_Xoa.Click += NotClick;
+
+                foreach (Control item in pn_Btn_Xoa.Controls)
+                {
+                    item.Click += NotClick;
+                }
+
+            }
+        }
+
+        private void NotClick(object sender, EventArgs e)
+        {
+            MessageBox.Show("Nhân viên không thể sử dụng chức năng này !");
         }
 
         public List<Control> Gekhtrl()
