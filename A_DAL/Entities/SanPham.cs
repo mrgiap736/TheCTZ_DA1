@@ -18,6 +18,7 @@ public partial class SanPham
     public int GiaBan { get; set; }
 
     public int TrangThai { get; set; }
+    public byte[]? HinhAnh { get; set; } // Thêm thuộc tính HinhAnh
 
     public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; } = new List<ChiTietHoaDon>();
 }
