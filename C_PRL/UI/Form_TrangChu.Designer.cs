@@ -638,11 +638,12 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(553, 148);
+            label11.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            label11.Location = new Point(527, 148);
             label11.Name = "label11";
-            label11.Size = new Size(21, 20);
+            label11.Size = new Size(50, 23);
             label11.TabIndex = 15;
-            label11.Text = "%";
+            label11.Text = "Điểm";
             // 
             // pn_buttonThanhToan
             // 
