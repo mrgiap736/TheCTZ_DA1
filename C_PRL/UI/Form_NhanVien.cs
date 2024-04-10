@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -71,6 +72,16 @@ namespace C_PRL.UI
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin nhân viên.");
                 return;
             }
+            if (txt_TaiKhoan.Text.Length > 20 || txt_MatKhau.Text.Length > 20)
+            {
+                MessageBox.Show("Tài khoản và mật khẩu chỉ được nhập tối đa 20 ký tự.");
+                return;
+            }
+            if (Regex.IsMatch(txt_TenNV.Text, @"\d"))
+            {
+                MessageBox.Show("Tên nhân viên không được chứa số.");
+                return;
+            }
             string selectedValue = Cmb_ChucVu.SelectedItem.ToString();
             var option = MessageBox.Show("Xác nhận muốn thêm nhân viên?", "Xác nhận", MessageBoxButtons.YesNo);
             if (option == DialogResult.Yes)
@@ -99,9 +110,24 @@ namespace C_PRL.UI
         private void pn_Btn_Sua_Click(object sender, EventArgs e)
         {
 
+            if (Regex.IsMatch(txt_TenNV.Text, @"\d"))
+            {
+                MessageBox.Show("Tên nhân viên không được chứa số.");
+                return;
+            }
+            if (string.IsNullOrEmpty(txt_MaNV.Text))
+            {
+                MessageBox.Show("Vui lòng chọn một nhân viên để sửa.");
+                return;
+            }
             if (Cmb_ChucVu.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng chọn chức vụ.");
+                return;
+            }
+            if (txt_TaiKhoan.Text.Length > 20 || txt_MatKhau.Text.Length > 20)
+            {
+                MessageBox.Show("Tài khoản và mật khẩu chỉ được nhập tối đa 20 ký tự.");
                 return;
             }
 

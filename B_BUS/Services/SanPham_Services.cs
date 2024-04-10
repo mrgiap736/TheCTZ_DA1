@@ -33,7 +33,8 @@ namespace B_BUS.Services
 			clone.ThongSoKyThuat = sp.ThongSoKyThuat;
 			clone.GiaNhap = sp.GiaNhap;
 			clone.GiaBan = sp.GiaBan;
-			clone.TrangThai = sp.TrangThai;
+			clone.TrangThai = sp.TrangThai;///
+			clone.HinhAnh = sp.HinhAnh;
 			if (_repos.UpdateSP(clone) == true)
 			{
 				return "Update sản phẩm thành công";
