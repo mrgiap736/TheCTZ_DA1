@@ -30,8 +30,28 @@ namespace A_DAL.Repos
 
         public bool RemoveKH(KhachHang kh)
         {
-            context.Remove(kh);
-            context.SaveChanges();
+            List<HoaDon> _lsthd = context.HoaDons.Where(x => x.MaKhachHang == kh.MaKhachHang).ToList();
+
+
+            if(_lsthd != null)
+            {
+                foreach (var item in _lsthd)
+                {
+                    foreach (var item2 in context.ChiTietHoaDons.Where(x => x.MaHoaDon == item.MaHoaDon))
+                    {
+                        context.ChiTietHoaDons.Remove(item2);
+                    }
+                    context.HoaDons.Remove(item);
+                    context.SaveChanges();
+                }
+                context.Remove(kh);
+                context.SaveChanges();
+            }
+            else
+            {
+                context.Remove(kh);
+                context.SaveChanges();
+            }         
             return true;
         }
 

@@ -13,5 +13,7 @@ namespace A_DAL.IRepos
 		public void Create(HoaDon hoaDon);
 		public void Update(int a, int b, int c, int d);
 		public HoaDon Get(int id);
-	}
+        public List<HoaDon> SearchByNameKH(string name);
+		public List<HoaDon> FilByTT(int tt);
+    }
 }

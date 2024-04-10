@@ -188,6 +188,7 @@ namespace C_PRL.UI
                     try
                     {
                         ptb_Anh.Image.Save(ms, ptb_Anh.Image.RawFormat);
+                        ptb_Anh.BackgroundImage = null;
                     }
                     catch (Exception ex)
                     {
@@ -320,6 +321,7 @@ namespace C_PRL.UI
                     try
                     {
                         ptb_Anh.Image.Save(ms, ptb_Anh.Image.RawFormat);
+                        ptb_Anh.BackgroundImage = null;
                     }
                     catch (Exception ex)
                     {
@@ -449,6 +451,7 @@ namespace C_PRL.UI
                 using (MemoryStream ms = new MemoryStream(obj.HinhAnh))
                 {
                     ptb_Anh.Image = Image.FromStream(ms);
+                    ptb_Anh.BackgroundImage = null;
                 }
             }
             else
@@ -485,6 +488,7 @@ namespace C_PRL.UI
                     {
                         // Gán hình ảnh vào ô cột tương ứng
                         e.Value = Image.FromStream(ms);
+                        ;
                     }
                 }
                 else

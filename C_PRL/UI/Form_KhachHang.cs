@@ -22,21 +22,24 @@ namespace C_PRL.UI
         {
             InitializeComponent();
             _service = new KhachHang_Services();
+            PhanQuyen_NhanVien(nv);
             LoadGird(null);
         }
 
         private void PhanQuyen_NhanVien(NhanVien nv)
         {
-            if(nv.ChucVu.Equals("Nhân viên"))
+            if (nv.ChucVu.Equals("Nhân viên"))
             {
                 pn_Btn_Xoa.Click -= pn_Btn_Xoa_Click;
 
                 pn_Btn_Xoa.Click += NotClick;
 
+
                 foreach (Control item in pn_Btn_Xoa.Controls)
                 {
                     item.Click += NotClick;
                 }
+
 
             }
         }
@@ -71,7 +74,7 @@ namespace C_PRL.UI
             foreach (var nv in _service.GetAll(txtSearch.Text))
             {
                 int stt = _listKH.IndexOf(nv) + 1;
-                dtgView.Rows.Add(stt, nv.MaKhachHang, nv.TenKhachHang, nv.SoDienThoai,nv.TichLuy);
+                dtgView.Rows.Add(stt, nv.MaKhachHang, nv.TenKhachHang, nv.SoDienThoai, nv.TichLuy);
             }
             dtgView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
@@ -91,12 +94,6 @@ namespace C_PRL.UI
                 return;
             }
 
-            // Kiểm tra ô văn bản tích lũy không được trống và chỉ chứa số không âm
-            if (string.IsNullOrWhiteSpace(txtTichLuy.Text) || !int.TryParse(txtTichLuy.Text, out int tichLuy) || tichLuy < 0)
-            {
-                MessageBox.Show("Vui lòng nhập điểm tích lũy là một số nguyên không âm.");
-                return;
-            }
             // Kiểm tra số điện thoại phải bắt đầu bằng số 0
 
 
@@ -127,7 +124,7 @@ namespace C_PRL.UI
             var kh = new KhachHang();
             kh.TenKhachHang = txt_TenKH.Text;
             kh.SoDienThoai = phoneNumber;
-            kh.TichLuy = Convert.ToInt32(txtTichLuy.Text);
+            kh.TichLuy = 0;
 
             var option = MessageBox.Show("Xác nhận muốn thêm khách hàng?", "Xác nhận", MessageBoxButtons.YesNo);
             if (option == DialogResult.Yes)
@@ -143,21 +140,21 @@ namespace C_PRL.UI
 
         private void pn_Btn_Sua_Click(object sender, EventArgs e)
         {
-            
+
             // Kiểm tra xem đã chọn một khách hàng từ danh sách hay chưa
             if (string.IsNullOrEmpty(txt_MaKH.Text))
             {
                 MessageBox.Show("Vui lòng chọn một khách hàng để sửa.");
                 return;
             }
-            
+
 
             // Tạo đối tượng khách hàng mới để lưu thông tin sửa đổi
             var kh = new KhachHang();
             kh.MaKhachHang = Convert.ToInt32(txt_MaKH.Text);
             kh.TenKhachHang = txt_TenKH.Text;
             kh.SoDienThoai = txt_SĐT.Text;
-            kh.TichLuy = Convert.ToInt32(txtTichLuy.Text);
+            kh.TichLuy = diemtichluy;
 
             if (!Regex.IsMatch(kh.TenKhachHang, "^[a-zA-Z ]+$"))
             {
@@ -199,8 +196,6 @@ namespace C_PRL.UI
             txt_MaKH.Text = "";
             txt_TenKH.Text = "";
             txt_SĐT.Text = "";
-            txtTichLuy.Text = "";
-            txtTichLuy.ReadOnly = false;
         }
 
         private void pn_Btn_Xoa_Click(object sender, EventArgs e)
@@ -250,6 +245,7 @@ namespace C_PRL.UI
             pn_Btn_Xoa_Click(sender, e);
         }
 
+        int? diemtichluy;
         private void dtgView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
@@ -262,13 +258,17 @@ namespace C_PRL.UI
             txt_MaKH.Text = obj.MaKhachHang.ToString();
             txt_TenKH.Text = obj.TenKhachHang;
             txt_SĐT.Text = obj.SoDienThoai.ToString();
-            txtTichLuy.Text = obj.TichLuy.ToString();
-            txtTichLuy.ReadOnly = true;
+            diemtichluy = obj.TichLuy;
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadGird(null);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using A_DAL.Repos;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,5 +38,15 @@ namespace B_BUS.Services
 			return hdrp.Get(id);
 		}
 
-	}
+		public List<HoaDon> SearchByNameKH(string name)
+		{
+			return hdrp.SearchByNameKH(name);
+		}
+
+		public List<HoaDon> FilByTT(int tt)
+		{
+			return hdrp.FilByTT(tt);
+		}
+
+    }
 }

@@ -15,6 +15,7 @@ namespace A_DAL.IRepos
 
 		public void Update(ChiTietHoaDon cthd);
 
-		public void Delete(ChiTietHoaDon cthd);
-	}
+		public void Delete(ChiTietHoaDon cthd);	
+
+    }
 }

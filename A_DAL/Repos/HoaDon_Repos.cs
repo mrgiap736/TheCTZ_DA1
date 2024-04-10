@@ -25,6 +25,11 @@ namespace A_DAL.Repos
 			return;
 		}
 
+        public List<HoaDon> FilByTT(int tt)
+        {
+			return context.HoaDons.Where(x => x.TrangThai.Equals(tt)).ToList();
+        }
+
         public HoaDon Get(int id)
         {
 			return context.HoaDons.SingleOrDefault(x => x.MaHoaDon.Equals(id));
@@ -33,6 +38,11 @@ namespace A_DAL.Repos
         public List<HoaDon> GetAll()
 		{
 			return context.HoaDons.Include("MaKhachHangNavigation").Include("MaNhanVienNavigation").ToList();
+		}
+
+		public List<HoaDon> SearchByNameKH (string name)
+		{
+			return context.HoaDons.Where(x => x.MaKhachHangNavigation.TenKhachHang.ToLower().Contains(name.Trim().ToLower())).ToList();
 		}
 
 		public void Update(int a, int b, int c, int d)
