@@ -40,7 +40,7 @@ namespace C_PRL.UI
 
             //Lấy mã nhân viên từ tk pw đăng nhập vào app
 
-            if(nv == null)
+            if (nv == null)
             {
                 nvien = null;
             }
@@ -158,7 +158,7 @@ namespace C_PRL.UI
         #region Load data
         private void Form_TrangChu_Load(object sender, EventArgs e)
         {
-            if(nvien == null)
+            if (nvien == null)
             {
                 lb_NameNV.Text = "Đang bảo trì";
             }
@@ -273,6 +273,8 @@ namespace C_PRL.UI
             dtg_GioHang.Columns[3].Name = "soluong";
             dtg_GioHang.Columns[3].HeaderText = "Số lượng";
             dtg_GioHang.Columns[3].Width = 40;
+            dtg_GioHang.Columns[3].ReadOnly = false;
+
 
             dtg_GioHang.Columns[4].Name = "dongia";
             dtg_GioHang.Columns[4].HeaderText = "Đơn giá";
@@ -390,7 +392,7 @@ namespace C_PRL.UI
 
             if (dtg_HoaDonCho.Rows.Count <= 1)
             {
-                if(dtg_HoaDonCho.SelectedRows.Count <= 1)
+                if (dtg_HoaDonCho.SelectedRows.Count <= 1)
                 {
                     return;
                 }
@@ -445,7 +447,7 @@ namespace C_PRL.UI
                 return;
             }
             {
-                idGHindex = dtg_GioHang.Rows[rowIndex].Cells[0].Value.ToString();       
+                idGHindex = dtg_GioHang.Rows[rowIndex].Cells[0].Value.ToString();
             }
         }
 
@@ -636,7 +638,7 @@ namespace C_PRL.UI
                         //nếu khách hàng mua không giảm giá thì tích lũy
                         tichluymoi = kHang.TichLuy + tongtien / 100000;
                         kHang.TichLuy = tichluymoi;
-                        
+
                     }
                     else
                     {
@@ -678,7 +680,7 @@ namespace C_PRL.UI
             }
             {
                 HoaDon hdonUpdate = hdsv.GetHD(idUpdate);
-                if(hdonUpdate != null)
+                if (hdonUpdate != null)
                 {
                     UpdateHDChiTiet();
                 }
@@ -819,7 +821,7 @@ namespace C_PRL.UI
         int idUpdate;
         private void pn_buttonThanhToan_Click(object sender, EventArgs e)
         {
-            ThanhToan(); 
+            ThanhToan();
         }
 
 
@@ -913,5 +915,24 @@ namespace C_PRL.UI
         #endregion
 
 
+        #region Sự kiện thay đổi giá trị cell 
+
+        //Thay đổi số lượng mua thì cập nhật tổng giá tiền
+        private void dtg_GioHang_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            TinhAllTien();
+        }
+
+        #endregion
+
+        #region Sự kiện cell content click 
+        private void dtg_GioHang_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+
+            dtg_GioHang.Rows[index].Cells[3].ReadOnly = false;
+        }
+
+        #endregion
     }
 }

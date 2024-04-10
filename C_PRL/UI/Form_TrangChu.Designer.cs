@@ -609,6 +609,8 @@
             dtg_GioHang.Size = new Size(995, 246);
             dtg_GioHang.TabIndex = 0;
             dtg_GioHang.CellClick += dtg_GioHang_CellClick;
+            dtg_GioHang.CellContentClick += dtg_GioHang_CellContentClick;
+            dtg_GioHang.CellValueChanged += dtg_GioHang_CellValueChanged;
             // 
             // grb_Thanhtoan
             // 

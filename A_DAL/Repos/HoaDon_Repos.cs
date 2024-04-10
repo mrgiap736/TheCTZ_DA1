@@ -32,7 +32,7 @@ namespace A_DAL.Repos
 
         public List<HoaDon> GetAll()
 		{
-			return context.HoaDons.Include("MaKhachHangNavigation").ToList();
+			return context.HoaDons.Include("MaKhachHangNavigation").Include("MaNhanVienNavigation").ToList();
 		}
 
 		public void Update(int a, int b, int c, int d)

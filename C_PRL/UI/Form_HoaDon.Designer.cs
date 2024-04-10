@@ -30,18 +30,18 @@
         {
             pn_Form_HoaDon = new Panel();
             groupBox2 = new GroupBox();
-            dataGridView2 = new DataGridView();
+            dtg_DSHoaDonCT = new DataGridView();
             groupBox1 = new GroupBox();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
-            button1 = new Button();
-            textBox1 = new TextBox();
-            dataGridView1 = new DataGridView();
+            rbt_payed = new RadioButton();
+            rbt_notpayed = new RadioButton();
+            btn_Search = new Button();
+            tbx_Search = new TextBox();
+            dtg_DSHoaDon = new DataGridView();
             pn_Form_HoaDon.SuspendLayout();
             groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtg_DSHoaDonCT).BeginInit();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dtg_DSHoaDon).BeginInit();
             SuspendLayout();
             // 
             // pn_Form_HoaDon
@@ -56,7 +56,7 @@
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(dataGridView2);
+            groupBox2.Controls.Add(dtg_DSHoaDonCT);
             groupBox2.Location = new Point(9, 468);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(1666, 322);
@@ -64,24 +64,24 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Chi tiết hóa đơn";
             // 
-            // dataGridView2
+            // dtg_DSHoaDonCT
             // 
-            dataGridView2.BackgroundColor = Color.White;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(6, 26);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowHeadersWidth = 51;
-            dataGridView2.RowTemplate.Height = 29;
-            dataGridView2.Size = new Size(1654, 282);
-            dataGridView2.TabIndex = 0;
+            dtg_DSHoaDonCT.BackgroundColor = Color.White;
+            dtg_DSHoaDonCT.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtg_DSHoaDonCT.Location = new Point(6, 26);
+            dtg_DSHoaDonCT.Name = "dtg_DSHoaDonCT";
+            dtg_DSHoaDonCT.RowHeadersWidth = 51;
+            dtg_DSHoaDonCT.RowTemplate.Height = 29;
+            dtg_DSHoaDonCT.Size = new Size(1654, 282);
+            dtg_DSHoaDonCT.TabIndex = 0;
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(radioButton2);
-            groupBox1.Controls.Add(radioButton1);
-            groupBox1.Controls.Add(button1);
-            groupBox1.Controls.Add(textBox1);
-            groupBox1.Controls.Add(dataGridView1);
+            groupBox1.Controls.Add(rbt_payed);
+            groupBox1.Controls.Add(rbt_notpayed);
+            groupBox1.Controls.Add(btn_Search);
+            groupBox1.Controls.Add(tbx_Search);
+            groupBox1.Controls.Add(dtg_DSHoaDon);
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(1672, 459);
@@ -89,55 +89,55 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Hóa đơn";
             // 
-            // radioButton2
+            // rbt_payed
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(861, 55);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(124, 24);
-            radioButton2.TabIndex = 5;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "Đã thanh toán";
-            radioButton2.UseVisualStyleBackColor = true;
+            rbt_payed.AutoSize = true;
+            rbt_payed.Location = new Point(861, 55);
+            rbt_payed.Name = "rbt_payed";
+            rbt_payed.Size = new Size(124, 24);
+            rbt_payed.TabIndex = 5;
+            rbt_payed.TabStop = true;
+            rbt_payed.Text = "Đã thanh toán";
+            rbt_payed.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // rbt_notpayed
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(702, 55);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(139, 24);
-            radioButton1.TabIndex = 4;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "Chưa thanh toán";
-            radioButton1.UseVisualStyleBackColor = true;
+            rbt_notpayed.AutoSize = true;
+            rbt_notpayed.Location = new Point(702, 55);
+            rbt_notpayed.Name = "rbt_notpayed";
+            rbt_notpayed.Size = new Size(139, 24);
+            rbt_notpayed.TabIndex = 4;
+            rbt_notpayed.TabStop = true;
+            rbt_notpayed.Text = "Chưa thanh toán";
+            rbt_notpayed.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btn_Search
             // 
-            button1.Location = new Point(293, 50);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btn_Search.Location = new Point(293, 50);
+            btn_Search.Name = "btn_Search";
+            btn_Search.Size = new Size(94, 29);
+            btn_Search.TabIndex = 2;
+            btn_Search.Text = "Tìm kiếm";
+            btn_Search.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // tbx_Search
             // 
-            textBox1.Location = new Point(6, 51);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Tìm kiếm";
-            textBox1.Size = new Size(260, 27);
-            textBox1.TabIndex = 1;
+            tbx_Search.Location = new Point(6, 51);
+            tbx_Search.Name = "tbx_Search";
+            tbx_Search.PlaceholderText = "Tìm kiếm";
+            tbx_Search.Size = new Size(260, 27);
+            tbx_Search.TabIndex = 1;
             // 
-            // dataGridView1
+            // dtg_DSHoaDon
             // 
-            dataGridView1.BackgroundColor = Color.White;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(6, 96);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(1660, 357);
-            dataGridView1.TabIndex = 0;
+            dtg_DSHoaDon.BackgroundColor = Color.White;
+            dtg_DSHoaDon.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtg_DSHoaDon.Location = new Point(6, 96);
+            dtg_DSHoaDon.Name = "dtg_DSHoaDon";
+            dtg_DSHoaDon.RowHeadersWidth = 51;
+            dtg_DSHoaDon.RowTemplate.Height = 29;
+            dtg_DSHoaDon.Size = new Size(1660, 357);
+            dtg_DSHoaDon.TabIndex = 0;
             // 
             // Form_HoaDon
             // 
@@ -147,12 +147,13 @@
             Controls.Add(pn_Form_HoaDon);
             Name = "Form_HoaDon";
             Text = "Form_HoaDon";
+            Load += Form_HoaDon_Load;
             pn_Form_HoaDon.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtg_DSHoaDonCT).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dtg_DSHoaDon).EndInit();
             ResumeLayout(false);
         }
 
@@ -160,12 +161,12 @@
 
         private Panel pn_Form_HoaDon;
         private GroupBox groupBox2;
-        private DataGridView dataGridView2;
+        private DataGridView dtg_DSHoaDonCT;
         private GroupBox groupBox1;
-        private RadioButton radioButton2;
-        private RadioButton radioButton1;
-        private Button button1;
-        private TextBox textBox1;
-        private DataGridView dataGridView1;
+        private RadioButton rbt_payed;
+        private RadioButton rbt_notpayed;
+        private Button btn_Search;
+        private TextBox tbx_Search;
+        private DataGridView dtg_DSHoaDon;
     }
 }
