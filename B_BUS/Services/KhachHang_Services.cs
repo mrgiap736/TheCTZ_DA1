@@ -30,6 +30,7 @@ namespace B_BUS.Services
             clone.MaKhachHang = kh.MaKhachHang;
             clone.TenKhachHang = kh.TenKhachHang;
             clone.SoDienThoai = kh.SoDienThoai;
+            clone.TichLuy = kh.TichLuy;
             if (_repos.UpdateKH(clone) == true)
             {
                 return "Update khách hàng thành công";
