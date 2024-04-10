@@ -60,7 +60,7 @@ namespace C_PRL.UI
 
         private void PhanQuyen_NhanVien(NhanVien nvien)
         {
-            if(nvien.ChucVu.Equals("Nhân viên"))
+            if (nvien.ChucVu.Equals("Nhân viên"))
             {
                 pn_NhanVien.Click -= pn_NhanVien_Click;
 
@@ -191,7 +191,7 @@ namespace C_PRL.UI
             PhanQuyen_NhanVien(nvien);
             //
             //
-             
+
             if (nvien == null)
             {
                 lb_NameNV.Text = "Đang bảo trì";
@@ -500,7 +500,7 @@ namespace C_PRL.UI
             {
                 if (item.Cells[3].Value != null && item.Cells[4].Value != null)
                 {
-                    kq = kq + (Convert.ToInt32(item.Cells[4].Value.ToString().Replace(",","")) * Convert.ToInt32(item.Cells[3].Value));
+                    kq = kq + (Convert.ToInt32(item.Cells[4].Value.ToString().Replace(",", "")) * Convert.ToInt32(item.Cells[3].Value));
                 }
 
             }
@@ -636,7 +636,7 @@ namespace C_PRL.UI
 
             int tongtien = TinhTongTien();
 
-            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text.Replace(",",""));
+            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text.Replace(",", ""));
 
             int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
 
@@ -764,7 +764,7 @@ namespace C_PRL.UI
                     ctHoaDon.MaHoaDon = mahd;
                     ctHoaDon.MaSanPham = item.Cells[0].Value.ToString();
                     ctHoaDon.SoLuong = Convert.ToInt32(item.Cells[3].Value);
-                    ctHoaDon.DonGia = Convert.ToInt32(item.Cells[4].Value.ToString().Replace(",",""));
+                    ctHoaDon.DonGia = Convert.ToInt32(item.Cells[4].Value.ToString().Replace(",", ""));
 
                     ctsv.TaoChiTietHoaDon(ctHoaDon);
                 }
@@ -821,7 +821,7 @@ namespace C_PRL.UI
                         ctHoaDon.MaHoaDon = idUpdate;
                         ctHoaDon.MaSanPham = row.Cells[0].Value.ToString();
                         ctHoaDon.SoLuong = Convert.ToInt32(row.Cells[3].Value);
-                        ctHoaDon.DonGia = Convert.ToInt32(row.Cells[4].Value.ToString().Replace(",",""));
+                        ctHoaDon.DonGia = Convert.ToInt32(row.Cells[4].Value.ToString().Replace(",", ""));
 
                         ctsv.TaoChiTietHoaDon(ctHoaDon);
                     }
@@ -1090,7 +1090,7 @@ namespace C_PRL.UI
                 tien = Convert.ToInt32(text);
             }
 
-            if(tien > 500000000)
+            if (tien > 500000000)
             {
                 tbx_TienKhachTra.Text = "0";
             }
@@ -1099,7 +1099,7 @@ namespace C_PRL.UI
             tbx_TienKhachTra.Text = AddThousandSeparators(tien);
 
             //reset lại focus 
-            tbx_TienKhachTra.SelectionStart = tbx_TienKhachTra.Text.Length;         
+            tbx_TienKhachTra.SelectionStart = tbx_TienKhachTra.Text.Length;
         }
 
         //Sự kiện giảm giá 
@@ -1202,5 +1202,30 @@ namespace C_PRL.UI
         }
 
         #endregion
+
+        private void panel10_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel12_Click(object sender, EventArgs e)
+        {
+            pn_DangXuat_Click(sender, e);
+        }
+
+        private void pn_DangXuat_Click(object sender, EventArgs e)
+        {
+            // Đóng form hiện tại (formTrangChu)
+            this.Hide();
+
+            // Tạo và mở form đăng nhập
+            Form_DangNhap formDangNhap = new Form_DangNhap();
+            formDangNhap.Show();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            pn_DangXuat_Click(sender, e);
+        }
     }
 }

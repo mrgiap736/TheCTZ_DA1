@@ -28,11 +28,13 @@ namespace C_PRL.UI
             if (loginsv.GetUS_PW(us, pw) != null)
             {
                 Form_TrangChu tt = new Form_TrangChu(loginsv.GetUS_PW(us, pw));
+
+                this.Hide();
+
                 tt.Show();
 
 
-
-                // Close();
+                
             }
             else
             {
