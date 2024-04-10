@@ -59,18 +59,19 @@ namespace C_PRL.UI
         public void LoadGird(string search)
         {
             dtgView.Rows.Clear();
-            dtgView.ColumnCount = 4;
+            dtgView.ColumnCount = 5;
             dtgView.Columns[0].Name = "STT";
             dtgView.Columns[1].Name = "Mã khách hàng";
             dtgView.Columns[2].Name = "Tên khách hàng";
             dtgView.Columns[3].Name = "Số Điện Thoại";
+            dtgView.Columns[4].Name = "Điểm Tích Luỹ";
 
 
             _listKH = _service.GetAll(search);
             foreach (var nv in _service.GetAll(txtSearch.Text))
             {
                 int stt = _listKH.IndexOf(nv) + 1;
-                dtgView.Rows.Add(stt, nv.MaKhachHang, nv.TenKhachHang, nv.SoDienThoai);
+                dtgView.Rows.Add(stt, nv.MaKhachHang, nv.TenKhachHang, nv.SoDienThoai,nv.TichLuy);
             }
             dtgView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
@@ -83,6 +84,20 @@ namespace C_PRL.UI
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin.");
                 return;
             }
+            // Kiểm tra tên khách hàng không được rỗng
+            if (string.IsNullOrWhiteSpace(txt_TenKH.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên khách hàng.");
+                return;
+            }
+
+            // Kiểm tra ô văn bản tích lũy không được trống và chỉ chứa số không âm
+            if (string.IsNullOrWhiteSpace(txtTichLuy.Text) || !int.TryParse(txtTichLuy.Text, out int tichLuy) || tichLuy < 0)
+            {
+                MessageBox.Show("Vui lòng nhập điểm tích lũy là một số nguyên không âm.");
+                return;
+            }
+            // Kiểm tra số điện thoại phải bắt đầu bằng số 0
 
 
             // Kiểm tra số điện thoại chỉ chứa số và có đúng 10 chữ số
@@ -101,11 +116,18 @@ namespace C_PRL.UI
                     return;
                 }
             }
+            // Kiểm tra số điện thoại phải bắt đầu từ số 0
+            if (!phoneNumber.StartsWith("0"))
+            {
+                MessageBox.Show("Số điện thoại phải bắt đầu bằng số 0.");
+                return;
+            }
 
 
             var kh = new KhachHang();
             kh.TenKhachHang = txt_TenKH.Text;
             kh.SoDienThoai = phoneNumber;
+            kh.TichLuy = Convert.ToInt32(txtTichLuy.Text);
 
             var option = MessageBox.Show("Xác nhận muốn thêm khách hàng?", "Xác nhận", MessageBoxButtons.YesNo);
             if (option == DialogResult.Yes)
@@ -121,6 +143,7 @@ namespace C_PRL.UI
 
         private void pn_Btn_Sua_Click(object sender, EventArgs e)
         {
+            
             // Kiểm tra xem đã chọn một khách hàng từ danh sách hay chưa
             if (string.IsNullOrEmpty(txt_MaKH.Text))
             {
@@ -134,7 +157,20 @@ namespace C_PRL.UI
             kh.MaKhachHang = Convert.ToInt32(txt_MaKH.Text);
             kh.TenKhachHang = txt_TenKH.Text;
             kh.SoDienThoai = txt_SĐT.Text;
+            kh.TichLuy = Convert.ToInt32(txtTichLuy.Text);
 
+            if (!Regex.IsMatch(kh.TenKhachHang, "^[a-zA-Z ]+$"))
+            {
+                MessageBox.Show("Tên khách hàng chỉ được nhập chữ và dấu cách.");
+                return;
+            }
+
+            // Kiểm tra số điện thoại có đúng 10 chữ số hay không
+            if (kh.SoDienThoai.Length != 10)
+            {
+                MessageBox.Show("Số điện thoại phải có đúng 10 chữ số.");
+                return;
+            }
             // Kiểm tra số điện thoại đã tồn tại trong danh sách khách hàng khác hay không
             foreach (var existingKH in _listKH)
             {
@@ -163,23 +199,26 @@ namespace C_PRL.UI
             txt_MaKH.Text = "";
             txt_TenKH.Text = "";
             txt_SĐT.Text = "";
+            txtTichLuy.Text = "";
+            txtTichLuy.ReadOnly = false;
         }
 
         private void pn_Btn_Xoa_Click(object sender, EventArgs e)
         {
             // Kiểm tra xem đã chọn một khách hàng từ danh sách hay chưa
-            if (_idwhenclick == null)
+            if (string.IsNullOrEmpty(txt_MaKH.Text))
             {
-                MessageBox.Show("Vui lòng chọn một khách hàng để xoá.");
+                MessageBox.Show("Vui lòng chọn một khách hàng để xóa.");
                 return;
             }
 
-            var kh = new KhachHang();
-            kh.MaKhachHang = _idwhenclick;
-
+            // Xác nhận xóa khách hàng
             var option = MessageBox.Show("Xác nhận muốn Xoá khách hàng?", "Xác nhận", MessageBoxButtons.YesNo);
             if (option == DialogResult.Yes)
             {
+                var kh = new KhachHang();
+                kh.MaKhachHang = _idwhenclick;
+
                 MessageBox.Show(_service.Remove(kh));
                 LoadGird(null);
             }
@@ -188,6 +227,7 @@ namespace C_PRL.UI
                 return;
             }
         }
+
 
 
         private void label4_Click(object sender, EventArgs e)
@@ -222,6 +262,8 @@ namespace C_PRL.UI
             txt_MaKH.Text = obj.MaKhachHang.ToString();
             txt_TenKH.Text = obj.TenKhachHang;
             txt_SĐT.Text = obj.SoDienThoai.ToString();
+            txtTichLuy.Text = obj.TichLuy.ToString();
+            txtTichLuy.ReadOnly = true;
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
