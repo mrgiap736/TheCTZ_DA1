@@ -290,6 +290,7 @@ namespace C_PRL.UI
 
             dtg_DSsanpham.Columns[6].Name = "Id";
             dtg_DSsanpham.Columns[6].Visible = false;
+            dtg_DSsanpham.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             //Tạo cột cho giỏ hàng
             dtg_GioHang.ColumnCount = 5;
@@ -312,6 +313,7 @@ namespace C_PRL.UI
 
             dtg_GioHang.Columns[4].Name = "dongia";
             dtg_GioHang.Columns[4].HeaderText = "Đơn giá";
+            dtg_GioHang.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             //Tạo cột cho hóa đơn chờ 
             dtg_HoaDonCho.ColumnCount = 6;
@@ -335,6 +337,7 @@ namespace C_PRL.UI
 
             dtg_HoaDonCho.Columns[5].Name = "giamgia";
             dtg_HoaDonCho.Columns[5].Visible = false;
+            dtg_HoaDonCho.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             //Thêm dữ liệu vào ds sản phẩm
             //stt
