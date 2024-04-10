@@ -112,6 +112,36 @@ namespace C_PRL.UI
                 MessageBox.Show("Vui lòng tải ảnh sản phẩm.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (txt_MaSanPham.Text.Length < 3 || txt_MaSanPham.Text.Length > 10)
+            {
+                MessageBox.Show("Mã sản phẩm phải có ít nhất 3 và tối đa 10 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra độ dài tên sản phẩm
+            if (txt_TenSanPham.Text.Length > 50)
+            {
+                MessageBox.Show("Tên sản phẩm chỉ được phép nhập tối đa 50 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra độ dài hãng sản xuất
+            if (txt_HangSanPham.Text.Length > 20)
+            {
+                MessageBox.Show("Hãng sản xuất chỉ được phép nhập tối đa 20 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra độ dài thông số kỹ thuật
+            if (txt_ThongSoKyThuat.Text.Length > 200)
+            {
+                MessageBox.Show("Thông số kỹ thuật chỉ được phép nhập tối đa 200 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             // Kiểm tra giá nhập và giá bán có phải số không
             if (!int.TryParse(txt_GiaNhap.Text.Replace(",", ""), out int giaNhap) ||
                 !int.TryParse(txt_GiaBan.Text.Replace(",", ""), out int giaBan))
@@ -219,7 +249,36 @@ namespace C_PRL.UI
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin sản phẩm.", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (txt_MaSanPham.Text.Length < 3 || txt_MaSanPham.Text.Length > 10)
+            {
+                MessageBox.Show("Mã sản phẩm phải có ít nhất 3 và tối đa 10 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            // Kiểm tra độ dài tên sản phẩm
+            if (txt_TenSanPham.Text.Length > 50)
+            {
+                MessageBox.Show("Tên sản phẩm chỉ được phép nhập tối đa 50 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra độ dài hãng sản xuất
+            if (txt_HangSanPham.Text.Length > 20)
+            {
+                MessageBox.Show("Hãng sản xuất chỉ được phép nhập tối đa 20 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra độ dài thông số kỹ thuật
+            if (txt_ThongSoKyThuat.Text.Length > 200)
+            {
+                MessageBox.Show("Thông số kỹ thuật chỉ được phép nhập tối đa 200 ký tự.",
+                                "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             // Kiểm tra giá nhập và giá bán có phải số không
             if (!int.TryParse(txt_GiaNhap.Text.Replace(",", ""), out int giaNhap) ||
                 !int.TryParse(txt_GiaBan.Text.Replace(",", ""), out int giaBan))
@@ -244,7 +303,7 @@ namespace C_PRL.UI
             }
 
             byte[] imageData = null;
-            // Kiểm tra xem người dùng đã chọn ảnh mới hay không
+            // Kiểm tra xem người dùng đã chọn ảnh mới hay chưa
             if (ptb_Anh.Image != null && !IsDefaultImage(ptb_Anh.Image))
             {
                 using (MemoryStream ms = new MemoryStream())
@@ -274,7 +333,6 @@ namespace C_PRL.UI
             {
                 sp.HinhAnh = imageData;
             }
-
 
             // Kiểm tra trạng thái sản phẩm
             if (rd_ConHang.Checked)
