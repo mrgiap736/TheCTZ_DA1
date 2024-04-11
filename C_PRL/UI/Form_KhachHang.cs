@@ -87,6 +87,11 @@ namespace C_PRL.UI
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin.");
                 return;
             }
+            if (string.IsNullOrWhiteSpace(txt_TenKH.Text) || txt_TenKH.Text.Length > 50)
+            {
+                MessageBox.Show("Vui lòng nhập tên khách hàng không quá 50 ký tự.");
+                return;
+            }
             // Kiểm tra tên khách hàng không được rỗng
             if (string.IsNullOrWhiteSpace(txt_TenKH.Text))
             {
@@ -119,7 +124,11 @@ namespace C_PRL.UI
                 MessageBox.Show("Số điện thoại phải bắt đầu bằng số 0.");
                 return;
             }
-
+            if (!phoneNumber.StartsWith("0"))
+            {
+                MessageBox.Show("Số điện thoại phải bắt đầu bằng số 0.");
+                return;
+            }
 
             var kh = new KhachHang();
             kh.TenKhachHang = txt_TenKH.Text;
@@ -148,7 +157,11 @@ namespace C_PRL.UI
                 return;
             }
 
-
+            if (string.IsNullOrWhiteSpace(txt_TenKH.Text) || txt_TenKH.Text.Length > 50)
+            {
+                MessageBox.Show("Vui lòng nhập tên khách hàng không quá 50 ký tự.");
+                return;
+            }
             // Tạo đối tượng khách hàng mới để lưu thông tin sửa đổi
             var kh = new KhachHang();
             kh.MaKhachHang = Convert.ToInt32(txt_MaKH.Text);
@@ -161,7 +174,7 @@ namespace C_PRL.UI
                 MessageBox.Show("Tên khách hàng chỉ được nhập chữ và dấu cách.");
                 return;
             }
-
+            
             // Kiểm tra số điện thoại có đúng 10 chữ số hay không
             if (kh.SoDienThoai.Length != 10)
             {
@@ -206,6 +219,14 @@ namespace C_PRL.UI
                 MessageBox.Show("Vui lòng chọn một khách hàng để xóa.");
                 return;
             }
+            // Kiểm tra số điện thoại có bắt đầu từ số 0 hay không
+            string phoneNumber = txt_SĐT.Text.Trim();
+            if (!phoneNumber.StartsWith("0"))
+            {
+                MessageBox.Show("Số điện thoại phải bắt đầu bằng số 0.");
+                return;
+            }
+
 
             // Xác nhận xóa khách hàng
             var option = MessageBox.Show("Xác nhận muốn Xoá khách hàng?", "Xác nhận", MessageBoxButtons.YesNo);
