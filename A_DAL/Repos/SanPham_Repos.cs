@@ -45,6 +45,47 @@ namespace A_DAL.Repos
 			context.SaveChanges();
 			return true;
 		}
+        public List<SanPham> GetFilteredData(string searchText, int filter1Index, int filter2Index)
+        {
+            var filteredData = GetAll();
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                filteredData = filteredData.Where(x => x.TenSanPham.ToLower().Contains(searchText.ToLower().Trim())).ToList();
+            }
+
+            if (filter1Index > 0)
+            {
+                filteredData = filteredData.Intersect(LocTheoHang(filter1Index)).ToList();
+            }
+
+            if (filter2Index > 0)
+            {
+                // Lọc dữ liệu theo điều kiện từ cbx_Filter2
+                if (filter2Index == 1)
+                {
+                    // Dưới 1 triệu
+                    filteredData = filteredData.Where(x => x.GiaBan < 1000000).ToList();
+                }
+                else if (filter2Index == 2)
+                {
+                    // Từ 1 triệu đến 10 triệu
+                    filteredData = filteredData.Where(x => x.GiaBan >= 1000000 && x.GiaBan <= 10000000).ToList();
+                }
+                else if (filter2Index == 3)
+                {
+                    // Từ 10 triệu đến 50 triệu
+                    filteredData = filteredData.Where(x => x.GiaBan > 10000000 && x.GiaBan <= 50000000).ToList();
+                }
+                else if (filter2Index == 4)
+                {
+                    // Trên 50 triệu
+                    filteredData = filteredData.Where(x => x.GiaBan > 50000000).ToList();
+                }
+            }
+
+            return filteredData;
+        }
 
         public List<SanPham> SearchByName(string name)
         {
@@ -89,35 +130,30 @@ namespace A_DAL.Repos
 
             return GetAll();
         }
+      
+
 
         public List<SanPham> LocTheoHang(int index)
         {
-            // Lấy danh sách hãng sản xuất từ cơ sở dữ liệu
             List<string> allManufacturers = GetAllManufacturers();
 
-            // Thực hiện lọc dựa trên chỉ số index
             if (index == 0)
             {
-                // Nếu index là 0, trả về tất cả sản phẩm
                 return GetAll();
             }
             else if (index > 0 && index <= allManufacturers.Count)
             {
-                // Lấy hãng sản xuất dựa trên chỉ số index
                 string selectedManufacturer = allManufacturers[index - 1];
 
-                // Lọc sản phẩm theo hãng sản xuất được chọn
                 return context.SanPhams.Where(x => x.HangSanXuat == selectedManufacturer).ToList();
             }
 
-            // Nếu index không hợp lệ hoặc không có hãng sản xuất tương ứng, trả về danh sách trống
             return new List<SanPham>();
         }
 
 
         public List<string> GetAllManufacturers()
         {
-            // Lấy danh sách hãng sản xuất từ cơ sở dữ liệu và sắp xếp chúng theo thứ tự mong muốn
             return context.SanPhams
                 .Select(s => s.HangSanXuat)
                 .Distinct()

@@ -1228,8 +1228,16 @@ namespace C_PRL.UI
         //su kien tim kiem san pham theo ten
         private void tbx_Search_TextChanged(object sender, EventArgs e)
         {
-            LoadGrid(bhsv.GetSPByName(tbx_Search.Text));
+            string searchText = tbx_Search.Text;
+            int filter1Index = cbx_Filter1.SelectedIndex;
+            int filter2Index = cbx_Filter2.SelectedIndex;
+
+            // Gọi phương thức GetFilteredData và tải dữ liệu vào DataGridView
+            LoadGrid(bhsv.LocALL(searchText, filter1Index, filter2Index));
+
+
         }
+
 
         #endregion
 
@@ -1237,7 +1245,13 @@ namespace C_PRL.UI
         #region Sự kiện combobox
         private void cbx_Filter2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadGrid(bhsv.GetSPByPrice(cbx_Filter2.SelectedIndex));
+            string searchText = tbx_Search.Text;
+            int filter1Index = cbx_Filter1.SelectedIndex;
+            int filter2Index = cbx_Filter2.SelectedIndex;
+
+            // Gọi phương thức GetFilteredData và tải dữ liệu vào DataGridView
+            LoadGrid(bhsv.LocALL(searchText, filter1Index, filter2Index));
+
         }
 
         #endregion
@@ -1303,7 +1317,14 @@ namespace C_PRL.UI
 
         private void cbx_Filter1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadGrid(bhsv.GetSPByFirm(cbx_Filter1.SelectedIndex));
+            string searchText = tbx_Search.Text;
+            int filter1Index = cbx_Filter1.SelectedIndex;
+            int filter2Index = cbx_Filter2.SelectedIndex;
+
+            // Gọi phương thức GetFilteredData và tải dữ liệu vào DataGridView
+            LoadGrid(bhsv.LocALL(searchText, filter1Index, filter2Index));
+
+
         }
 
         private void cbx_Filter1_DropDown(object sender, EventArgs e)

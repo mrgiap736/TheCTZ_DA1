@@ -36,11 +36,15 @@ namespace B_BUS.Services
         public List<SanPham> GetSPByFirm(int index)
         {
             return sprp.LocTheoHang(index);
+        }public List<SanPham> LocALL(string searchText, int filter1Index, int filter2Index)
+        {
+            return sprp.GetFilteredData( searchText,  filter1Index,  filter2Index);
         }
 
         public KhachHang GetKhachHang(string phone)
         {
             return khrp.SearchByPhone(phone);
         }
+
     }
 }

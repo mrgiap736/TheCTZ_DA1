@@ -17,5 +17,5 @@ namespace A_DAL.IRepos
 		public List<SanPham> FilterByPrice(int index);
 		public List<SanPham> FilterByTheFirm(int index);
 
-	}
+    }
 }
