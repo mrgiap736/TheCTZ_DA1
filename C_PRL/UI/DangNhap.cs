@@ -34,11 +34,27 @@ namespace C_PRL.UI
                 tt.Show();
 
 
-                
+
             }
             else
             {
                 MessageBox.Show("Đăng nhập thất bại !");
+            }
+        }
+
+        private void Form_DangNhap_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btn_DangNhap_Click(sender, e);
+            }
+        }
+
+        private void tbx_usn_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                tbx_pass.Focus();
             }
         }
     }

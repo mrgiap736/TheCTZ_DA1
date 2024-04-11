@@ -48,7 +48,7 @@ namespace C_PRL.UI
         {
             dtg_DSHoaDon.Rows.Clear();
             //Load cac cot cho hoa don
-            dtg_DSHoaDon.ColumnCount = 8;
+            dtg_DSHoaDon.ColumnCount = 9;
 
             dtg_DSHoaDon.Columns[0].Name = "stt";
             dtg_DSHoaDon.Columns[0].HeaderText = "STT";
@@ -61,6 +61,9 @@ namespace C_PRL.UI
 
             dtg_DSHoaDon.Columns[3].Name = "tennhanvien";
             dtg_DSHoaDon.Columns[3].HeaderText = "Tên nhân viên";
+
+            dtg_DSHoaDon.Columns[8].Name = "ngaymua";
+            dtg_DSHoaDon.Columns[8].HeaderText = "Ngày mua";
 
             dtg_DSHoaDon.Columns[4].Name = "tongtien";
             dtg_DSHoaDon.Columns[4].HeaderText = "Tổng giá tiền";
@@ -79,7 +82,7 @@ namespace C_PRL.UI
             int stt = 1;
             foreach (HoaDon item in data)
             {
-                dtg_DSHoaDon.Rows.Add(stt++, item.MaHoaDon, item.MaKhachHangNavigation.TenKhachHang, item.MaNhanVienNavigation.TenNhanVien, AddThousandSeparators(item.TongTien), AddThousandSeparators(item.TienKhachTra), AddThousandSeparators(Convert.ToInt32(item.GiamGia) * 10000), (item.TrangThai == 0) ? "Chưa thanh toán" : "Đã thanh toán");
+                dtg_DSHoaDon.Rows.Add(stt++, item.MaHoaDon, item.MaKhachHangNavigation.TenKhachHang, item.MaNhanVienNavigation.TenNhanVien, AddThousandSeparators(item.TongTien), AddThousandSeparators(item.TienKhachTra), AddThousandSeparators(Convert.ToInt32(item.GiamGia) * 10000), (item.TrangThai == 0) ? "Chưa thanh toán" : "Đã thanh toán", item.NgayMua);
             }
 
 

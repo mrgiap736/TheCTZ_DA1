@@ -96,6 +96,7 @@ namespace C_PRL.UI
         }
         private void pn_BanHang_Click(object sender, EventArgs e)
         {
+            lb_TenChucNang.Text = "QUẢN LÝ BÁN HÀNG";
             pn_Form_BanHang.Controls.Clear();
 
             foreach (Control item in GetCtrl())
@@ -113,6 +114,7 @@ namespace C_PRL.UI
 
         private void pn_HoaDon_Click(object sender, EventArgs e)
         {
+            lb_TenChucNang.Text = "QUẢN LÝ HÓA ĐƠN";
             pn_Form_BanHang.Controls.Clear();
 
             Form_HoaDon form = new Form_HoaDon();
@@ -131,6 +133,7 @@ namespace C_PRL.UI
 
         private void pn_SanPham_Click(object sender, EventArgs e)
         {
+            lb_TenChucNang.Text = "QUẢN LÝ SẢN PHẨM";
             pn_Form_BanHang.Controls.Clear();
 
             Form_SanPham form = new Form_SanPham(nvien);
@@ -149,6 +152,7 @@ namespace C_PRL.UI
 
         private void pn_KhachHang_Click(object sender, EventArgs e)
         {
+            lb_TenChucNang.Text = "QUẢN LÝ KHÁCH HÀNG";
             pn_Form_BanHang.Controls.Clear();
 
             Form_KhachHang form = new Form_KhachHang(nvien);
@@ -167,6 +171,7 @@ namespace C_PRL.UI
 
         private void pn_NhanVien_Click(object sender, EventArgs e)
         {
+            lb_TenChucNang.Text = "QUẢN LÝ NHÂN VIÊN";
             pn_Form_BanHang.Controls.Clear();
 
             Form_NhanVien form = new Form_NhanVien();
@@ -222,6 +227,7 @@ namespace C_PRL.UI
 
             tbx_Search.Text = "";
             tbx_TienKhachTra.Text = "0";
+            tbx_Giamgia.Text = "0";
             tbx_GhiChu.Text = "";
             tbx_SDTkh.Text = "";
             dtg_GioHang.Rows.Clear();
@@ -462,7 +468,7 @@ namespace C_PRL.UI
 
                 tbx_TienKhachTra.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[4].Value.ToString();
                 tbx_Giamgia.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[5].Value.ToString();
-                lb_TongTien.Text = dtg_HoaDonCho.Rows[rowIndex].Cells[3].Value.ToString();
+                lb_TongTien.Text = AddThousandSeparators(Convert.ToInt32(dtg_HoaDonCho.Rows[rowIndex].Cells[3].Value));
 
                 string nameKH_search = dtg_HoaDonCho.Rows[rowIndex].Cells[1].Value.ToString();
 
@@ -528,6 +534,12 @@ namespace C_PRL.UI
             if (int.TryParse(tbx_Giamgia.Text, out int giamgia))
             {
                 SauKhiGiamGia = kq - (10000 * giamgia);
+
+                if (SauKhiGiamGia < (kq /100 * 70))
+                {
+                    SauKhiGiamGia = kq / 100 * 30;
+                    tbx_Giamgia.Text = $"{kq / 100 * 70 / 10000}";
+                }
             }
 
 
@@ -611,7 +623,7 @@ namespace C_PRL.UI
         }
 
         //Hàm validate dữ liệu đầu vào tạo hóa đơn 
-        public bool ValidateTaoHD(int makh, int tienkhachtra, int tongtien)
+        public bool ValidateTaoHD(int makh, string tienkhachtra, int tongtien)
         {
             bool check = true;
             //
@@ -625,14 +637,24 @@ namespace C_PRL.UI
                 MessageBox.Show("Không tìm thấy khách hàng !");
                 check = false;
             }
-            else if (tienkhachtra == 0)
-            {
+            else if (tbx_TienKhachTra.Text == "")
+            {          
                 MessageBox.Show("Chưa nhập số tiền khách trả !");
+                check = false;
+            }
+            else if(tbx_Giamgia.Text == "")
+            {
+                MessageBox.Show("Chưa nhập số điểm giảm giá !");
                 check = false;
             }
             else
             {
-                if (tienkhachtra < tongtien)
+                if (Convert.ToInt32(tienkhachtra) == 0)
+                {
+                    MessageBox.Show("Chưa nhập số tiền khách trả !");
+                    check = false;
+                }
+                else if (Convert.ToInt32(tienkhachtra) < tongtien)
                 {
                     MessageBox.Show("Số tiền khách gửi không đủ !");
                     check = false;
@@ -671,17 +693,15 @@ namespace C_PRL.UI
 
             int tongtien = TinhTongTien();
 
-            int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text.Replace(",", ""));
-
-            int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
-
             int trangthai = 1;
 
-            if (!ValidateTaoHD(makhachhang, tienkhachtra, tongtien))
+            if (!ValidateTaoHD(makhachhang, tbx_TienKhachTra.Text.Replace(",", ""), tongtien))
             {
                 return;
             }
             {
+                int tienkhachtra = Convert.ToInt32(tbx_TienKhachTra.Text.Replace(",", ""));
+                int giamgia = Convert.ToInt32(tbx_Giamgia.Text);
                 bool check = true;
                 foreach (var item in hdsv.GetAllHoaDon())
                 {
@@ -693,67 +713,87 @@ namespace C_PRL.UI
 
                 if (check)
                 {
-                    HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
-                    hdsv.TaoHoaDon(hd);
-                    AddHDChiTiet(hd.MaHoaDon);
-                    MessageBox.Show("Thanh toán thành công");
-
-                    //cập nhật tích lũy cho khách hàng
-                    int? tichluymoi;
-
-                    if (tbx_Giamgia.Text == "0" || tbx_Giamgia.Text == null)
+                    //Check xem khách đủ điểm để giảm giá hay không
+                    if (CheckGiamGia())
                     {
-                        //nếu khách hàng mua không giảm giá thì tích lũy
-                        tichluymoi = kHang.TichLuy + tongtien / 100000;
-                        kHang.TichLuy = tichluymoi;
+                        HoaDon hd = new HoaDon(makhachhang, manhanvien, ngaymua, tongtien, tienkhachtra, giamgia, trangthai);
+                        hdsv.TaoHoaDon(hd);
+                        AddHDChiTiet(hd.MaHoaDon);
+                        MessageBox.Show("Thanh toán thành công");
 
+
+                        //cập nhật tích lũy cho khách hàng
+                        int? tichluymoi;
+
+                        if (tbx_Giamgia.Text == "0" || tbx_Giamgia.Text == null)
+                        {
+                            //nếu khách hàng mua không giảm giá thì tích lũy
+                            tichluymoi = kHang.TichLuy + tongtien / 100000;
+                            kHang.TichLuy = tichluymoi;
+
+                        }
+                        else
+                        {
+                            //nếu khách hàng mua với giảm giá thì không tích lũy và trừ bớt điểm tích lũy đang có
+                            tichluymoi = kHang.TichLuy - Convert.ToInt32(tbx_Giamgia.Text);
+                            kHang.TichLuy = tichluymoi;
+                        }
+
+                        khsv.Update(kHang);
+
+                        //In hoa don cho khach
+                        InHoaDon(hd.MaHoaDon);
+
+                        //Xoa du lieu input
+                        ClearInput();
                     }
                     else
                     {
-                        //nếu khách hàng mua với giảm giá thì không tích lũy và trừ bớt điểm tích lũy đang có
-                        tichluymoi = kHang.TichLuy - Convert.ToInt32(tbx_Giamgia.Text);
-                        kHang.TichLuy = tichluymoi;
+                        MessageBox.Show("Khách hàng không đủ điểm tích lũy !");
+                        return;
                     }
-
-                    khsv.Update(kHang);
-
-                    //In hoa don cho khach
-                    InHoaDon(hd.MaHoaDon);
-
-                    //Xoa du lieu input
-                    ClearInput();
+                    
+                    
                 }
                 else
                 {
 
-                    //Thanh toán hóa đơn chờ
-                    hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien);
-                    UpdateHDChiTiet();
-                    MessageBox.Show("Thanh toán thành công");
-
-                    //cập nhật tích lũy cho khách hàng
-                    int? tichluymoi;
-                    if (tbx_Giamgia.Text == "0" || tbx_Giamgia.Text == null)
+                    if(CheckGiamGia())
                     {
-                        //nếu khách hàng mua không giảm giá thì tích lũy
-                        tichluymoi = kHang.TichLuy + tongtien / 100000;
-                        kHang.TichLuy = tichluymoi;
+                        //Thanh toán hóa đơn chờ
+                        hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien);
+                        UpdateHDChiTiet();
+                        MessageBox.Show("Thanh toán thành công");
 
+                        //cập nhật tích lũy cho khách hàng
+                        int? tichluymoi;
+                        if (tbx_Giamgia.Text == "0" || tbx_Giamgia.Text == null)
+                        {
+                            //nếu khách hàng mua không giảm giá thì tích lũy
+                            tichluymoi = kHang.TichLuy + tongtien / 100000;
+                            kHang.TichLuy = tichluymoi;
+
+                        }
+                        else
+                        {
+                            //nếu khách hàng mua với giảm giá thì không tích lũy và trừ bớt điểm tích lũy đang có
+                            tichluymoi = kHang.TichLuy - Convert.ToInt32(tbx_Giamgia.Text);
+                            kHang.TichLuy = tichluymoi;
+                        }
+
+                        khsv.Update(kHang);
+
+                        //In hoa don cho khach
+                        InHoaDon(idUpdate);
+
+                        //Xoa du lieu input
+                        ClearInput();
                     }
                     else
                     {
-                        //nếu khách hàng mua với giảm giá thì không tích lũy và trừ bớt điểm tích lũy đang có
-                        tichluymoi = kHang.TichLuy - Convert.ToInt32(tbx_Giamgia.Text);
-                        kHang.TichLuy = tichluymoi;
+                        MessageBox.Show("Khách hàng không đủ điểm tích lũy !");
+                        return;
                     }
-
-                    khsv.Update(kHang);
-
-                    //In hoa don cho khach
-                    InHoaDon(idUpdate);
-
-                    //Xoa du lieu input
-                    ClearInput();
                 }
 
 
@@ -1036,7 +1076,7 @@ namespace C_PRL.UI
                 MessageBox.Show("Hoá đơn đã được lưu thành công vào tệp PDF.");
 
                 // Mở tệp PDF sau khi lưu
-                Process.Start(@"C:\Users\TuanHung01\AppData\Local\SumatraPDF\SumatraPDF.exe", fileName);
+                Process.Start(@"E:\Dự án 1\SumatraPDF\SumatraPDF.exe", fileName);
             }
             catch (Exception ex)
             {
@@ -1079,6 +1119,16 @@ namespace C_PRL.UI
             }
 
             return table;
+        }
+
+        //Hàm check giảm giá 
+        private bool CheckGiamGia()
+        {
+            if (Convert.ToInt32(tbx_Giamgia.Text) > kHang.TichLuy)
+            {
+                return false;
+            }
+            else return true;
         }
 
 
