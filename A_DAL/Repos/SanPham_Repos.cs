@@ -90,6 +90,42 @@ namespace A_DAL.Repos
             return GetAll();
         }
 
+        public List<SanPham> LocTheoHang(int index)
+        {
+            // Lấy danh sách hãng sản xuất từ cơ sở dữ liệu
+            List<string> allManufacturers = GetAllManufacturers();
+
+            // Thực hiện lọc dựa trên chỉ số index
+            if (index == 0)
+            {
+                // Nếu index là 0, trả về tất cả sản phẩm
+                return GetAll();
+            }
+            else if (index > 0 && index <= allManufacturers.Count)
+            {
+                // Lấy hãng sản xuất dựa trên chỉ số index
+                string selectedManufacturer = allManufacturers[index - 1];
+
+                // Lọc sản phẩm theo hãng sản xuất được chọn
+                return context.SanPhams.Where(x => x.HangSanXuat == selectedManufacturer).ToList();
+            }
+
+            // Nếu index không hợp lệ hoặc không có hãng sản xuất tương ứng, trả về danh sách trống
+            return new List<SanPham>();
+        }
+
+
+        public List<string> GetAllManufacturers()
+        {
+            // Lấy danh sách hãng sản xuất từ cơ sở dữ liệu và sắp xếp chúng theo thứ tự mong muốn
+            return context.SanPhams
+                .Select(s => s.HangSanXuat)
+                .Distinct()
+                .OrderBy(h => h) // Sắp xếp danh sách theo thứ tự bảng chữ cái
+                .ToList();
+        }
+
+
         public List<SanPham> FilterByTheFirm(int index)
         {
             throw new NotImplementedException();

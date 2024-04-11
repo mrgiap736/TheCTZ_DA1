@@ -1,5 +1,6 @@
 ﻿using A_DAL.Data;
 using A_DAL.Entities;
+using A_DAL.Repos;
 using B_BUS.Services;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -233,11 +234,26 @@ namespace C_PRL.UI
         //Load du lieu cho 2 combobox
         public void LoadCBX1()
         {
-            cbx_Filter1.Items.Add("Tất cả");
+            cbx_Filter1.Items.Clear(); // Xóa tất cả các mục đã tồn tại trong ComboBox trước khi thêm các mục mới
+
+            cbx_Filter1.Items.Add("Tất cả"); // Thêm mục "Tất cả" vào ComboBox
+
+            // Lấy danh sách hãng sản xuất từ cơ sở dữ liệu
+            var sanPhamRepos = new SanPham_Repos();
+            var manufacturers = sanPhamRepos.GetAllManufacturers();
+
+            // Thêm các hãng sản xuất vào ComboBox
+            foreach (var manufacturer in manufacturers)
+            {
+                cbx_Filter1.Items.Add(manufacturer);
+            }
 
             //Tự động chọn item 0 (tất cả)
             cbx_Filter1.SelectedIndex = 0;
+            cbx_Filter1.DropDown += cbx_Filter1_DropDown;
         }
+
+
         public void LoadCBX2()
         {
             cbx_Filter2.Items.Add("Tất cả");
@@ -907,7 +923,7 @@ namespace C_PRL.UI
                 infoTable.WidthPercentage = 100;
                 infoTable.SpacingBefore = 10f; // Khoảng cách trước của bảng
 
-                PdfPCell nhanVienCell = new PdfPCell(new Phrase($"Nhân viên bán hàng:{lb_NameNV.Text}", contentFont));
+                PdfPCell nhanVienCell = new PdfPCell(new Phrase($"Nhân viên bán hàng: {lb_NameNV.Text}", contentFont));
                 nhanVienCell.Border = PdfPCell.NO_BORDER;
                 infoTable.AddCell(nhanVienCell);
 
@@ -946,7 +962,7 @@ namespace C_PRL.UI
                 totalTable.AddCell(totalLabelCell);
 
                 // Thêm giá trị lb_TongTien.Text với căn chỉnh bên phải
-                PdfPCell totalValueCell = new PdfPCell(new Phrase($"{AddThousandSeparators(Convert.ToInt32(lb_TongTien.Text.Replace(",","")))} VND", contentFont));
+                PdfPCell totalValueCell = new PdfPCell(new Phrase($"{AddThousandSeparators(Convert.ToInt32(lb_TongTien.Text.Replace(",", "")))} VND", contentFont));
                 totalValueCell.HorizontalAlignment = Element.ALIGN_RIGHT;
                 totalValueCell.Border = PdfPCell.NO_BORDER;
                 totalTable.AddCell(totalValueCell);
@@ -977,7 +993,7 @@ namespace C_PRL.UI
                 paymentTable.AddCell(paymentLabelCell);
 
                 // Thêm giá trị tbx_TienKhachTra.Text với căn chỉnh bên phải
-                PdfPCell paymentValueCell = new PdfPCell(new Phrase($"{AddThousandSeparators(Convert.ToInt32(tbx_TienKhachTra.Text.Replace(",","")))} VND", contentFont));
+                PdfPCell paymentValueCell = new PdfPCell(new Phrase($"{AddThousandSeparators(Convert.ToInt32(tbx_TienKhachTra.Text.Replace(",", "")))} VND", contentFont));
                 paymentValueCell.HorizontalAlignment = Element.ALIGN_RIGHT;
                 paymentValueCell.Border = PdfPCell.NO_BORDER;
                 paymentTable.AddCell(paymentValueCell);
@@ -1020,7 +1036,7 @@ namespace C_PRL.UI
                 MessageBox.Show("Hoá đơn đã được lưu thành công vào tệp PDF.");
 
                 // Mở tệp PDF sau khi lưu
-                Process.Start(@"E:\Dự án 1\SumatraPDF\SumatraPDF.exe", fileName);
+                Process.Start(@"C:\Users\TuanHung01\AppData\Local\SumatraPDF\SumatraPDF.exe", fileName);
             }
             catch (Exception ex)
             {
@@ -1271,6 +1287,47 @@ namespace C_PRL.UI
         private void label3_Click(object sender, EventArgs e)
         {
             pn_DangXuat_Click(sender, e);
+        }
+
+        private int FindColumnIndexByName(DataGridView dataGridView, string columnName)
+        {
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                if (column.Name == columnName)
+                {
+                    return column.Index; // Trả về chỉ mục của cột nếu tìm thấy
+                }
+            }
+            return -1; // Trả về -1 nếu không tìm thấy cột
+        }
+
+        private void cbx_Filter1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadGrid(bhsv.GetSPByFirm(cbx_Filter1.SelectedIndex));
+        }
+
+        private void cbx_Filter1_DropDown(object sender, EventArgs e)
+        {
+            cbx_Filter1.Items.Clear(); // Xóa tất cả các mục đã tồn tại trong ComboBox trước khi thêm các mục mới
+
+            cbx_Filter1.Items.Add("Tất cả"); // Thêm mục "Tất cả" vào ComboBox
+
+            // Lấy danh sách hãng sản xuất từ cơ sở dữ liệu
+            var sanPhamRepos = new SanPham_Repos();
+            var manufacturers = sanPhamRepos.GetAllManufacturers();
+
+            // Thêm các hãng sản xuất vào ComboBox
+            foreach (var manufacturer in manufacturers)
+            {
+                cbx_Filter1.Items.Add(manufacturer);
+            }
+
+        }
+
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+            LoadGrid(bhsv.GetAllSanPham());
         }
     }
 }

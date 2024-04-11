@@ -33,6 +33,10 @@ namespace B_BUS.Services
         {
             return sprp.FilterByPrice(index);
         }
+        public List<SanPham> GetSPByFirm(int index)
+        {
+            return sprp.LocTheoHang(index);
+        }
 
         public KhachHang GetKhachHang(string phone)
         {
