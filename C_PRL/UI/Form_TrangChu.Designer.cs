@@ -78,6 +78,7 @@
             panel1 = new Panel();
             dtg_GioHang = new DataGridView();
             grb_Thanhtoan = new GroupBox();
+            label12 = new Label();
             label11 = new Label();
             pn_buttonThanhToan = new Panel();
             pn_iconThanhtoan = new Panel();
@@ -102,7 +103,6 @@
             cbx_Filter1 = new ComboBox();
             label1 = new Label();
             dtg_DSsanpham = new DataGridView();
-            label12 = new Label();
             pn_DSChucNang.SuspendLayout();
             pn_DangXuat.SuspendLayout();
             pn_NhanVien.SuspendLayout();
@@ -651,6 +651,7 @@
             dtg_GioHang.TabIndex = 0;
             dtg_GioHang.CellClick += dtg_GioHang_CellClick;
             dtg_GioHang.CellContentClick += dtg_GioHang_CellContentClick;
+            dtg_GioHang.CellValidating += dtg_GioHang_CellValidating;
             dtg_GioHang.CellValueChanged += dtg_GioHang_CellValueChanged;
             // 
             // grb_Thanhtoan
@@ -676,6 +677,15 @@
             grb_Thanhtoan.TabIndex = 1;
             grb_Thanhtoan.TabStop = false;
             grb_Thanhtoan.Text = "Thanh toán";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(402, 146);
+            label12.Name = "label12";
+            label12.Size = new Size(182, 20);
+            label12.TabIndex = 16;
+            label12.Text = "(Tối đa 70% tổng giá tiền)";
             // 
             // label11
             // 
@@ -916,15 +926,6 @@
             dtg_DSsanpham.Size = new Size(995, 424);
             dtg_DSsanpham.TabIndex = 0;
             dtg_DSsanpham.CellClick += dtg_DSsanpham_CellClick;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(402, 146);
-            label12.Name = "label12";
-            label12.Size = new Size(182, 20);
-            label12.TabIndex = 16;
-            label12.Text = "(Tối đa 70% tổng giá tiền)";
             // 
             // Form_TrangChu
             // 

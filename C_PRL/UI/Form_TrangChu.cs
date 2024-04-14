@@ -535,7 +535,7 @@ namespace C_PRL.UI
             {
                 SauKhiGiamGia = kq - (10000 * giamgia);
 
-                if (SauKhiGiamGia < (kq /100 * 70))
+                if (SauKhiGiamGia < (kq / 100 * 70))
                 {
                     SauKhiGiamGia = kq / 100 * 30;
                     tbx_Giamgia.Text = $"{kq / 100 * 70 / 10000}";
@@ -632,17 +632,22 @@ namespace C_PRL.UI
                 MessageBox.Show("Không có sản phẩm nào được chọn !");
                 check = false;
             }
+            else if (kHang == null)
+            {
+                MessageBox.Show("Không tìm thấy khách hàng");
+                check = false;
+            }
             else if (makh == 0)
             {
                 MessageBox.Show("Không tìm thấy khách hàng !");
                 check = false;
             }
             else if (tbx_TienKhachTra.Text == "")
-            {          
+            {
                 MessageBox.Show("Chưa nhập số tiền khách trả !");
                 check = false;
             }
-            else if(tbx_Giamgia.Text == "")
+            else if (tbx_Giamgia.Text == "")
             {
                 MessageBox.Show("Chưa nhập số điểm giảm giá !");
                 check = false;
@@ -672,6 +677,11 @@ namespace C_PRL.UI
             if (dtg_GioHang.Rows.Count == 1)
             {
                 MessageBox.Show("Không có sản phẩm nào được chọn !");
+                check = false;
+            }
+            else if (kHang == null)
+            {
+                MessageBox.Show("Không tìm thấy khách hàng !");
                 check = false;
             }
             else if (makh == 0)
@@ -752,13 +762,13 @@ namespace C_PRL.UI
                         MessageBox.Show("Khách hàng không đủ điểm tích lũy !");
                         return;
                     }
-                    
-                    
+
+
                 }
                 else
                 {
 
-                    if(CheckGiamGia())
+                    if (CheckGiamGia())
                     {
                         //Thanh toán hóa đơn chờ
                         hdsv.CapNhatHoaDon(idUpdate, tienkhachtra, giamgia, tongtien);
@@ -1124,13 +1134,19 @@ namespace C_PRL.UI
         //Hàm check giảm giá 
         private bool CheckGiamGia()
         {
-            if (Convert.ToInt32(tbx_Giamgia.Text) > kHang.TichLuy)
+            if (kHang == null)
             {
                 return false;
             }
-            else return true;
-        }
+            {
+                if (Convert.ToInt32(tbx_Giamgia.Text) > kHang.TichLuy)
+                {
+                    return false;
+                }
+                else return true;
+            }
 
+        }
 
         #endregion
 
@@ -1313,6 +1329,7 @@ namespace C_PRL.UI
         private void dtg_GioHang_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             TinhAllTien();
+
         }
 
         #endregion
@@ -1399,6 +1416,28 @@ namespace C_PRL.UI
         private void label12_Click(object sender, EventArgs e)
         {
             LoadGrid(bhsv.GetAllSanPham());
+        }
+
+        private void dtg_GioHang_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.RowIndex < dtg_GioHang.Rows.Count - 1 && dtg_GioHang.Columns[e.ColumnIndex].Name == "soluong") // Thay "ColumnName" bằng tên cột bạn muốn kiểm tra
+            {
+                int parsedValue;
+                if(e.FormattedValue.ToString() == "" || e.FormattedValue == null)
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("Vui lòng nhập số lượng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                else
+                {
+                    if (!int.TryParse(e.FormattedValue.ToString(), out parsedValue) || parsedValue <= 0)
+                    {
+                        e.Cancel = true;
+                        MessageBox.Show("Vui lòng nhập một số dương.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }         
+            }
         }
     }
 }
